@@ -1,4 +1,5 @@
 import AboutSection from "@/components/root/AboutSection";
+import BlogSection from "@/components/root/BlogSection";
 import EventSection from "@/components/root/EventSection";
 import HeroSection from "@/components/root/HeroSection";
 import TeamSection from "@/components/root/TeamSection";
@@ -12,7 +13,6 @@ const poppins = Poppins({
 const Rootpage = () => {
   return (
     <>
-
       <HeroSection />
       <AboutSection />
       <Marquee className=" border-t-2 border-black">
@@ -25,6 +25,7 @@ const Rootpage = () => {
       </Marquee>
       <TeamSection />
       <EventSection />
+      <BlogSection />
     </>
   );
 };
