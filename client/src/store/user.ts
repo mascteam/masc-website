@@ -1,0 +1,29 @@
+import { create } from "zustand";
+
+export type UserType = {
+  department: string;
+  division: string;
+  moodleID: string;
+  name: string;
+  year : string;
+  organizationID: { _id: string; name: string; slug: string; logoUrl: string }[];
+  registeredEvents: { title: string; _id: string; slug: string }[];
+  role: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type userStore = {
+  user: UserType | null;
+  setUser: (data: UserType | null) => void;
+  isAuth: boolean;
+  setAuth: (data: boolean) => void;
+};
+
+export const useUserStore = create<userStore>()((set) => ({
+  user: null,
+  setUser: (data: UserType | null) => set(() => ({ user: data })),
+  isAuth: false,
+  setAuth: (data: boolean) => set(() => ({ isAuth: data })),
+}));
