@@ -16,13 +16,13 @@ const EventSection = () => {
   const router = useRouter();
 
   return (
-    <section className="h-[80vh] md:h-[65vh] w-screen flex flex-col justify-start items-start px-5">
+    <section className="h-screen md:h-[80vh] w-screen flex flex-col justify-start items-start px-5">
       <h1 className="text-4xl mt-5">Upcoming Events</h1>
       <p className="hidden md:flex text-gray-600">
         Workshops, competitions, talks, and more. See what's happening at MASC and find something worth being part of.
       </p>
-      <section className="relative h-full w-full">
-        <div className="absolute inset-0 -z-10" />
+      <section className=" h-full w-full">
+
         <div className="grid grid-cols-2 md:grid-cols-3 gap-1 lg:grid-cols-4 xl:grid-cols-5 pt-6">
           {eventData.map((event, i) => (
             <div
