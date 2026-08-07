@@ -4,6 +4,7 @@ import "./globals.css";
 import TargetCursor from "@/components/TargetCursor";
 import Navbar from "@/components/layout/Navbar";
 import LenisProvider from "@/components/root/LenisProvider";
+import Footer from "@/components/layout/Footer";
 
 export const titleFont = Mansalva({
   weight: ["400"],
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <LenisProvider>
           <Navbar />
           {children}
+          <Footer />
         </LenisProvider>
       </body>
     </html>
