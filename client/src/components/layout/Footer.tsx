@@ -26,15 +26,18 @@ const Footer = () => {
     <footer className="h-[60vh] md:h-[50vh] w-screen bg-black cursor-auto text-white px-5 md:px-10 flex flex-col md:flex-row justify-between">
       {/* CTA */}
       <div className="pt-5">
-        <p className="text-sm text-gray-500 mb-4">End of Line</p>
+        <p className="text-sm text-gray-500 mb-4">The End Of The Line</p>
 
-        <Link href={"https://www.linkedin.com/in/shree-bavachikar-a16493375/"} className="group block w-fit cursor-target">
+        <Link
+          href={"https://www.linkedin.com/in/shree-bavachikar-a16493375/"}
+          className="group block w-fit cursor-target"
+        >
           <h2 className="text-[12vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em]">
             <span className="cursor-target">SHREE</span>
             <span>
               MADE THAT
-              <span className="inline-block ml-2 transition-transform duration-500 group-hover:translate-x-4 group-hover:-translate-y-2">
-                ↗
+              <span className="cursor-target inline-block ml-2 transition-transform duration-500 group-hover:animate-spin">
+                🧿
               </span>
             </span>
           </h2>
@@ -48,7 +51,7 @@ const Footer = () => {
 
           <div className="flex flex-col gap-1">
             {navs.map((nav) => (
-              <Link key={nav} href={`/${nav}`} className="capitalize text-lg hover:text-gray-400 transition-colors">
+              <Link key={nav} href={`/${nav}`} className="cursor-target capitalize text-lg hover:text-gray-400 transition-colors">
                 {nav}
               </Link>
             ))}
@@ -65,7 +68,7 @@ const Footer = () => {
                 href={social.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="capitalize text-lg hover:text-gray-400 transition-colors"
+                className="cursor-target capitalize text-lg hover:text-gray-400 transition-colors"
               >
                 {social.name}
               </Link>
@@ -76,7 +79,6 @@ const Footer = () => {
         <div className="md:col-span-2 md:text-right">
           <p className="text-xs text-gray-500 mb-4">MASC</p>
           <p className="text-xs">something</p>
-          
         </div>
       </div>
     </footer>
