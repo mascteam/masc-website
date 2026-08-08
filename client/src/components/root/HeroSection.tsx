@@ -1,7 +1,6 @@
 import React from "react";
 
 import { titleFont } from "@/app/layout";
-import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
 
 const HeroSection = () => {
   return (
