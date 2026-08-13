@@ -10,9 +10,11 @@ import axiosInstance from "@/services/axios";
 import { toasty } from "@/components/ToastProvider";
 
 import { useUserStore } from "@/store/user";
-import LoadingPage from "@/app/loading";
 import NotFound from "@/app/not-found";
 import { TrashIcon } from "lucide-react";
+import Link from "next/link";
+
+import download from "downloadjs"
 
 export type EventType = {
   _id: string;
@@ -45,40 +47,17 @@ export type EventType = {
   isPublic: boolean;
 };
 
-export const initialEventState: EventType = {
-  _id: "",
-  title: "",
-  slug: "",
-  date: "",
-  day: "",
-  time: "",
-  banner: "",
-  venue: "",
-  speakers: [],
-  description: "",
-  tags: ["example1", "example2"],
-  externalLinks: [],
-
-  organizationID: "",
-
-  canRegister: false,
-  isPublic: false,
-
-  registerdStudentsID: [],
-
-  allowedYears: [],
-  allowedDepartments: [],
-  allowedDivisions: [],
-};
-
-const CreateEvent = () => {
-  const [editState, setEditState] = useState<EventType>(initialEventState);
+const UpdateEventDetails = ({ event }: { event: EventType }) => {
+  const [editState, setEditState] = useState<EventType>({ ...event });
 
   const [disable, setDisable] = useState(false);
 
   const [isAdmin, setAdmin] = useState(false);
 
-  const [commaInputs, setCommaInputs] = useState<{ tags: string; speakers: string }>({ tags: "", speakers: "" });
+  const [commaInputs, setCommaInputs] = useState<{ tags: string; speakers: string }>({
+    tags: event.tags.join(","),
+    speakers: event.speakers.join(","),
+  });
 
   const { user } = useUserStore();
 
@@ -130,12 +109,12 @@ const CreateEvent = () => {
     }
   };
 
-  const hostEvent = async () => {
+  const updateEvents = async () => {
     setDisable(true);
     try {
       // submit the data
-      const { data }: { data: { event: EventType } } = await axiosInstance.post(
-        `/events`,
+      const { data }: { data: { event: EventType } } = await axiosInstance.patch(
+        `/events/${event._id}`,
         {
           ...editState,
           organizationID: user!.organizationID[0]._id,
@@ -147,9 +126,9 @@ const CreateEvent = () => {
         },
       );
 
-      toasty("event created successfully");
+      toasty("event updated successfully");
 
-      router.push(`/events/${data.event.slug}`);
+      router.push(`/events?search=${data.event.slug}`);
     } catch (error: any) {
       console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
@@ -163,24 +142,59 @@ const CreateEvent = () => {
     }
   };
 
-  const [uploading, setUploading] = useState(false);
 
-  const uploadImage = async (file: File) => {
+
+
+  const downloadAttendanceList = async () => {
     try {
-      setUploading(true);
+      if (!editState?._id) throw new Error("try again, failed to get event id");
+      const res = await axiosInstance.get(`/events/${editState._id}/attended`, {
+        withCredentials: true,
+        responseType: "blob",
+      });
 
-      const formData = new FormData();
-      formData.append("image", file);
+      download(res.data, "attendance-list.csv", "text/csv");
+    } catch (error: any) {
+      toasty(error.response.data.message || "failed to get your list");
+    }
+  };
 
-      const { data } = await axiosInstance.post("/image-to-url", formData);
+  const downloadRegistrationList = async () => {
+    try {
+      if (!editState?._id) throw new Error("try again, failed to get event id");
+      const res = await axiosInstance.get(`/events/${editState._id}/register`, {
+        withCredentials: true,
+        responseType: "blob",
+      });
 
-      return data.url;
-    } catch {
-      (error: any) => {
-        toasty(error.message || "failed to upload image");
-      };
-    } finally {
-      setUploading(false);
+      download(res.data, "registration-list.csv", "text/csv");
+    } catch (error: any) {
+      toasty(error.response.data.message || "failed to get your list");
+    }
+  };
+
+  const registrationToggle = async () => {
+    try {
+      if (!user) {
+        throw new Error("user is not logged in");
+      }
+
+      const { data }: { data: { event: EventType } } = await axiosInstance.patch(
+        `/events/${event._id}`,
+        {
+          canRegister: !editState.canRegister,
+          organizationID: user.organizationID[0]._id,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+
+      toasty("event updated successfully");
+
+      setEditState((p) => ({ ...p, canRegister: data.event.canRegister }));
+    } catch (error: any) {
+      toasty(error.message);
     }
   };
 
@@ -189,18 +203,18 @@ const CreateEvent = () => {
   }
 
   return (
-    <section className="relative min-h-screen flex justify-center px-6 py-20 text-black">
-      <div className="absolute inset-0 -z-10" />
+    <section className="relative min-h-screen w-screen flex justify-center px-6 py-20">
+      <div className="absolute inset-0 -z-10 bg-white text-black" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-5xl flex flex-col gap-12"
+        className="w-full flex flex-col gap-12"
       >
         {/* Heading */}
         <div>
-          <h1 className="text-5xl font-bold uppercase">Host an Event</h1>
+          <h1 className="text-5xl font-bold uppercase">Update an Event</h1>
         </div>
 
         {/* Title */}
@@ -219,27 +233,16 @@ const CreateEvent = () => {
           />
 
           <input
-            type="file"
-            accept="image/*"
-            disabled={uploading}
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-
-              try {
-                const url = await uploadImage(file);
-
-                setEditState((prev) => ({
-                  ...prev,
-                  banner: url,
-                }));
-
-                toasty("Banner uploaded");
-              } catch (error: any) {
-                toasty(error.response?.data?.message || "Upload failed");
-              }
-            }}
-            className="w-full mt-4 file:mr-4 file:border-0 file:bg-transparent"
+            name="banner"
+            placeholder="Banner Link"
+            value={editState.banner}
+            onChange={(e) =>
+              setEditState({
+                ...editState,
+                banner: e.target.value,
+              })
+            }
+            className="w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
           />
         </motion.div>
 
@@ -287,7 +290,7 @@ const CreateEvent = () => {
 
         {/* Description */}
         <div className="flex flex-col gap-3">
-          <p className="uppercase text-sm">Description</p>
+          <p className="uppercase text-sm opacity-60">Description</p>
 
           <textarea
             name="description"
@@ -306,7 +309,7 @@ const CreateEvent = () => {
         {/* Tags & Speakers */}
         <div className="flex flex-wrap gap-10">
           <div className="flex-1 min-w-[250px]">
-            <p className="uppercase text-sm mb-3">Tags</p>
+            <p className="uppercase text-sm opacity-60 mb-3">Tags</p>
 
             <input
               name="tags"
@@ -323,7 +326,7 @@ const CreateEvent = () => {
           </div>
 
           <div className="flex-1 min-w-[250px]">
-            <p className="uppercase text-sm mb-3">Speakers</p>
+            <p className="uppercase text-sm opacity-60 mb-3">Speakers</p>
 
             <input
               name="speakers"
@@ -343,7 +346,7 @@ const CreateEvent = () => {
         {/* Departments */}
 
         <div className="flex flex-col gap-4">
-          <h2 className="uppercase text-sm">Allowed Departments</h2>
+          <h2 className="uppercase text-sm opacity-60">Allowed Departments</h2>
 
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {allowedDepartments.map((dept) => (
@@ -363,7 +366,7 @@ const CreateEvent = () => {
         {/* Years */}
 
         <div className="flex flex-col gap-4">
-          <h2 className="uppercase text-sm">Allowed Years</h2>
+          <h2 className="uppercase text-sm opacity-60">Allowed Years</h2>
 
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {allowedYears.map((year) => (
@@ -383,7 +386,7 @@ const CreateEvent = () => {
         {/* Divisions */}
 
         <div className="flex flex-col gap-4">
-          <h2 className="uppercase text-sm">Allowed Divisions</h2>
+          <h2 className="uppercase text-sm opacity-60">Allowed Divisions</h2>
 
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {allowedDivisions.map((div) => (
@@ -401,24 +404,22 @@ const CreateEvent = () => {
         </div>
 
         {/* External Links */}
-        <div className="flex flex-col gap-4">
-          <h2 className="uppercase text-sm">Helpful Links</h2>
+        <div className="flex flex-col gap-6">
+          {editState.externalLinks.map((item, index) => (
+            <div key={index} className="flex flex-col md:flex-row gap-3 md:items-center">
+              <input
+                type="text"
+                placeholder="Name"
+                value={item.name}
+                onChange={(e) => {
+                  const updated = [...editState.externalLinks];
+                  updated[index] = { ...updated[index], name: e.target.value };
+                  setEditState({ ...editState, externalLinks: updated });
+                }}
+                className="w-full md:flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
+              />
 
-          <div className="flex flex-col gap-6">
-            {editState.externalLinks.map((item, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={item.name}
-                  onChange={(e) => {
-                    const updated = [...editState.externalLinks];
-                    updated[index] = { ...updated[index], name: e.target.value };
-                    setEditState({ ...editState, externalLinks: updated });
-                  }}
-                  className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
-                />
-
+              <div className="flex items-center gap-3 w-full md:flex-[2]">
                 <input
                   type="text"
                   placeholder="https://..."
@@ -428,7 +429,7 @@ const CreateEvent = () => {
                     updated[index] = { ...updated[index], link: e.target.value };
                     setEditState({ ...editState, externalLinks: updated });
                   }}
-                  className="flex-[2] border-0 border-b-2 border-black bg-transparent outline-none"
+                  className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
                 />
 
                 <button
@@ -439,28 +440,13 @@ const CreateEvent = () => {
                       externalLinks: editState.externalLinks.filter((_, i) => i !== index),
                     })
                   }
-                  className="opacity-60 hover:opacity-100 transition"
+                  className="opacity-60 hover:opacity-100 transition shrink-0"
                 >
                   <TrashIcon size={18} />
                 </button>
               </div>
-            ))}
-          </div>
-
-          <div className="flex justify-start pt-2">
-            <button
-              type="button"
-              onClick={() =>
-                setEditState({
-                  ...editState,
-                  externalLinks: [...editState.externalLinks, { name: "", link: "" }],
-                })
-              }
-              className="border-b-2 border-black uppercase tracking-wide"
-            >
-              + Add Link
-            </button>
-          </div>
+            </div>
+          ))}
         </div>
 
         {/* Submit */}
@@ -470,15 +456,41 @@ const CreateEvent = () => {
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.97 }}
             disabled={disable}
-            onClick={hostEvent}
-            className="border-b-2 border-black text-xl uppercase tracking-wide"
+            onClick={updateEvents}
+            className="cursor-target border-b-2 border-black text-xl uppercase tracking-wide"
           >
-            Publish →
+            Update →
           </motion.button>
+        </div>
+
+        <div className="mt-20 pt-8 border-t border-white/10">
+          <h2 className="text-sm uppercase tracking-widest opacity-60 mb-8">Event Actions</h2>
+
+          <div className="flex flex-wrap gap-x-10 gap-y-6">
+            <button onClick={downloadRegistrationList} className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+              Download Registration List
+            </button>
+
+            <button onClick={downloadAttendanceList} className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+              Download Attendance List
+            </button>
+
+            <Link href="attendance" className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+              Mark Attendance
+            </Link>
+
+            <Link href="feedback" className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+              Start Feedback
+            </Link>
+
+            <button onClick={registrationToggle} className="cursor-target border-b-2 border-black text-red-400 hover:opacity-70 transition">
+              {editState.canRegister ? "Close" : "Open"} Registration
+            </button>
+          </div>
         </div>
       </motion.div>
     </section>
   );
 };
 
-export default CreateEvent;
+export default UpdateEventDetails;

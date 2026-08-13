@@ -25,7 +25,7 @@ export const createHighlight = async (req: AuthenticatedRequest, res: Response) 
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if such organization exist or not
-  const organizationToUpdate = await Organization.findOne({ slug: "dsa" });
+  const organizationToUpdate = await Organization.findOne({ slug: "masc" });
   if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
 
   // check if authenticated user is in the organization
@@ -51,7 +51,7 @@ export const updateHighlightByID = async (req: AuthenticatedRequest, res: Respon
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if such organization exist or not
-  const organizationToUpdate = await Organization.findOne({ slug: "dsa" });
+  const organizationToUpdate = await Organization.findOne({ slug: "masc" });
   if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
 
   // check if authenticated user is in the organization
@@ -83,7 +83,7 @@ export const deleteHighlightByID = async (req: AuthenticatedRequest, res: Respon
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if such organization exist or not
-  const organizationToUpdate = await Organization.findOne({ slug: "dsa" });
+  const organizationToUpdate = await Organization.findOne({ slug: "masc" });
   if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
 
   // check if authenticated user is in the organization

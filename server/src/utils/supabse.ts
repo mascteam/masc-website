@@ -25,7 +25,7 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
       if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
     
       // check if such organization exist or not
-      const organizationToUpdate = await Organization.findOne({ slug : "dsa" });
+      const organizationToUpdate = await Organization.findOne({ slug : "masc" });
       if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
     
       // check if authenticated user is in the organization
@@ -45,7 +45,7 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
     const fileName = `${crypto.randomUUID()}-${req.file.originalname}`;
 
     const { error } = await supabase.storage
-      .from("dsa website") // Bucket name
+      .from("masc") // Bucket name
       .upload(fileName, req.file.buffer, {
         contentType: req.file.mimetype,
         upsert: false,
@@ -58,7 +58,7 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     const { data } = supabase.storage
-      .from("dsa website")
+      .from("masc")
       .getPublicUrl(fileName);
 
     return res.status(200).json({

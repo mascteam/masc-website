@@ -5,6 +5,7 @@ import TargetCursor from "@/components/TargetCursor";
 import Navbar from "@/components/layout/Navbar";
 import LenisProvider from "@/components/root/LenisProvider";
 import Footer from "@/components/layout/Footer";
+import AuthProvider from "@/components/AuthProvider";
 
 export const titleFont = Mansalva({
   weight: ["400"],
@@ -33,8 +34,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           cursorColorOnTarget="#ff2c2c"
         />
         <LenisProvider>
-          <Navbar />
-          {children}
+          <AuthProvider>
+            <Navbar />
+
+            {children}
+          </AuthProvider>
           <Footer />
         </LenisProvider>
       </body>

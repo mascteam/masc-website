@@ -72,7 +72,7 @@ const RegisterPage = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6">
-      <div className="absolute inset-0 -z-10 bg-[#131F43] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
+      <div className="absolute inset-0 -z-10" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -82,7 +82,7 @@ const RegisterPage = () => {
       >
         {/* Heading */}
         <div>
-          <h1 className="text-4xl font-bold uppercase">Register with dsa</h1>
+          <h1 className="text-4xl font-bold uppercase">Register at masc</h1>
           <p className="text-sm opacity-60 mt-2">Enter your academic details to continue.</p>
         </div>
 
@@ -98,7 +98,7 @@ const RegisterPage = () => {
             <IdCard className="shrink-0" />
 
             <input
-              className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg"
+              className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none uppercase text-lg"
               placeholder="Moodle ID"
               value={registerData.moodleID}
               onChange={(e) =>
@@ -120,7 +120,7 @@ const RegisterPage = () => {
             <User2 className="shrink-0" />
 
             <input
-              className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg"
+              className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none uppercase text-lg"
               placeholder="Full Name"
               value={registerData.name}
               onChange={(e) =>
@@ -142,7 +142,7 @@ const RegisterPage = () => {
           className="flex flex-wrap gap-6"
         >
           <select
-            className="flex-1 min-w-[180px] border-0 border-b bg-transparent outline-none uppercase text-lg"
+            className="flex-1 min-w-[180px] border-0 border-b-2 border-black bg-transparent outline-none uppercase text-lg"
             value={registerData.department}
             onChange={(e) =>
               setRegisterData((p) => ({
@@ -151,19 +151,19 @@ const RegisterPage = () => {
               }))
             }
           >
-            <option className="bg-[#131F43]" disabled value="">
+            <option className="" disabled value="">
               Department
             </option>
 
             {departments.map((dept) => (
-              <option key={dept} value={dept} className="bg-[#131F43]">
+              <option key={dept} value={dept} className="">
                 {dept}
               </option>
             ))}
           </select>
 
           <select
-            className="flex-1 min-w-[120px] border-0 border-b bg-transparent outline-none uppercase text-lg"
+            className="flex-1 min-w-[120px] border-0 border-b-2 border-black bg-transparent outline-none uppercase text-lg"
             value={registerData.division}
             onChange={(e) =>
               setRegisterData((p) => ({
@@ -172,19 +172,19 @@ const RegisterPage = () => {
               }))
             }
           >
-            <option className="bg-[#131F43]" disabled value="">
+            <option className="" disabled value="">
               Division
             </option>
 
             {divisions.map((div) => (
-              <option key={div} value={div} className="bg-[#131F43]">
+              <option key={div} value={div} className="">
                 {div}
               </option>
             ))}
           </select>
 
           <select
-            className="flex-1 min-w-[120px] border-0 border-b bg-transparent outline-none uppercase text-lg"
+            className="flex-1 min-w-[120px] border-0 border-b-2 border-black bg-transparent outline-none uppercase text-lg"
             value={registerData.year}
             onChange={(e) =>
               setRegisterData((p) => ({
@@ -193,12 +193,12 @@ const RegisterPage = () => {
               }))
             }
           >
-            <option className="bg-[#131F43]" disabled value="">
+            <option className="" disabled value="">
               Year
             </option>
 
             {years.map((year) => (
-              <option key={year} value={year} className="bg-[#131F43]">
+              <option key={year} value={year} className="">
                 {year}
               </option>
             ))}
@@ -216,7 +216,7 @@ const RegisterPage = () => {
           <Lock className="shrink-0" />
 
           <input
-            className="flex-1 border-0 border-b bg-transparent outline-none text-lg"
+            className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none text-lg"
             placeholder="Password"
             type="password"
             value={registerData.password}
@@ -235,7 +235,7 @@ const RegisterPage = () => {
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="border-b text-lg uppercase tracking-wide cursor-pointer"
+            className="border-b-2 border-black text-lg uppercase tracking-wide cursor-target"
             onClick={handleRegister}
           >
             Submit Details

@@ -47,7 +47,7 @@ const LoginPage = () => {
 
       Cookie.set("jwt", data.token);
 
-      setUser(data.userExist)
+      setUser(data.userExist);
 
       router.push("/profile");
     } catch (error: any) {
@@ -72,7 +72,7 @@ const LoginPage = () => {
       >
         {/* Heading */}
         <div>
-          <h1 className="text-4xl font-bold uppercase">Login At DSA</h1>
+          <h1 className="text-4xl font-bold uppercase">Login At masc</h1>
           <p className="mt-2 text-sm opacity-60">Continue with your Moodle credentials.</p>
         </div>
 

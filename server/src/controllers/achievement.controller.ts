@@ -24,7 +24,7 @@ export const createAchievement = async (req: AuthenticatedRequest, res: Response
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if such organization exist or not
-  const organizationToUpdate = await Organization.findOne({ slug: "dsa" });
+  const organizationToUpdate = await Organization.findOne({ slug: "masc" });
   if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
 
   // check if authenticated user is in the organization
@@ -50,7 +50,7 @@ export const updateAchievementByID = async (req: AuthenticatedRequest, res: Resp
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if such organization exist or not
-  const organizationToUpdate = await Organization.findOne({ slug: "dsa" });
+  const organizationToUpdate = await Organization.findOne({ slug: "masc" });
   if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
 
   // check if authenticated user is in the organization
@@ -82,7 +82,7 @@ export const deleteAchievementByID = async (req: AuthenticatedRequest, res: Resp
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if such organization exist or not
-  const organizationToUpdate = await Organization.findOne({ slug: "dsa" });
+  const organizationToUpdate = await Organization.findOne({ slug: "masc" });
   if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
 
   // check if authenticated user is in the organization
