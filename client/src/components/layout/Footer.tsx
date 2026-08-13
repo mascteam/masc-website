@@ -33,7 +33,7 @@ const Footer = () => {
           className="group block w-fit cursor-target"
         >
           <h2 className="text-[12vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em]">
-            <span className="cursor-target">SHREE</span>
+            <span className="cursor-target mb-2">SHREE</span>
             <span>
               MADE THAT
               <span className="cursor-target inline-block ml-2 transition-transform duration-500 group-hover:animate-spin">
