@@ -14,10 +14,14 @@ import {
   markAttendanceForEvent,
   registerForEvent,
   updateEventInformation,
+  getLatestEvent
 } from "../controllers/event.controller";
 
 // get all events
 router.get("/", getAllEvents);
+
+// get 1 latest events
+router.get("/latest", getLatestEvent)
 
 // get one event by ID
 router.get("/:slug", getEventBySlug);

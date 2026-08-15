@@ -27,6 +27,13 @@ import logger from "../utils/logger";
 import { isUserInOrganization } from "../utils/isOrganizor";
 import { FeedBack } from "../models/feedback.model";
 
+const getLatestEvent = asyncHandler(async (req: Request, res: Response) => {
+  // pagination logic
+  const events = await Event.findOne().sort({ createdAt: -1 });
+
+  res.status(OK).json({ events, message: "events fetched successfully", success: true });
+});
+
 // get all events
 const getAllEvents = asyncHandler(async (req: Request, res: Response) => {
   // pagination logic
@@ -55,7 +62,7 @@ const getEventBySlug = asyncHandler(async (req: Request, res: Response) => {
   const { slug } = req.params;
   if (!slug) throw new ApiError(BAD_REQUEST, "event slug not provided");
 
-  console.log({slug})
+  console.log({ slug });
 
   const event = await Event.findOne({ slug }).populate({
     path: "organizationID",
@@ -481,4 +488,5 @@ export {
   getAllEvents,
   getEventBySlug,
   deleteEvent,
+  getLatestEvent,
 };
