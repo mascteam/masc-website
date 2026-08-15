@@ -4,7 +4,7 @@ import { toasty } from "@/components/ToastProvider";
 import axiosInstance from "@/services/axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { EventType } from "./create/page";
+import { EventType } from '@/app/events/create/page';
 import { useRouter } from "next/navigation";
 
 const EventsPage = () => {
