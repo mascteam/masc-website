@@ -27,9 +27,8 @@ const NotFound = () => {
         ></motion.p>
 
         <motion.div
-          whileHover={{ y: -4 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          className="text-sm underline cursor-pointer"
+          
+          className="text-sm underline cursor-target p-1"
         >
           <Link href="/">Go back</Link>
         </motion.div>

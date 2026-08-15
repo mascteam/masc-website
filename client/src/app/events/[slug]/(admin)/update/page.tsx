@@ -1,5 +1,6 @@
 import NotFound from '@/app/not-found';
-import UpdateEventDetails, { EventType } from '@/components/events/UpdateEventDetails';
+import UpdateEventDetails from '@/components/events/UpdateEventDetails';
+import { EventType } from '@/app/events/create/page';
 import axiosInstance from '@/services/axios';
 import React from 'react'
 

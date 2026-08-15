@@ -68,7 +68,7 @@ const rowVariants = {
 const BlogSection = () => {
   const router = useRouter();
   return (
-    <section className="h-[70vh] md:h-screen md:min-h-[90vh] w-screen px-5 flex flex-col">
+    <section className="h-[70vh] md:h-screen md:min-h-[90vh] w-screen px-5 flex flex-col ">
       <div>
         <h1 className="text-3xl md:text-4xl">
           <span className="cursor-target">Blogs</span> for <span className="cursor-target">nerds</span>

@@ -40,7 +40,7 @@ const Footer = () => {
           href={"https://www.linkedin.com/in/shree-bavachikar-a16493375/"}
           className="group block w-fit cursor-target"
         >
-          <h2 className="text-[12vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em]">
+          <h2 className="text-[10vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em]">
             <span className="cursor-target mb-2">SHREE</span>
             <span>
               MADE THAT
@@ -84,9 +84,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="md:col-span-2 md:text-right">
+        <div className="md:col-span-2 md:text-right flex flex-col justify-start md:items-end items-start">
           <p className="text-xs text-gray-500 mb-4">MASC</p>
-          <p className="text-xs">something</p>
+          <p title="Albert Camus" className="text-xs w-[90vw] overflow-x-hidden md:max-w-55 cursor-target">The universe is under no obligation to make sense to you.</p>
         </div>
       </div>
     </footer>
