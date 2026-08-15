@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType } from "@zxing/library";
 import axiosInstance from "@/services/axios";
-import { EventType } from "@/components/events/UpdateEventDetails";
+import { EventType } from '@/app/events/create/page';
 import { toasty } from "@/components/ToastProvider";
 import { Send, SendHorizonal } from "lucide-react";
 

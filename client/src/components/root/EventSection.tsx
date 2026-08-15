@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
-import { EventType } from "../events/UpdateEventDetails";
+import { EventType } from '@/app/events/create/page';
 import axiosInstance from "@/services/axios";
 import { toasty } from "../ToastProvider";
 

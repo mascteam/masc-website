@@ -16,36 +16,7 @@ import Link from "next/link";
 
 import download from "downloadjs"
 
-export type EventType = {
-  _id: string;
-  title: string;
-  date: string; // change to Date
-  day: string; // change to Date
-
-  time: string;
-  banner: string;
-  venue: string;
-  speakers: string[];
-  description: string;
-  tags: string[];
-  externalLinks: { name: string; link: string }[];
-  slug: string;
-
-  // filters
-  allowedYears: string[];
-  allowedDepartments: string[];
-  allowedDivisions: string[];
-
-  // org info
-  organizationID: string;
-
-  // data handling of students
-  registerdStudentsID: string[];
-
-  //bools to hide/show certain action for the user
-  canRegister: boolean;
-  isPublic: boolean;
-};
+import { EventType } from "@/app/events/create/page";
 
 const UpdateEventDetails = ({ event }: { event: EventType }) => {
   const [editState, setEditState] = useState<EventType>({ ...event });

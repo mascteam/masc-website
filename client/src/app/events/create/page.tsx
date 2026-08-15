@@ -43,6 +43,10 @@ export type EventType = {
   //bools to hide/show certain action for the user
   canRegister: boolean;
   isPublic: boolean;
+
+  //metadata
+  createdAt? : string,
+  updatedAt? : string,
 };
 
 export const initialEventState: EventType = {
