@@ -113,7 +113,7 @@ const BlogSection = () => {
               </span>
 
               {/* TITLE */}
-              <h2 className="cursor-target w-full leading-tight md:text-2xl">{blog.title}</h2>
+              <h2 className="cursor-target w-full leading-tight md:text-2xl select-none">{blog.title}</h2>
 
               {/* ARROW */}
               <motion.span
@@ -153,8 +153,7 @@ const BlogSection = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className="mt-8 flex justify-end"
       >
         <Link href="/blogs" className="cursor-target flex items-center gap-3 text-sm md:text-base">

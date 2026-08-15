@@ -1,7 +1,15 @@
 import Link from "next/link";
 
-const navs = ["home", "teams", "events", "blogs", "register"];
-
+const navs: {
+  name: string;
+  path: string;
+}[] = [
+  { name: "Home", path: "/" },
+  { name: "Teams", path: "/teams" },
+  { name: "Events", path: "/events" },
+  { name: "Blogs", path: "/blogs" },
+  { name: "Register", path: "/register" },
+];
 const socials = [
   {
     name: "instagram",
@@ -51,8 +59,8 @@ const Footer = () => {
 
           <div className="flex flex-col gap-1">
             {navs.map((nav) => (
-              <Link key={nav} href={`/${nav}`} className="cursor-target capitalize text-lg hover:text-gray-400 transition-colors">
-                {nav}
+              <Link key={`${nav.name} footer`} href={`${nav.path}`} className="cursor-target capitalize text-lg hover:text-gray-400 transition-colors">
+                {nav.name}
               </Link>
             ))}
           </div>

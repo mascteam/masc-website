@@ -15,7 +15,7 @@ const Rootpage = () => {
     <>
       <HeroSection />
       <AboutSection />
-      <Marquee className=" border-t-2 border-black">
+      <Marquee className=" border-t-2 border-black select-none">
         <h1
           className={`font-mono text-[10vh] md:text-[15vh] font-bold text-black [-webkit-text-stroke:2px_white] uppercase ${poppins.className}`}
         >

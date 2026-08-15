@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 
-const navs = ["home", "teams", "events", "blogs", "register"];
+const navs: {
+  name: string;
+  path: string;
+}[] = [
+  { name: "Home", path: "/" },
+  { name: "Teams", path: "/teams" },
+  { name: "Events", path: "/events" },
+  { name: "Blogs", path: "/blogs" },
+  { name: "Register", path: "/register" },
+];
 
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
@@ -15,27 +24,27 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const {isAuth} = useUserStore()
+  const { isAuth } = useUserStore();
 
   return (
-    <nav className="fixed top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3">
+    <nav className="fixed select-none top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3">
       <span className="cursor-target text-2xl">MASC</span>
       <div className="hidden md:flex max-w-sm flex-row flex-wrap gap-3">
         {navs.map((nav) => (
-          <Link href={`/${nav}`} key={nav} className="flex flex-row justify-center items-center">
-            <div className="size-2 bg-slate-700" />
-            <span className="text-xs cursor-target p-2">{nav}</span>
+          <Link href={`${nav.path}`} key={nav.name} className="flex flex-row justify-center items-center cursor-target group">
+            <div className="size-2 bg-slate-700 group-hover:bg-red-400" />
+            <span className="text-xs p-2 lowercase">{nav.name}</span>
           </Link>
         ))}
         <span
-          className="flex flex-row justify-center items-center"
+          className="flex flex-row justify-center items-center group cursor-target"
           onClick={() => {
             setOpen(false);
             router.push(isAuth ? "/profile" : "/login");
           }}
         >
-          <div className="size-2 bg-slate-700" />
-          <span className="text-xs cursor-target p-2">{isAuth ? "profile" : "login"}</span>
+          <div className="size-2 bg-slate-700 group-hover:bg-red-400" />
+          <span className="text-xs p-2 ">{isAuth ? "profile" : "login"}</span>
         </span>
       </div>
 
@@ -68,11 +77,11 @@ const Navbar = () => {
             <div className="flex flex-col gap-8 px-6 mt-4 flex-1">
               {navs.map((nav) => (
                 <Link
-                  key={nav}
-                  href={`/${nav}`}
+                  key={`${nav.name} mobile`}
+                  href={`${nav.path}`}
                   className="text-[2.25rem] font-semibold tracking-tight capitalize cursor-pointer transition hover:translate-x-1 border-0 border-b border-slate-700"
                 >
-                  {nav}
+                  {nav.name}
                 </Link>
               ))}
 
