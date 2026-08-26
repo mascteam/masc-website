@@ -25,8 +25,8 @@ const EventsPage = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen mt-20">
-      <div className="absolute inset-0 -z-10" />
+    <section className=" min-h-screen mt-20">
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 pt-12">
         {eventData.map((event, i) => (
           <div key={i} className="aspect-[3/4] border border-white/10 flex items-center justify-center flex-col">

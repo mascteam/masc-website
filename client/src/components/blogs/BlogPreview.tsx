@@ -1,9 +1,15 @@
 import Link from "next/link";
-import React from "react";
 
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
 
-export type BlogContentType = { title: string; createdAt: string; description: string; bannerUrl: string };
+export type BlogContentType = {
+  title: string;
+  createdAt: string;
+  content: string;
+  bannerUrl: string;
+  id: string;
+  slug: string;
+};
 
 const containerVariants = {
   hidden: {},
@@ -60,18 +66,20 @@ const BlogPreview = ({ blogContent }: { blogContent: BlogContentType }) => {
           >
             {/* TITLE */}
             <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center ">
-              <Link href={`/blogs/${blogContent.title}`}>
+              <Link href={`/blogs/${blogContent.slug}`}>
                 <h1 className="text-lg md:text-2xl select-none cursor-target md:px-3">{blogContent.title}</h1>
               </Link>
               <span className="text-xs mt-2">{new Date(blogContent.createdAt!).toDateString()}</span>
             </div>
           </motion.div>
 
-          <p className="text-black/50 text-wrap mb-2 text-xs md:text-sm">
-            {blogContent.description.length > 500
-              ? blogContent.description.slice(0, 500) + "..."
-              : blogContent.description}
-          </p>
+          <p
+            className="text-black/50 text-wrap mb-2 text-xs md:text-sm"
+            dangerouslySetInnerHTML={{
+              __html:
+                blogContent.content.length > 500 ? blogContent.content.slice(0, 500) + "..." : blogContent.content,
+            }}
+          ></p>
 
           {/* HOVER LINE */}
           <motion.div

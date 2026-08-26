@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import LenisProvider from "@/components/root/LenisProvider";
 import Footer from "@/components/layout/Footer";
 import AuthProvider from "@/components/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 export const titleFont = Mansalva({
   weight: ["400"],
@@ -23,23 +24,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${globalFont.className} h-full overflow-x-hidden`}>
-      <body className="min-h-full flex flex-col text-black bg-slate-100">
-        <TargetCursor
-          spinDuration={1.4}
-          hideDefaultCursor={true}
-          parallaxOn
-          hoverDuration={0.35}
-          cursorColor="#000000"
-          cursorColorOnTarget="#ff2c2c"
-        />
+    <html lang="en" className={`${globalFont.className}overflow-x-hidden`}>
+      <body className="flex flex-col text-black bg-slate-100">
         <LenisProvider>
+          <Toaster position="bottom-right" reverseOrder={false} />
+          <TargetCursor
+            spinDuration={1.4}
+            hideDefaultCursor={true}
+            parallaxOn
+            hoverDuration={0.35}
+            cursorColor="#000000"
+            cursorColorOnTarget="#ff2c2c"
+          />
           <AuthProvider>
             <Navbar />
 
             {children}
           </AuthProvider>
-          <Footer />
+        <Footer />
         </LenisProvider>
       </body>
     </html>

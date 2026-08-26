@@ -3,7 +3,7 @@ import NotFound from "@/app/not-found";
 import EventsDetails from "@/components/events/EventsDetails";
 
 import axiosInstance from "@/services/axios";
-import { EventType } from '@/app/events/create/page';
+import { EventType } from "@/app/events/create/page";
 
 const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
@@ -12,9 +12,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
     const { data }: { data: { event: EventType } } = await axiosInstance.get(`/events/${slug}`);
 
     return (
-      <section className="relative min-h-[70vh] flex justify-center items-center">
-        <div className="absolute inset-0 -z-10 bg-[#131F43] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-
+      <section className=" min-h-[70vh] flex justify-center items-center">
         <EventsDetails event={data.event} />
       </section>
     );

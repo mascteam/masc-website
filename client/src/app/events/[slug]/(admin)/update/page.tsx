@@ -1,8 +1,8 @@
-import NotFound from '@/app/not-found';
-import UpdateEventDetails from '@/components/events/UpdateEventDetails';
-import { EventType } from '@/app/events/create/page';
-import axiosInstance from '@/services/axios';
-import React from 'react'
+import NotFound from "@/app/not-found";
+import UpdateEventDetails from "@/components/events/UpdateEventDetails";
+import { EventType } from "@/app/events/create/page";
+import axiosInstance from "@/services/axios";
+import React from "react";
 
 const UpdateEventPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
@@ -11,9 +11,7 @@ const UpdateEventPage = async ({ params }: { params: Promise<{ slug: string }> }
     const { data }: { data: { event: EventType } } = await axiosInstance.get(`/events/${slug}`);
 
     return (
-      <section className="relative min-h-[70vh] flex justify-center items-center">
-        <div className="absolute inset-0 -z-10 bg-[#131F43] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-
+      <section className=" min-h-[70vh] flex justify-center items-center">
         <UpdateEventDetails event={data.event} />
       </section>
     );
@@ -22,5 +20,4 @@ const UpdateEventPage = async ({ params }: { params: Promise<{ slug: string }> }
   }
 };
 
-
-export default UpdateEventPage
+export default UpdateEventPage;

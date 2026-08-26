@@ -48,7 +48,7 @@ const ProfileUpdatePage = () => {
       moodleID: user.moodleID,
       name: user.name,
       year: user.year,
-      password : ""
+      password: "",
     });
   }, [user]);
 
@@ -69,8 +69,7 @@ const ProfileUpdatePage = () => {
     try {
       const { moodleID, password, name, department, division, year } = updateData;
 
-      if (!moodleID || !name || !department || !division || !year)
-        return toasty("incomplete form cant be submitted");
+      if (!moodleID || !name || !department || !division || !year) return toasty("incomplete form cant be submitted");
 
       const { data } = await axiosInstance.patch("/auth/update", updateData, { withCredentials: true });
 
@@ -78,7 +77,7 @@ const ProfileUpdatePage = () => {
 
       router.push("/profile");
     } catch (error: any) {
-       console.log(error.message || error);
+      console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
@@ -92,9 +91,7 @@ const ProfileUpdatePage = () => {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6">
-      <div className="absolute inset-0 -z-10 bg-[#131F43] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-
+    <section className=" min-h-screen flex items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

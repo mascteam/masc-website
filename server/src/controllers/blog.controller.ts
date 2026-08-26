@@ -19,7 +19,7 @@ export const getAllBlogs = asyncHandler(async (_: Request, res: Response) => {
 export const getBlogBySlug = asyncHandler(async (req: Request, res: Response) => {
   const { slug } = req.params;
 
-  if (!slug) throw new ApiError(BAD_REQUEST,"slug was not provided in request");
+  if (!slug) throw new ApiError(BAD_REQUEST, "slug was not provided in request");
   const blog = await Blog.findOne({ slug });
 
   if (!blog) {
@@ -68,7 +68,9 @@ export const createBlog = asyncHandler(async (req: AuthenticatedRequest, res: Re
     throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
   }
 
-  const blog = await Blog.create(validated);
+  const slug = validated.title.split(" ").join("-").toLocaleLowerCase();
+
+  const blog = await Blog.create({ ...validated, slug });
 
   res.status(201).json({
     blog,
@@ -79,7 +81,7 @@ export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
   const validated = updateBlogSchema.parse(req.body);
 
   const { slug } = req.params;
-    if(!slug) throw new ApiError(BAD_REQUEST,"no slug provided to update");
+  if (!slug) throw new ApiError(BAD_REQUEST, "no slug provided to update");
 
   if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
@@ -111,9 +113,18 @@ export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
     throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
   }
 
-  const blog = await Blog.findOneAndUpdate({ slug }, validated, {
-    new: true,
-  });
+  let newSlug = slug;
+  if (validated.title) {
+    newSlug = validated.title.split(" ").join("-").toLocaleLowerCase();
+  }
+
+  const blog = await Blog.findOneAndUpdate(
+    { slug },
+    { validated, slug: newSlug },
+    {
+      new: true,
+    },
+  );
 
   if (!blog) {
     return res.status(404).json({
@@ -131,9 +142,9 @@ export const deleteBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
     throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
   }
 
-  const {slug} = req.params;
+  const { slug } = req.params;
 
-  if(!slug) throw new ApiError(BAD_REQUEST,"no slug provided to delete");
+  if (!slug) throw new ApiError(BAD_REQUEST, "no slug provided to delete");
 
   const { userID } = req.user;
 
@@ -163,7 +174,7 @@ export const deleteBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
     throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
   }
 
-  const blog = await Blog.findOneAndDelete({slug});
+  const blog = await Blog.findOneAndDelete({ slug });
 
   if (!blog) {
     return res.status(404).json({

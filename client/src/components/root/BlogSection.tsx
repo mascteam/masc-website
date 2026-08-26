@@ -1,44 +1,15 @@
 "use client";
 
-import { ArrowLeft, ArrowLeftCircle, ArrowLeftFromLine, ArrowRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
 
-type BlogData = {
-  id: string;
-  title: string;
-  content: string;
-};
-
-const blogs: BlogData[] = [
-  {
-    id: "1",
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, eligendi.",
-    content: "lorem 50",
-  },
-  {
-    id: "2",
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, eligendi.",
-    content: "lorem 50",
-  },
-  {
-    id: "3",
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, eligendi.",
-    content: "lorem 50",
-  },
-  {
-    id: "4",
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, eligendi.",
-    content: "lorem 50",
-  },
-  {
-    id: "5",
-    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, eligendi.",
-    content: "lorem 50",
-  },
-];
+import { useEffect, useState } from "react";
+import { BlogContentType } from "../blogs/BlogPreview";
+import { toasty } from "../ToastProvider";
+import axiosInstance from "@/services/axios";
 
 const containerVariants = {
   hidden: {},
@@ -67,6 +38,26 @@ const rowVariants = {
 
 const BlogSection = () => {
   const router = useRouter();
+
+  const [blogs, setBlogs] = useState<BlogContentType[]>([]);
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const {
+          data: { blogs },
+        }: { data: { blogs: BlogContentType[] } } = await axiosInstance.get("/blogs");
+
+        if (!blogs || blogs.length < 1) throw new Error("failed to fetch blogs");
+
+        setBlogs(blogs);
+      } catch (error) {
+        setBlogs([]);
+        toasty("failed to fetch blogs");
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   return (
     <section className="h-[70vh] md:h-screen md:min-h-[90vh] w-screen px-5 flex flex-col ">
       <div>
@@ -89,7 +80,7 @@ const BlogSection = () => {
       >
         {blogs.map((blog, index) => (
           <motion.div
-            onClick={() => router.push(`/blogs/${blog.id}`)}
+            onClick={() => router.push(`/blogs/${blog.slug}`)}
             key={blog.id}
             variants={rowVariants}
             whileHover="hover"

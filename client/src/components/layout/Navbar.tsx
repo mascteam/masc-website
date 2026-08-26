@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { usePathname } from "next/navigation";
+
 const navs: {
   name: string;
   path: string;
@@ -23,6 +25,7 @@ import { useUserStore } from "@/store/user";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const { isAuth } = useUserStore();
 
@@ -40,7 +43,7 @@ const Navbar = () => {
           className="flex flex-row justify-center items-center group cursor-target"
           onClick={() => {
             setOpen(false);
-            router.push(isAuth ? "/profile" : "/login");
+            router.push(isAuth ? "/profile" : `/login?redirect=${pathname}`);
           }}
         >
           <div className="size-2 bg-slate-700 group-hover:bg-red-400" />
@@ -89,7 +92,7 @@ const Navbar = () => {
                 className="mt-4 text-[2.25rem] font-semibold tracking-tight cursor-pointer transition hover:translate-x-1 border-0 border-b border-slate-700"
                 onClick={() => {
                   setOpen(false);
-                  router.push(isAuth ? "/profile" : "/login");
+                  router.push(isAuth ? "/profile" : `/login?redirect=${pathname}`);
                 }}
               >
                 {isAuth ? "Profile" : "Login"}

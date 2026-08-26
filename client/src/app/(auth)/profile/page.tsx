@@ -18,14 +18,13 @@ const ProfilePage = () => {
 
   const handleLogout = async () => {
     Cookies.remove("jwt");
-    setUser(null)
-    setAuth(false)
+    setUser(null);
+    setAuth(false);
     router.push("/");
   };
 
   return (
-    <section className="relative min-h-screen w-screen overflow-x-hidden px-6 py-16">
-      <div className="absolute inset-0 -z-10 " />
+    <section className=" min-h-screen w-screen overflow-x-hidden px-6 py-16">
       <div className="border-b-2 border-black pb-8">
         <h1 className="text-3xl font-black uppercase">{user.name}</h1>
 

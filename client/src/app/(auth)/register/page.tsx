@@ -71,8 +71,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6">
-      <div className="absolute inset-0 -z-10" />
+    <section className=" min-h-screen flex items-center justify-center px-6">
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

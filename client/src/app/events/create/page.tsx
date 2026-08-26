@@ -193,8 +193,8 @@ const CreateEvent = () => {
   }
 
   return (
-    <section className="relative min-h-screen flex justify-center px-6 py-20 text-black">
-      <div className="absolute inset-0 -z-10" />
+    <section className="min-h-screen flex justify-center px-6 py-20 text-black">
+  
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

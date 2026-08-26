@@ -174,8 +174,8 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
   }
 
   return (
-    <section className="relative min-h-screen w-screen flex justify-center px-6 py-20">
-      <div className="absolute inset-0 -z-10 bg-white text-black" />
+    <section className="min-h-screen w-screen flex justify-center px-6 py-20">
+
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

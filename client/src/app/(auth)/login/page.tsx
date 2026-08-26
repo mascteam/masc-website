@@ -14,15 +14,18 @@ import { useRouter } from "next/navigation";
 
 import { useUserStore } from "@/store/user";
 
+import { useSearchParams } from "next/navigation";
+
 const LoginPage = () => {
   const [loginData, setLoginData] = useState<{ moodleID: string; password: string }>({
     moodleID: "",
     password: "",
   });
 
-  const { setUser } = useUserStore();
+  const { setUser, setAuth } = useUserStore();
 
   const router = useRouter();
+  const redirectTo = useSearchParams().get("redirect");
 
   const fieldVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -48,22 +51,21 @@ const LoginPage = () => {
       Cookie.set("jwt", data.token);
 
       setUser(data.userExist);
+      setAuth(true);
 
-      router.push("/profile");
+      if (redirectTo) {
+        redirectTo === "/login" ? router.push("/profile") : router.push(redirectTo);
+      }
     } catch (error: any) {
-      console.log(error.message || error);
-      if (error.message.response.data.errors.length > 0) {
+      toasty(error.response.data.message);
+      if (error.response.data.errors?.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
-
-      toasty(error.response.data.message);
     }
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6">
-      <div className="absolute inset-0 -z-10 bg-[#131F43] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-
+    <section className=" min-h-screen flex items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -87,7 +89,7 @@ const LoginPage = () => {
           <User2 className="shrink-0" />
 
           <input
-            className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg"
+            className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg cursor-target"
             placeholder="Moodle ID"
             type="text"
             value={loginData.moodleID}
@@ -111,7 +113,7 @@ const LoginPage = () => {
           <Lock className="shrink-0" />
 
           <input
-            className="flex-1 border-0 border-b bg-transparent outline-none text-lg"
+            className="flex-1 border-0 border-b bg-transparent outline-none text-lg cursor-target"
             placeholder="Password"
             type="password"
             value={loginData.password}
@@ -130,7 +132,7 @@ const LoginPage = () => {
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="border-b text-lg uppercase tracking-wide cursor-pointer"
+            className="border-b text-lg uppercase tracking-wide  cursor-target"
             onClick={handleLogin}
           >
             Login
