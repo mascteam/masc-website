@@ -7,10 +7,17 @@ import LoadingPage from "@/app/loading";
 import Link from "next/link";
 
 import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const ProfilePage = () => {
-  const { user, setUser, setAuth } = useUserStore();
+  const { user, setUser, setAuth, getUser } = useUserStore();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, []);
 
   if (!user) {
     return <LoadingPage />;
