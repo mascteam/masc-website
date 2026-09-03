@@ -15,12 +15,15 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/user";
 
 import { useSearchParams } from "next/navigation";
+import { useLoadingStore } from "@/store/loading";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState<{ moodleID: string; password: string }>({
     moodleID: "",
     password: "",
   });
+
+  const { loading, setLoading } = useLoadingStore();
 
   const { setUser, setAuth } = useUserStore();
 
@@ -42,6 +45,7 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       const { moodleID, password } = loginData;
 
       if (!moodleID || !password) return toasty("an incomplete form cant be submitted");
@@ -51,16 +55,19 @@ const LoginPage = () => {
       Cookie.set("jwt", data.token);
 
       setUser(data.userExist);
-      setAuth(true);
 
       if (redirectTo) {
-        redirectTo === "/login" ? router.push("/profile") : router.push(redirectTo);
+        return router.push(redirectTo);
       }
+
+      router.push("/profile");
     } catch (error: any) {
-      toasty(error.response.data.message);
+      toasty(error.response.data.message || "log in failed");
       if (error.response.data.errors?.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,10 +136,11 @@ const LoginPage = () => {
         {/* Button */}
         <motion.div custom={2} variants={fieldVariants} initial="hidden" animate="visible" className="flex justify-end">
           <motion.button
+            disabled={loading}
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="border-b text-lg uppercase tracking-wide  cursor-target"
+            className={`border-b text-lg uppercase tracking-wide cursor-target ${loading ? "text-gray-400" : "text-black"}`}
             onClick={handleLogin}
           >
             Login

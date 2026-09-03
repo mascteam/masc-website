@@ -13,6 +13,7 @@ import { useUserStore } from "@/store/user";
 import LoadingPage from "@/app/loading";
 import NotFound from "@/app/not-found";
 import { TrashIcon } from "lucide-react";
+import { useLoadingStore } from "@/store/loading";
 
 export type EventType = {
   _id: string;
@@ -78,13 +79,13 @@ export const initialEventState: EventType = {
 const CreateEvent = () => {
   const [editState, setEditState] = useState<EventType>(initialEventState);
 
-  const [disable, setDisable] = useState(false);
 
   const [isAdmin, setAdmin] = useState(false);
 
   const [commaInputs, setCommaInputs] = useState<{ tags: string; speakers: string }>({ tags: "", speakers: "" });
 
   const { user } = useUserStore();
+  const {loading, setLoading} = useLoadingStore()
 
   useEffect(() => {
     if (!user || user.role === "USER") {
@@ -95,8 +96,8 @@ const CreateEvent = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log({ editState, commaInputs });
-  }, [editState, commaInputs]);
+    console.log({banner : editState.banner});
+  }, [editState.banner]);
 
   const router = useRouter();
 
@@ -135,7 +136,7 @@ const CreateEvent = () => {
   };
 
   const hostEvent = async () => {
-    setDisable(true);
+    setLoading(true)
     try {
       // submit the data
       const { data }: { data: { event: EventType } } = await axiosInstance.post(
@@ -163,7 +164,7 @@ const CreateEvent = () => {
       toasty(error.response.data.message);
       return;
     } finally {
-      setDisable(false);
+      setLoading(false);
     }
   };
 
@@ -192,6 +193,8 @@ const CreateEvent = () => {
     return <NotFound />;
   }
 
+
+
   return (
     <section className="min-h-screen flex justify-center px-6 py-20 text-black">
   
@@ -219,7 +222,7 @@ const CreateEvent = () => {
                 title: e.target.value,
               })
             }
-            className="w-full bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
+            className="w-full bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold cursor-target"
           />
 
           <input
@@ -243,14 +246,14 @@ const CreateEvent = () => {
                 toasty(error.response?.data?.message || "Upload failed");
               }
             }}
-            className="w-full mt-4 file:mr-4 file:border-0 file:bg-transparent"
+            className="w-full mt-4 file:mr-4 file:border-0 file:bg-transparent cursor-target"
           />
         </motion.div>
 
         {/* Meta */}
         <div className="flex flex-wrap gap-8">
           <input
-            className="flex-1 min-w-[150px] border-0 border-b-2 border-black bg-transparent outline-none"
+            className="flex-1 min-w-[150px] border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
             placeholder="Date"
             name="date"
             value={editState.date}
@@ -263,7 +266,7 @@ const CreateEvent = () => {
           />
 
           <input
-            className="w-40 border-0 border-b-2 border-black bg-transparent outline-none"
+            className="w-40 border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
             placeholder="Time"
             name="time"
             value={editState.time}
@@ -276,7 +279,7 @@ const CreateEvent = () => {
           />
 
           <input
-            className="flex-1 min-w-[180px] border-0 border-b-2 border-black bg-transparent outline-none"
+            className="flex-1 min-w-[180px] border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
             placeholder="Venue"
             name="venue"
             value={editState.venue}
@@ -303,7 +306,7 @@ const CreateEvent = () => {
                 description: e.target.value,
               })
             }
-            className="w-full min-h-20 resize-none bg-transparent border-0 border-b-2 border-black outline-none"
+            className="w-full min-h-20 resize-none bg-transparent border-0 border-b-2 border-black outline-none cursor-target"
           />
         </div>
 
@@ -322,7 +325,7 @@ const CreateEvent = () => {
                 })
               }
               placeholder="ai, workshop, backend"
-              className="w-full border-0 border-b-2 border-black bg-transparent outline-none"
+              className="w-full border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
             />
           </div>
 
@@ -339,7 +342,7 @@ const CreateEvent = () => {
                 })
               }
               placeholder="John, Jane..."
-              className="w-full border-0 border-b-2 border-black bg-transparent outline-none"
+              className="w-full border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
             />
           </div>
         </div>
@@ -351,7 +354,7 @@ const CreateEvent = () => {
 
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {allowedDepartments.map((dept) => (
-              <label key={dept} className="flex items-center gap-2 cursor-pointer">
+              <label key={dept} className="flex items-center gap-2 cursor-pointer cursor-target">
                 <input
                   type="checkbox"
                   checked={editState.allowedDepartments.includes(dept)}
@@ -371,7 +374,7 @@ const CreateEvent = () => {
 
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {allowedYears.map((year) => (
-              <label key={year} className="flex items-center gap-2 cursor-pointer">
+              <label key={year} className="flex items-center gap-2 cursor-target">
                 <input
                   type="checkbox"
                   checked={editState.allowedYears.includes(year)}
@@ -391,7 +394,7 @@ const CreateEvent = () => {
 
           <div className="flex flex-wrap gap-x-8 gap-y-3">
             {allowedDivisions.map((div) => (
-              <label key={div} className="flex items-center gap-2 cursor-pointer">
+              <label key={div} className="flex items-center gap-2 cursor-target">
                 <input
                   type="checkbox"
                   checked={editState.allowedDivisions.includes(div)}
@@ -420,7 +423,7 @@ const CreateEvent = () => {
                     updated[index] = { ...updated[index], name: e.target.value };
                     setEditState({ ...editState, externalLinks: updated });
                   }}
-                  className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
+                  className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
                 />
 
                 <input
@@ -432,7 +435,7 @@ const CreateEvent = () => {
                     updated[index] = { ...updated[index], link: e.target.value };
                     setEditState({ ...editState, externalLinks: updated });
                   }}
-                  className="flex-[2] border-0 border-b-2 border-black bg-transparent outline-none"
+                  className="flex-[2] border-0 border-b-2 border-black bg-transparent outline-none cursor-target"
                 />
 
                 <button
@@ -445,7 +448,7 @@ const CreateEvent = () => {
                   }
                   className="opacity-60 hover:opacity-100 transition"
                 >
-                  <TrashIcon size={18} />
+                  <TrashIcon className="cursor-target m-2" size={18} />
                 </button>
               </div>
             ))}
@@ -473,9 +476,9 @@ const CreateEvent = () => {
           <motion.button
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.97 }}
-            disabled={disable}
+            disabled={loading}
             onClick={hostEvent}
-            className="border-b-2 border-black text-xl uppercase tracking-wide"
+            className="border-b-2 border-black text-xl uppercase tracking-wide cursor-target"
           >
             Publish →
           </motion.button>

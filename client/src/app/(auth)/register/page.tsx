@@ -11,6 +11,7 @@ import Cookie from "js-cookie";
 import { toasty } from "@/components/ToastProvider";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useLoadingStore } from "@/store/loading";
 
 const RegisterPage = () => {
   const [registerData, setRegisterData] = useState<{
@@ -34,6 +35,7 @@ const RegisterPage = () => {
   const years = ["FE", "SE", "TE", "BE"];
 
   const router = useRouter();
+  const { loading, setLoading } = useLoadingStore();
 
   const fieldVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -50,6 +52,7 @@ const RegisterPage = () => {
 
   const handleRegister = async () => {
     try {
+      setLoading(true);
       const { moodleID, password, name, department, division, year } = registerData;
 
       if (!moodleID || !password || !name || !department || !division || !year)
@@ -61,18 +64,18 @@ const RegisterPage = () => {
 
       router.push("/profile");
     } catch (error: any) {
-      console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
 
-      toasty(error.response.data.message);
+      toasty(error.response.data.message || "failed to register user");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className=" min-h-screen flex items-center justify-center px-6">
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -92,7 +95,7 @@ const RegisterPage = () => {
             variants={fieldVariants}
             initial="hidden"
             animate="visible"
-            className="flex items-center gap-4"
+            className="flex items-center gap-4 cursor-target"
           >
             <IdCard className="shrink-0" />
 
@@ -114,7 +117,7 @@ const RegisterPage = () => {
             variants={fieldVariants}
             initial="hidden"
             animate="visible"
-            className="flex items-center gap-4"
+            className="flex items-center gap-4 cursor-target"
           >
             <User2 className="shrink-0" />
 
@@ -210,7 +213,7 @@ const RegisterPage = () => {
           variants={fieldVariants}
           initial="hidden"
           animate="visible"
-          className="flex items-center gap-4"
+          className="flex items-center gap-4 cursor-target "
         >
           <Lock className="shrink-0" />
 
@@ -234,7 +237,7 @@ const RegisterPage = () => {
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="border-b-2 border-black text-lg uppercase tracking-wide cursor-target"
+            className={`border-b-2 border-black text-lg uppercase tracking-wide cursor-target ${loading ? "text-gray-400" : "text-black"}`}
             onClick={handleRegister}
           >
             Submit Details
