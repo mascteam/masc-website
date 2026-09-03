@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
-import { EventType } from '@/app/events/create/page';
+import { EventType } from "@/app/events/create/page";
 import axiosInstance from "@/services/axios";
 import { toasty } from "../ToastProvider";
 
@@ -27,8 +27,6 @@ const EventSection = () => {
       try {
         const { data }: { data: { events: EventType[] } } = await axiosInstance.get(`/events`);
         setEvents(data.events);
-
-        console.log(data);
       } catch {
         (err: any) => toasty(err.message || "failed to fetch events");
       }
@@ -58,12 +56,7 @@ const EventSection = () => {
                     className="cursor-target cursor-none h-full w-full object-cover"
                   />
                 </Link>
-                <button
-                  onClick={() => router.push(`/events/${event.slug}`)}
-                  className="cursor-target cursor-pointer text-center w-full rounded-none bg-black text-white"
-                >
-                  Check Out
-                </button>
+               
               </div>
             ))}
           <div className="mt-10 cursor-target aspect-square overflow-y-scroll border rounded-full bg-black text-white border-black  w-full flex items-center justify-center flex-col">
