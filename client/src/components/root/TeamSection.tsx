@@ -232,7 +232,7 @@ const teamData: Record<string, TeamDataType> = {
 const TeamSection = () => {
   const [activeTeam, setActiveTeam] = useState("core");
   return (
-    <div className="h-screen w-screen xl:h-[60vh] border border-black flex flex-col xl:flex-row justify-start items-start overflow-hidden">
+    <div id="team" className="team h-screen w-screen xl:h-[60vh] border border-black flex flex-col xl:flex-row justify-start items-start overflow-hidden">
      
       {Object.keys(teamData).map((name) => (
         <div
