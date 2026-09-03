@@ -15,7 +15,7 @@ const BlogPage = async () => {
     return (
       <main className="min-h-[80vh] flex flex-col justify-center items-center md:px-10 mt-10">
         {blogs.map((blog) => (
-          <BlogPreview key={blog.id} blogContent={blog} />
+          <BlogPreview key={blog.slug} blogContent={blog} />
         ))}
       </main>
     );

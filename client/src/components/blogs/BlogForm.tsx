@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SimpleEditor } from "../tiptap-templates/simple/simple-editor";
 
+import { BlogEditor } from "./BlogEditor";
+import { BlogReadOnly } from "./BlogReadOnly";
 import axiosInstance from "@/services/axios";
 import { toasty } from "../ToastProvider";
-import NotFound from "@/app/not-found";
 import { useUserStore } from "@/store/user";
+import NotFound from "@/app/not-found";
+import { RawDraftContentState } from "draft-js";
 
 type BlogData = {
   title: string;
@@ -21,18 +23,14 @@ type BlogFormProps = {
   blogId?: string;
 };
 
-export default function BlogForm({
-  mode,
-  initialData,
-  blogId,
-}: BlogFormProps) {
+export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
   const router = useRouter();
   const { user } = useUserStore();
 
   const [blogContent, setBlogContent] = useState<BlogData>({
     title: initialData?.title ?? "",
     bannerUrl: initialData?.bannerUrl ?? "",
-    content: initialData?.content ?? "",
+    content: "",
   });
 
   const [image, setImage] = useState<File | null>(null);
@@ -40,28 +38,39 @@ export default function BlogForm({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const updateField = (field: keyof BlogData, value: string) => {
+  useEffect(() => {
+    return () => {
+      if (preview.startsWith("blob:")) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
+  const updateField = <K extends keyof BlogData>(field: K, value: BlogData[K]) => {
     setBlogContent((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
 
     if (!file) return;
 
+    if (preview.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
+    }
+
     setImage(file);
     setPreview(URL.createObjectURL(file));
-
-    // Clear old URL until the new image is uploaded
     updateField("bannerUrl", "");
   };
 
-  const handleUpload = async () => {
+  const handleImageUpload = async () => {
     if (!image) {
-      return toasty("Select an image first");
+      toasty("Select an image first");
+      return;
     }
 
     try {
@@ -70,11 +79,7 @@ export default function BlogForm({
       const formData = new FormData();
       formData.append("image", image);
 
-      const { data } = await axiosInstance.post(
-        "/image-to-url",
-        formData,
-        {withCredentials : true}
-      );
+      const { data } = await axiosInstance.post("/image-to-url", formData, { withCredentials: true });
 
       updateField("bannerUrl", data.url);
 
@@ -82,9 +87,7 @@ export default function BlogForm({
 
       toasty("Uploaded & copied to clipboard");
     } catch (error: any) {
-      toasty(
-        error.response?.data?.message || "Upload failed"
-      );
+      toasty(error.response?.data?.message ?? "Upload failed");
     } finally {
       setUploadingImage(false);
     }
@@ -92,129 +95,105 @@ export default function BlogForm({
 
   const handleSubmit = async () => {
     if (!blogContent.bannerUrl) {
-      return toasty("Upload a banner image first");
+      toasty("Upload a banner image first");
+      return;
     }
 
     try {
       setLoading(true);
 
-      const { data } =
+      const response =
         mode === "create"
-          ? await axiosInstance.post(
-              "/blogs",
-              blogContent,
-              { withCredentials: true }
-            )
-          : await axiosInstance.put(
-              `/blogs/${blogId}`,
-              blogContent,
-              { withCredentials: true }
-            );
+          ? await axiosInstance.post("/blogs", blogContent, {
+              withCredentials: true,
+            })
+          : await axiosInstance.put(`/blogs/${blogId}`, blogContent, { withCredentials: true });
 
-      router.push(`/blogs/${data.blog.slug}`);
+      router.push(`/blogs/${response.data.blog.slug}`);
     } catch (error: any) {
-      toasty(
-        error.response?.data?.message ||
-          `Failed to ${mode} blog`
-      );
+      toasty(error.response?.data?.message ?? `Failed to ${mode} blog`);
     } finally {
       setLoading(false);
     }
   };
 
-  if (user && user.role === "USER") {
+  const handleRichTextImageUpload = async (file: File) => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const { data } = await axiosInstance.post("/image-to-url", formData, {
+        withCredentials: true,
+      });
+
+      return data.url;
+    } catch (error: any) {
+      toasty(error.response?.data?.message ?? "Image upload failed");
+
+      throw error;
+    }
+  };
+
+  if (user?.role === "USER") {
     return <NotFound />;
   }
 
   return (
     <div className="mx-auto mt-10 w-full max-w-5xl space-y-8">
-      {/* Header */}
-      <div className="flex items-end justify-between gap-6 border-b-2 border-black pb-6">
+      <header className="flex items-end justify-between gap-6 border-b-2 border-black pb-6">
         <div>
-          <p className="mb-2 text-[10px] uppercase tracking-[0.3em]">
-            MASC / BLOG
-          </p>
+          <p className="mb-2 text-[10px] uppercase tracking-[0.3em]">MASC / BLOG</p>
 
-          <p className="mt-2 text-sm">
-            {mode === "create"
-              ? "Share something worth knowing."
-              : "Update your article."}
-          </p>
+          <p className="text-sm">{mode === "create" ? "Share something worth knowing." : "Update your article."}</p>
         </div>
-      </div>
+      </header>
 
-      {/* Basic information */}
       <section className="space-y-5">
-        {/* Title */}
         <div>
-          <label className="mb-2 block text-xs uppercase tracking-widest">
-            Title
-          </label>
+          <label className="mb-2 block text-xs uppercase tracking-widest">Title</label>
 
           <input
             value={blogContent.title}
-            onChange={(e) =>
-              updateField("title", e.target.value)
-            }
+            onChange={(event) => updateField("title", event.target.value)}
             placeholder="Enter your blog title..."
             className="w-full border-b-2 border-black py-1 text-2xl outline-none"
           />
         </div>
 
-        {/* Banner */}
         <div className="space-y-4 border-b-2 border-black pb-5">
-          <label className="block text-xs uppercase tracking-widest">
-            Banner Image
-          </label>
+          <label className="block text-xs uppercase tracking-widest">Banner Image</label>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-            <div className="flex-1">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImage}
-                className="w-full cursor-pointer text-sm"
-              />
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full flex-1 cursor-pointer text-sm"
+            />
 
             <button
               type="button"
-              onClick={handleUpload}
+              onClick={handleImageUpload}
               disabled={!image || uploadingImage}
-              className="border-y-2 cursor-target border-black px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
+              className="cursor-target border-y-2 border-black px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {uploadingImage
-                ? "Uploading..."
-                : "Upload Image"}
+              {uploadingImage ? "Uploading..." : "Upload Image"}
             </button>
           </div>
 
-          {/* Preview */}
           {preview && (
             <div className="overflow-hidden border border-black">
-              <img
-                src={preview}
-                alt="Banner preview"
-                className="h-64 w-full object-cover"
-              />
+              <img src={preview} alt="Banner preview" className="h-64 w-full object-cover" />
             </div>
           )}
 
-          {/* Uploaded URL */}
           {blogContent.bannerUrl && (
             <div>
-              <p className="mb-1 text-[10px] uppercase tracking-widest">
-                Banner URL
-              </p>
+              <p className="mb-1 text-[10px] uppercase tracking-widest">Banner URL</p>
 
               <input
                 value={blogContent.bannerUrl}
-                onChange={(e) =>
-                  updateField(
-                    "bannerUrl",
-                    e.target.value
-                  )
-                }
+                onChange={(event) => updateField("bannerUrl", event.target.value)}
                 className="w-full rounded-lg text-sm outline-none"
               />
             </div>
@@ -222,35 +201,28 @@ export default function BlogForm({
         </div>
       </section>
 
-      {/* Editor */}
       <section>
         <div className="mb-3 flex items-center justify-between">
-          <label className="text-xs uppercase tracking-widest">
-            Content
-          </label>
+          <label className="text-xs uppercase tracking-widest">Content</label>
 
-          <span className="text-[10px] uppercase tracking-widest text-slate-700">
-            Rich Text
-          </span>
+          <span className="text-[10px] uppercase tracking-widest text-slate-700">Rich Text</span>
         </div>
 
-        <div className=" overflow-hidden border border-black p-2">
-          <SimpleEditor
-            content={blogContent.content}
-            onChange={(value) =>
-              updateField("content", value)
-            }
-          />
+        <div className="relative border border-black p-2">
+          {mode === "create" ? (
+            <BlogEditor
+              value={blogContent.content}
+              onChange={(value) => updateField("content", value)}
+              onImageUpload={handleRichTextImageUpload}
+            />
+          ) : (
+            <BlogReadOnly value={blogContent.content} />
+          )}
         </div>
       </section>
 
-      {/* Bottom actions */}
-      <div className="flex items-center justify-between border-t-2 border-black pt-6 text-black">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="cursor-target text-sm"
-        >
+      <footer className="flex items-center justify-between border-t-2 border-black pt-6 text-black">
+        <button type="button" onClick={() => router.back()} className="cursor-target text-sm">
           Cancel
         </button>
 
@@ -258,15 +230,11 @@ export default function BlogForm({
           type="button"
           onClick={handleSubmit}
           disabled={loading || !blogContent.bannerUrl}
-          className="cursor-target border-y-2 border-black p-2 text-sm transition disabled:cursor-not-allowed disabled:opacity-40"
+          className="cursor-target border-y-2 border-black p-2 text-sm transition disabled:opacity-40"
         >
-          {loading
-            ? "Saving..."
-            : mode === "create"
-              ? "Publish Blog"
-              : "Save Changes"}
+          {loading ? "Saving..." : mode === "create" ? "Publish Blog" : "Save Changes"}
         </button>
-      </div>
+      </footer>
     </div>
   );
 }

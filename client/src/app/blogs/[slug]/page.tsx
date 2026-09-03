@@ -1,6 +1,7 @@
 import NotFound from "@/app/not-found";
-import BlogContent from "@/components/blogs/BlogContent";
 import axiosInstance from "@/services/axios";
+
+import { BlogReadOnly } from "@/components/blogs/BlogReadOnly";
 
 type Blog = {
   _id: string;
@@ -56,7 +57,7 @@ const BlogPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
         {/* Content */}
         <section className="mx-auto w-full max-w-6xl px-6 py-16 md:px-10 md:py-24">
-          <BlogContent content={blog.content} />
+          <BlogReadOnly value={blog.content} />
         </section>
 
         {/* Footer metadata */}
