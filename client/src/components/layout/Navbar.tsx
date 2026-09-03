@@ -9,7 +9,6 @@ const navs: {
   path: string;
 }[] = [
   { name: "Home", path: "/" },
-  { name: "Teams", path: "/teams" },
   { name: "Events", path: "/events" },
   { name: "Blogs", path: "/blogs" },
   { name: "Register", path: "/register" },
@@ -29,22 +28,54 @@ const Navbar = () => {
 
   const { isAuth } = useUserStore();
 
+  const handleNav = async (nav: string) => {
+    setOpen(false);
+
+    console.log(nav)
+    if (nav === "teams") {
+      // If already on home, just scroll
+      if (pathname === "/") {
+        window?.lenis?.scrollTo(`#${nav}`);
+        return;
+      }
+
+      // If NOT on home:
+      // 1. go to home
+      // 2. wait for route
+      // 3. scroll
+      router.push("/");
+
+      // small delay so DOM + lenis are ready
+      setTimeout(() => {
+        window?.lenis?.scrollTo(`#${nav}`);
+      }, 1000);
+    }
+
+
+    if(nav =="/login" && pathname != "/login"){
+      return router.push(`/login?redirect=${pathname}`)
+    }
+
+    router.push(nav);
+  };
+
   return (
     <nav className="fixed select-none top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3">
       <span className="cursor-target text-2xl">MASC</span>
       <div className="hidden md:flex max-w-sm flex-row flex-wrap gap-3">
         {navs.map((nav) => (
-          <Link href={`${nav.path}`} key={nav.name} className="flex flex-row justify-center items-center cursor-target group">
+          <span
+            onClick={() => handleNav(nav.path)}
+            key={nav.name}
+            className="flex flex-row justify-center items-center cursor-target group"
+          >
             <div className="size-2 bg-slate-700 group-hover:bg-red-400" />
             <span className="text-xs p-2 lowercase">{nav.name}</span>
-          </Link>
+          </span>
         ))}
         <span
           className="flex flex-row justify-center items-center group cursor-target"
-          onClick={() => {
-            setOpen(false);
-            router.push(isAuth ? "/profile" : `/login?redirect=${pathname}`);
-          }}
+          onClick={() => handleNav(isAuth ? "/profile" : "/login")}
         >
           <div className="size-2 bg-slate-700 group-hover:bg-red-400" />
           <span className="text-xs p-2 ">{isAuth ? "profile" : "login"}</span>
@@ -79,21 +110,18 @@ const Navbar = () => {
             {/* LINKS */}
             <div className="flex flex-col gap-8 px-6 mt-4 flex-1">
               {navs.map((nav) => (
-                <Link
+                <span
                   key={`${nav.name} mobile`}
-                  href={`${nav.path}`}
+                  onClick={() => handleNav(nav.path)}
                   className="text-[2.25rem] font-semibold tracking-tight capitalize cursor-pointer transition hover:translate-x-1 border-0 border-b border-slate-700"
                 >
                   {nav.name}
-                </Link>
+                </span>
               ))}
 
               <span
                 className="mt-4 text-[2.25rem] font-semibold tracking-tight cursor-pointer transition hover:translate-x-1 border-0 border-b border-slate-700"
-                onClick={() => {
-                  setOpen(false);
-                  router.push(isAuth ? "/profile" : `/login?redirect=${pathname}`);
-                }}
+                onClick={() => handleNav(isAuth ? "/profile" : "/login")}
               >
                 {isAuth ? "Profile" : "Login"}
               </span>
