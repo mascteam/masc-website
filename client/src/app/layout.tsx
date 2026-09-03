@@ -9,11 +9,12 @@ import AuthProvider from "@/components/AuthProvider";
 import { Toaster } from "react-hot-toast";
 
 export const titleFont = Mansalva({
-  weight: ["400"],
+  weight: "400",
   subsets: ["latin"],
 });
+
 export const globalFont = Orbitron({
-  weight: ["500"],
+  weight: "500",
   subsets: ["latin"],
 });
 
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${globalFont.className}overflow-x-hidden`}>
+    <html lang="en" className={`${globalFont.className} overflow-x-hidden`}>
       <body className="flex flex-col text-black bg-slate-100">
         <LenisProvider>
           <Toaster position="bottom-right" reverseOrder={false} />
@@ -38,10 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           />
           <AuthProvider>
             <Navbar />
-
             {children}
+            <Footer />
           </AuthProvider>
-        <Footer />
         </LenisProvider>
       </body>
     </html>
