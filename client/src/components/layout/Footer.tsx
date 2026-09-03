@@ -10,6 +10,7 @@ const navs: {
   { name: "Blogs", path: "/blogs" },
   { name: "Register", path: "/register" },
 ];
+
 const socials = [
   {
     name: "instagram",
@@ -44,16 +45,14 @@ const Footer = () => {
             <span className="cursor-target mb-2">SHREE</span>
             <span>
               MADE THAT
-              <span className="cursor-target inline-block ml-2 transition-transform duration-500 group-hover:animate-spin">
-                🧿
-              </span>
+
             </span>
           </h2>
         </Link>
       </div>
 
       {/* LINKS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-10 py-16">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:py-16">
         <div>
           <p className="text-xs text-gray-500 mb-4">NAVIGATION</p>
 
@@ -84,7 +83,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="md:col-span-2 md:text-right flex flex-col justify-start md:items-end items-start">
+        <div className="md:col-span-2 md:text-right flex flex-col justify-start md:items-end items-start mb-2 md:mb-0">
           <p className="text-xs text-gray-500 mb-4">MASC</p>
           <p title="Albert Camus" className="text-xs w-[90vw] overflow-x-hidden md:max-w-55 cursor-target">The universe is under no obligation to make sense to you.</p>
         </div>
