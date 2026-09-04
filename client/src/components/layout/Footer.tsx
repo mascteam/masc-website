@@ -32,7 +32,7 @@ const socials = [
 
 const Footer = () => {
   return (
-    <footer className="h-[60vh] md:h-[50vh] w-screen bg-black cursor-auto text-white px-5 md:px-10 flex flex-col md:flex-row justify-between">
+    <footer className="min-h-[60vh] md:min-h-[50vh] w-screen bg-black cursor-auto text-white px-5 md:px-10 flex flex-col md:flex-row justify-between">
       {/* CTA */}
       <div className="pt-5">
         <p className="text-sm text-gray-500 mb-4">The End Of The Line</p>
