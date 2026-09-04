@@ -6,6 +6,7 @@ export type UserType = {
   department: string;
   division: string;
   moodleID: string;
+  password : string;
   name: string;
   year : string;
   organizationID: { _id: string; name: string; slug: string; logoUrl: string }[];
