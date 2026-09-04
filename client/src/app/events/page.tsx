@@ -18,7 +18,7 @@ const EventsPage = () => {
       const { data } = await axiosInstance.get("/events");
       setEventData(data.events);
     } catch (error: any) {
-      toasty(error.response.data.message || error.message);
+      toasty(error.message || "Failed t Fetch Events");
     }
   };
   useEffect(() => {

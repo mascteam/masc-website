@@ -14,7 +14,7 @@ import NotFound from "@/app/not-found";
 import { TrashIcon } from "lucide-react";
 import Link from "next/link";
 
-import download from "downloadjs"
+import download from "downloadjs";
 
 import { EventType } from "@/app/events/create/page";
 
@@ -113,9 +113,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
     }
   };
 
-
-
-
   const downloadAttendanceList = async () => {
     try {
       if (!editState?._id) throw new Error("try again, failed to get event id");
@@ -126,7 +123,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
       download(res.data, "attendance-list.csv", "text/csv");
     } catch (error: any) {
-      toasty(error.response.data.message || "failed to get your list");
+      toasty("Failed to get your list");
     }
   };
 
@@ -140,7 +137,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
       download(res.data, "registration-list.csv", "text/csv");
     } catch (error: any) {
-      toasty(error.response.data.message || "failed to get your list");
+      toasty("Failed to get your list");
     }
   };
 
@@ -175,8 +172,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
   return (
     <section className="min-h-screen w-screen flex justify-center px-6 py-20">
-
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -438,11 +433,17 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
           <h2 className="text-sm uppercase tracking-widest opacity-60 mb-8">Event Actions</h2>
 
           <div className="flex flex-wrap gap-x-10 gap-y-6">
-            <button onClick={downloadRegistrationList} className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+            <button
+              onClick={downloadRegistrationList}
+              className="cursor-target border-b-2 border-black hover:opacity-70 transition"
+            >
               Download Registration List
             </button>
 
-            <button onClick={downloadAttendanceList} className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+            <button
+              onClick={downloadAttendanceList}
+              className="cursor-target border-b-2 border-black hover:opacity-70 transition"
+            >
               Download Attendance List
             </button>
 
@@ -454,7 +455,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
               Start Feedback
             </Link>
 
-            <button onClick={registrationToggle} className="cursor-target border-b-2 border-black text-red-400 hover:opacity-70 transition">
+            <button
+              onClick={registrationToggle}
+              className="cursor-target border-b-2 border-black text-red-400 hover:opacity-70 transition"
+            >
               {editState.canRegister ? "Close" : "Open"} Registration
             </button>
           </div>

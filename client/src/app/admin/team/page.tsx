@@ -41,7 +41,7 @@ const ManageMembers = () => {
       setDisplayMembers([...displayMembers, data.user]);
       toasty(`${data.user.name} added`);
     } catch (error: any) {
-      toasty(error.response.data.message || "failed to add id");
+      toasty("Failed to add id");
     } finally {
       setInputData("");
     }
@@ -63,7 +63,7 @@ const ManageMembers = () => {
       setDisplayMembers(displayMembers.filter((val) => val !== data.user));
       toasty(`${data.user.name} removed`);
     } catch (error: any) {
-      toasty(error.response.data.message || "failed to remove id");
+      toasty("Failed to remove id");
     } finally {
       setInputData("");
     }
@@ -91,11 +91,17 @@ const ManageMembers = () => {
               />
 
               <div className="flex gap-8">
-                <button onClick={addMember} className="cursor-target border-b-2 border-black hover:opacity-70 transition">
+                <button
+                  onClick={addMember}
+                  className="cursor-target border-b-2 border-black hover:opacity-70 transition"
+                >
                   Add Member
                 </button>
 
-                <button onClick={removeMember} className="cursor-target border-b-2 border-black text-red-600 hover:opacity-70 transition">
+                <button
+                  onClick={removeMember}
+                  className="cursor-target border-b-2 border-black text-red-600 hover:opacity-70 transition"
+                >
                   Remove Member
                 </button>
               </div>
@@ -117,7 +123,10 @@ const ManageMembers = () => {
             {displayMembers.length ? (
               <div className="border-t border-white/10">
                 {displayMembers.map((member) => (
-                  <div key={member._id} className="cursor-target flex justify-between items-center border-b-2 border-black border-white/10 py-5">
+                  <div
+                    key={member._id}
+                    className="cursor-target flex justify-between items-center border-b-2 border-black border-white/10 py-5"
+                  >
                     <span>{member.name}</span>
                     <span>{member.moodleID}</span>
                   </div>

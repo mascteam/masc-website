@@ -68,7 +68,7 @@ const RegisterPage = () => {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
 
-      toasty(error.response.data.message || "failed to register user");
+      toasty("Failed To Register User");
     } finally {
       setLoading(false);
     }

@@ -55,19 +55,19 @@ const LoginPage = () => {
       Cookie.set("jwt", data.token);
 
       setUser(data.userExist);
-      setAuth(true)
+      setAuth(true);
 
       if (redirectTo) {
-        return redirectTo === "/" || "/login" ? router.push("/profile") : router.push(redirectTo)
+        return redirectTo === "/" || "/login" ? router.push("/profile") : router.push(redirectTo);
       }
 
       router.push("/profile");
     } catch (error: any) {
-      toasty(error.response.data.message || "log in failed");
+      toasty("Login Failed");
       if (error.response.data.errors?.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
-      setAuth(false)
+      setAuth(false);
     } finally {
       setLoading(false);
     }
@@ -148,7 +148,12 @@ const LoginPage = () => {
             Login
           </motion.button>
         </motion.div>
-        <span className="underline underline-offset-4 text-gray-400 cursor-target" onClick={()=> toasty("No worries!, Club Members can set new password for you")}>Forgot Password ?</span>
+        <span
+          className="underline underline-offset-4 text-gray-400 cursor-target"
+          onClick={() => toasty("No worries!, Club Members can set new password for you")}
+        >
+          Forgot Password ?
+        </span>
       </motion.div>
     </section>
   );
