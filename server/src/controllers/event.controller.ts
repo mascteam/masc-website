@@ -192,6 +192,7 @@ const deleteEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response
   const { eventID } = req.params;
   if (!eventID) throw new ApiError(BAD_REQUEST, "event id was not provided");
 
+
   // get the authenticated user payload
   if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
   const { userID } = req.user;
@@ -203,19 +204,16 @@ const deleteEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response
   if (user.role === "USER")
     throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not allowed to perfom this action");
 
-  // check if such event exist
-  const event = await Event.findById(eventID);
+  // check if such event exist - masc client is passing slug here so im not changing the var names but fetch event by slug here
+  const event = await Event.findOne({slug : eventID});
   if (!event) throw new ApiError(NOT_FOUND, "event not found");
 
   // check is user is part of the organization using slug
   const isOrganizer = isUserInOrganization(user, event.organizationID);
   if (!isOrganizer) throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not in this org");
 
-  // delete the event
-  await Event.findOneAndDelete({ _id: eventID });
-
-  // delete all the feedback docs
-  await FeedBack.deleteMany({ eventID });
+  // delete the event - delete using the slug
+  await Event.findOneAndDelete({ slug : eventID });
 
   // send a response
   res.status(CREATED).json({ event, message: "event updated successfully", succee: true });
