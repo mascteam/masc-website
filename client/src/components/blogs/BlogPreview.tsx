@@ -38,7 +38,7 @@ const rowVariants = {
 
 const BlogPreview = ({ blogContent }: { blogContent: BlogContentType }) => {
   return (
-    <section className="w-[95%] border-black mt-2">
+    <section className="w-[95%] border-black my-2">
       <motion.div
         variants={containerVariants}
         initial="hidden"
