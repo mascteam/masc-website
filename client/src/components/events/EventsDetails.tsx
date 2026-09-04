@@ -33,7 +33,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
   };
   return (
     <div className="min-h-screen flex justify-center px-6 py-20">
-      <div className="absolute inset-0 -z-10 bg-white text-black" />
+      <div className="absolute inset-0 -z-10 text-black" />
 
       <section className="min-h-[80vh] w-[90vw]">
         <div className="flex flex-col lg:flex-row gap-10 items-start">
