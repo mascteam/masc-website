@@ -7,10 +7,11 @@ import ApiError from "../utils/apiError";
 import jwt from "jsonwebtoken";
 import { BAD_REQUEST, CONFLICT, NOT_FOUND, OK, UNAUTHORIZED } from "../constants/status-codes";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
+import { hashPassword } from "../utils/bcrypt";
 
 const registerController = asyncHandler(async (req: Request, res: Response) => {
   // let zod validate the payload
-  const { moodleID, name,  password, department, division, year } = registerSchema.parse(req.body);
+  const { moodleID, name, password, department, division, year } = registerSchema.parse(req.body);
 
   // check if the user alreadu exists
   const isMoodleTaken = await User.findOne({ moodleID });
@@ -18,7 +19,7 @@ const registerController = asyncHandler(async (req: Request, res: Response) => {
   if (isMoodleTaken) throw new ApiError(409, "moodleID is already in use");
 
   // create the user
-  const user = await User.create({ moodleID, name,  password, department, division, year });
+  const user = await User.create({ moodleID, name, password, department, division, year });
 
   // create a token
   const token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET!, { expiresIn: "24hr" });
@@ -108,7 +109,7 @@ const findUser = asyncHandler(async (req: AuthenticatedRequest, res: Response) =
   if (!adminUser) throw new ApiError(BAD_REQUEST, "invalid usedID provided");
 
   // check if user is Admin
-  const isAdmin = adminUser.role === "ADMIN";
+  const isAdmin = adminUser.role === "ORGANIZOR" || "ADMIN";
   if (!isAdmin) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
   // fetch the requested user using moodleID
@@ -136,8 +137,14 @@ const updateUserInfo = asyncHandler(async (req: AuthenticatedRequest, res: Respo
   // if current user is trying to update himself then allow else check admin
   const isUpdatingOwnDoc = currentUser.moodleID === data.moodleID;
 
+  //check if user is trying to update the password
+  if(data.password){
+    //hash the new string password
+    data.password = await hashPassword(data.password)
+  }
+
   // check if user is Admin then allow anyway
-  const isAdmin = currentUser.role === "ADMIN";
+  const isAdmin = currentUser.role === "ORGANIZOR" || "ADMIN";
   if (!isAdmin && !isUpdatingOwnDoc) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
   // update the user
