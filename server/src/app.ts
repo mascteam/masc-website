@@ -30,8 +30,6 @@ import AuthRouter from "./routes/auth.routes.ts";
 import OrganizationRouter from "./routes/organization.routes.ts";
 import EventsRouter from "./routes/event.routes.ts";
 import FeedbackRouter from "./routes/feedback.routes.ts";
-import AchivementRouter from "./routes/achievement.routes.ts";
-import HighlightRouter from "./routes/highlight.routes.ts";
 import BlogRouter from "./routes/blog.routes.ts"
 
 app.get("/", (req: Request, res: Response) => {
@@ -59,8 +57,6 @@ app.use("/organizations", OrganizationRouter);
 app.use("/events", EventsRouter);
 app.use("/feedbacks", FeedbackRouter);
 
-app.use("/achievements", AchivementRouter)
-app.use("/highlights", HighlightRouter)
 app.use("/blogs", BlogRouter)
 
 app.post("/image-to-url", checkAuth, upload.single("image"), uploadImage)
