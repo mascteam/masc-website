@@ -11,7 +11,7 @@ import { useUserStore } from "@/store/user";
 import NotFound from "@/app/not-found";
 import { RawDraftContentState } from "draft-js";
 
-type BlogData = {
+export type BlogData = {
   title: string;
   bannerUrl: string;
   content: string;
@@ -30,7 +30,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
   const [blogContent, setBlogContent] = useState<BlogData>({
     title: initialData?.title ?? "",
     bannerUrl: initialData?.bannerUrl ?? "",
-    content: "",
+    content: initialData?.content ?? "",
   });
 
   const [image, setImage] = useState<File | null>(null);
