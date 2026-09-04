@@ -65,6 +65,7 @@ const ProfilePage = () => {
           <Link href="#" className="cursor-target underline underline-offset-4">
             Update Details
           </Link>
+          {user.role === "ORGANIZOR" && <Link className="cursor-target underline underline-offset-4" href="/admin/nav">Admin Navigation</Link>}
           <button onClick={handleLogout} className="cursor-target underline underline-offset-4 text-red-400">
             Log Out
           </button>
