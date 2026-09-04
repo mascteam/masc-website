@@ -25,7 +25,7 @@ const EventsPage = () => {
     fetchEvents();
   }, []);
 
-  if(!eventData){
+  if(!eventData || eventData.length <1){
     return <LoadingPage/>
   }
 
