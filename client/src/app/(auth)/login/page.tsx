@@ -55,9 +55,10 @@ const LoginPage = () => {
       Cookie.set("jwt", data.token);
 
       setUser(data.userExist);
+      setAuth(true)
 
       if (redirectTo) {
-        return router.push(redirectTo);
+        return redirectTo === "/" || "/login" ? router.push("/profile") : router.push(redirectTo)
       }
 
       router.push("/profile");
@@ -66,6 +67,7 @@ const LoginPage = () => {
       if (error.response.data.errors?.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
       }
+      setAuth(false)
     } finally {
       setLoading(false);
     }
