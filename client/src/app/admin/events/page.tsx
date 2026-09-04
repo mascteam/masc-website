@@ -92,7 +92,7 @@ const AdminEventNavigationPage = () => {
               <p className="text-xs opacity-50 sm:text-sm">Create a new event.</p>
             </div>
 
-            <Link href="/event/create" className="shrink-0 cursor-target text-base uppercase tracking-wide sm:text-lg">
+            <Link href="/events/create" className="shrink-0 cursor-target text-base uppercase tracking-wide sm:text-lg">
               Create
             </Link>
           </div>
