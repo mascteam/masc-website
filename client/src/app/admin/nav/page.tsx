@@ -17,13 +17,13 @@ const navigation = [
     icon: Image,
   },
   {
-    label: "write new blog",
-    href: "/blogs/admin/create",
+    label: "Manage Blogs",
+    href: "/admin/blogs",
     icon: PenLine,
   },
   {
-    label: "Host new Event",
-    href: "/events/create",
+    label: "Manage Events",
+    href: "/admin/events",
     icon: CalendarDays,
   },
   {
