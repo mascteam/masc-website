@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 
@@ -30,8 +29,6 @@ const Navbar = () => {
 
   const handleNav = async (nav: string) => {
     setOpen(false);
-
-    console.log(nav)
     if (nav === "teams") {
       // If already on home, just scroll
       if (pathname === "/") {
