@@ -195,7 +195,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                 title: e.target.value,
               })
             }
-            className="w-full bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
+            className="cursor-target w-full bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
           />
 
           <input
@@ -208,14 +208,14 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                 banner: e.target.value,
               })
             }
-            className="w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
+            className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
           />
         </motion.div>
 
         {/* Meta */}
         <div className="flex flex-wrap gap-8">
           <input
-            className="flex-1 min-w-[150px] border-0 border-b-2 border-black bg-transparent outline-none"
+            className="cursor-target flex-1 min-w-[150px] border-0 border-b-2 border-black bg-transparent outline-none"
             placeholder="Date"
             name="date"
             value={editState.date}
@@ -228,7 +228,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
           />
 
           <input
-            className="w-40 border-0 border-b-2 border-black bg-transparent outline-none"
+            className="cursor-target w-40 border-0 border-b-2 border-black bg-transparent outline-none"
             placeholder="Time"
             name="time"
             value={editState.time}
@@ -241,7 +241,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
           />
 
           <input
-            className="flex-1 min-w-[180px] border-0 border-b-2 border-black bg-transparent outline-none"
+            className="cursor-target flex-1 min-w-[180px] border-0 border-b-2 border-black bg-transparent outline-none"
             placeholder="Venue"
             name="venue"
             value={editState.venue}
@@ -287,7 +287,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                 })
               }
               placeholder="ai, workshop, backend"
-              className="w-full border-0 border-b-2 border-black bg-transparent outline-none"
+              className="cursor-target w-full border-0 border-b-2 border-black bg-transparent outline-none"
             />
           </div>
 
@@ -304,7 +304,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                 })
               }
               placeholder="John, Jane..."
-              className="w-full border-0 border-b-2 border-black bg-transparent outline-none"
+              className="cursor-target w-full border-0 border-b-2 border-black bg-transparent outline-none"
             />
           </div>
         </div>
@@ -382,7 +382,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                   updated[index] = { ...updated[index], name: e.target.value };
                   setEditState({ ...editState, externalLinks: updated });
                 }}
-                className="w-full md:flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
+                className="cursor-target w-full md:flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
               />
 
               <div className="flex items-center gap-3 w-full md:flex-[2]">
@@ -395,7 +395,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                     updated[index] = { ...updated[index], link: e.target.value };
                     setEditState({ ...editState, externalLinks: updated });
                   }}
-                  className="flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
+                  className="cursor-target flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
                 />
 
                 <button
@@ -406,7 +406,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                       externalLinks: editState.externalLinks.filter((_, i) => i !== index),
                     })
                   }
-                  className="opacity-60 hover:opacity-100 transition shrink-0"
+                  className="cursor-target opacity-60 hover:opacity-100 transition shrink-0"
                 >
                   <TrashIcon size={18} />
                 </button>
