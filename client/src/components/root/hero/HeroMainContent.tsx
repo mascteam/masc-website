@@ -37,7 +37,7 @@ const HeroMainContent = () => {
                   </span>
                 </div>
     
-                <CardItem translateY={-30} translateZ={20} className="mt-10 max-w-[80vw] md:max-w-xl text-center text-xs text-gray-500 md:text-xl">
+                <CardItem translateY={-30} translateZ={20} className="md:mt-10 max-w-[90vw] md:max-w-xl text-center text-xs text-gray-500 md:text-xl hidden md:flex">
                   At MASC, we believe growth happens when curious people come together. We learn. We build. We share. And
                   somewhere along the way, we inspire someone else to start.
                 </CardItem>
