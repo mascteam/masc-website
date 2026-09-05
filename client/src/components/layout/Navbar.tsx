@@ -1,6 +1,5 @@
 "use client";
 
-
 import { usePathname } from "next/navigation";
 
 const navs: {
@@ -14,11 +13,13 @@ const navs: {
 ];
 
 import { motion, AnimatePresence } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { useRouter } from "next/navigation";
 
 import { useUserStore } from "@/store/user";
+import { EventType } from "@/app/events/create/page";
+import axiosInstance from "@/services/axios";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,17 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const { isAuth } = useUserStore();
+
+  const [event, setEvent] = useState<EventType | null>(null);
+
+  useEffect(() => {
+    const fetchUpcomingEvent = async () => {
+      const { data } = await axiosInstance.get("/events/latest", { withCredentials: true });
+      setEvent(data.event);
+    };
+
+    fetchUpcomingEvent();
+  }, []);
 
   const handleNav = async (nav: string) => {
     setOpen(false);
@@ -48,9 +60,8 @@ const Navbar = () => {
       }, 1000);
     }
 
-
-    if(nav =="/login" && pathname != "/login"){
-      return router.push(`/login?redirect=${pathname}`)
+    if (nav == "/login" && pathname != "/login") {
+      return router.push(`/login?redirect=${pathname}`);
     }
 
     router.push(nav);
@@ -125,17 +136,14 @@ const Navbar = () => {
 
               {/* BOTTOM NOTIFICATION */}
               <div className="cursor-target cursor-pointer flex flex-row justify-around items-center border-2 border-black rounded-sm w-[90%] h-[40%] p-1 m-1">
-                <img
-                  src={"https://th.bing.com/th/id/OIP.sUzI9MNZRL8yQWHYt05PlQHaEK?w=320&h=180&c=7&r=0&o=7&pid=1.7&rm=3"}
-                  className="h-full w-[30%] object-cover p-1"
-                />
+                <img src={event?.banner} className="h-full w-[30%] object-cover p-1" />
                 <div className="flex flex-col justify-around items-start">
                   <h3 className="flex flex-row gap-1 justify-start items-center">
                     <div className="size-2 bg-red-400" />
-                    <span className="text-xs p-2">Upcoming</span>
+                    <span className="text-xs p-2">Upcoming Event</span>
                   </h3>
-                  <h2 className="cursor-target text-wrap">Event Event Name Full </h2>
-                  <span className="text-xs">08 June, 2026</span>
+                  <h2 className="cursor-target text-wrap">{event?.title}</h2>
+                  <span className="text-xs">{new Date(event?.createdAt!).toDateString()}</span>
                 </div>
               </div>
             </div>
