@@ -9,7 +9,7 @@ const HeroToast = () => {
   useEffect(() => {
     const fetchUpcomingEvent = async () => {
       const { data } = await axiosInstance.get("/events/latest", { withCredentials: true });
-      setEvent(data.event);
+      setEvent(data.events);
     };
 
     fetchUpcomingEvent();
