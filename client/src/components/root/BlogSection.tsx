@@ -81,7 +81,7 @@ const BlogSection = () => {
         {blogs.map((blog, index) => (
           <motion.div
             onClick={() => router.push(`/blogs/${blog.slug}`)}
-            key={blog.id}
+            key={blog._id}
             variants={rowVariants}
             whileHover="hover"
             className="group relative w-full border-b border-black overflow-hidden"

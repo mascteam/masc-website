@@ -7,7 +7,7 @@ export type BlogContentType = {
   createdAt: string;
   content: string;
   bannerUrl: string;
-  id: string;
+  _id: string;
   slug: string;
 };
 
