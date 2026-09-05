@@ -135,7 +135,7 @@ const Navbar = () => {
               </span>
 
               {/* BOTTOM NOTIFICATION */}
-              <div className="cursor-target cursor-pointer flex flex-row justify-around items-center border-2 border-black rounded-sm w-[90%] h-[40%] p-1 m-1">
+              <div onClick={()=> router.push(`/events/${event?.slug}`)}  className="cursor-target cursor-pointer flex flex-row justify-around items-center border-2 border-black rounded-sm w-[90%] h-[40%] p-1 m-1">
                 <img src={event?.banner} className="h-full w-[30%] object-cover p-1" />
                 <div className="flex flex-col justify-around items-start">
                   <h3 className="flex flex-row gap-1 justify-start items-center">
