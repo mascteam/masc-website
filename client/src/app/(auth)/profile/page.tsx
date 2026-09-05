@@ -53,11 +53,23 @@ const ProfilePage = () => {
         <div className="flex flex-col gap5">
           <div>
             <p className="text-xs uppercase text-gray-600">Joined</p>
-            <h2 className="text-xl md:text-4xl mt-2">{new Date(user.createdAt).toLocaleString().split(",")[0]}</h2>
+            <h2 className="text-xl md:text-4xl mt-2">
+              {new Date(user.createdAt).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </h2>
           </div>
           <div className="hidden md:flex flex-col mt-5">
             <p className="text-xs uppercase text-gray-600">Last Updated</p>
-            <h2 className="text-xl md:text-4xl mt-2">{new Date(user.createdAt).toLocaleString().split(",")[0]}</h2>
+            <h2 className="text-xl md:text-4xl mt-2">
+              {new Date(user.createdAt).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+              })}
+            </h2>
           </div>
         </div>
 
@@ -65,7 +77,11 @@ const ProfilePage = () => {
           <Link href="#" className="cursor-target underline underline-offset-4">
             Update Details
           </Link>
-          {user.role === "ORGANIZOR" && <Link className="cursor-target underline underline-offset-4" href="/admin/nav">Admin Navigation</Link>}
+          {user.role === "ORGANIZOR" && (
+            <Link className="cursor-target underline underline-offset-4" href="/admin/nav">
+              Admin Navigation
+            </Link>
+          )}
           <button onClick={handleLogout} className="cursor-target underline underline-offset-4 text-red-400">
             Log Out
           </button>
