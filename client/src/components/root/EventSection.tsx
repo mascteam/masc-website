@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { EventType } from "@/app/events/create/page";
 import axiosInstance from "@/services/axios";
 import { toasty } from "../ToastProvider";
+import { TypingAnimation } from "../ui/typing-animation";
 
 const EventSection = () => {
   const eventData: { banner: string; title: string; slug: string }[] = [
@@ -35,9 +36,24 @@ const EventSection = () => {
     getEvents();
   }, []);
 
+  const elements = [
+    "Upcoming Events!!",
+    "Discover what's happening next.",
+    "Workshops, competitions, and experiments.",
+    "Learn something. Build something.",
+    "Your next curiosity starts here.",
+  ];
+
   return (
     <section className="h-screen md:h-[80vh] w-screen flex flex-col justify-start items-start px-5">
-      <h1 className="text-4xl mt-5">Upcoming Events</h1>
+      <TypingAnimation
+        words={elements}
+        blinkCursor={true}
+        pauseDelay={2000}
+        as="h1"
+        loop
+        className="text-4xl mt-5"
+      />
       <p className="hidden md:flex text-gray-600">
         Workshops, competitions, talks, and more. See what's happening at MASC and find something worth being part of.
       </p>
@@ -56,7 +72,6 @@ const EventSection = () => {
                     className="cursor-target cursor-none h-full w-full object-cover"
                   />
                 </Link>
-               
               </div>
             ))}
           <div className="mt-10 cursor-target aspect-square overflow-y-scroll border rounded-full bg-black text-white border-black  w-full flex items-center justify-center flex-col">

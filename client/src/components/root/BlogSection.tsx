@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { BlogContentType } from "../blogs/BlogPreview";
 import { toasty } from "../ToastProvider";
 import axiosInstance from "@/services/axios";
+import { TypingAnimation } from "../ui/typing-animation";
 
 const containerVariants = {
   hidden: {},
@@ -36,6 +37,13 @@ const rowVariants = {
   },
 };
 
+const elements = [
+  "Blogs for Nerds",
+  "Read something worth thinking about.",
+  "Feed your curiosity, one article at a time.",
+  "There's always something new to read?",
+];
+
 const BlogSection = () => {
   const router = useRouter();
 
@@ -59,13 +67,20 @@ const BlogSection = () => {
     fetchBlogs();
   }, []);
   return (
-    <section className="h-[70vh] md:h-screen md:min-h-[90vh] w-screen px-5 flex flex-col ">
+    <section className="h-[70vh]  md:h-screen md:min-h-[90vh] w-screen px-5 flex flex-col ">
       <div>
         <h1 className="text-3xl md:text-4xl">
-          <span className="cursor-target">Blogs</span> for <span className="cursor-target">nerds</span>
+          <TypingAnimation
+            words={elements}
+            blinkCursor={true}
+            pauseDelay={2000}
+            as="span"
+            loop
+            className="uppercase text-lg md:text-4xl select-none"
+          />
         </h1>
 
-        <p className="hidden md:block max-w-lg mt-2 text-gray-500">
+        <p className="hidden md:block mt-2 text-gray-500">
           Ideas, insights, and stories from MASC. Explore what we're learning, building, and thinking about.
         </p>
       </div>
