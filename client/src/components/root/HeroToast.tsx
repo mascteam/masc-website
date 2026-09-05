@@ -14,7 +14,7 @@ const HeroToast = async () => {
         <div className="flex flex-col justify-around items-start">
           <h3 className="flex flex-row gap-1 justify-start items-center">
             <div className="size-2 bg-red-400" />
-            <span className="text-xs p-2">Upcoming</span>
+            <span className="text-xs p-2">Upcoming Event</span>
           </h3>
           <h2 className="cursor-target">{events.title}</h2>
           <span className="text-xs">{new Date(events.createdAt!).toDateString()}</span>
