@@ -36,7 +36,7 @@ const AdminEventNavigationPage = () => {
       return toasty("event slug is required");
     }
 
-    router.push(`/event/${slug}/update`);
+    router.push(`/events/${slug}/update`);
   };
 
   const handleDelete = async () => {
