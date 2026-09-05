@@ -142,7 +142,7 @@ const Navbar = () => {
                     <div className="size-2 bg-red-400" />
                     <span className="text-xs p-2">Upcoming Event</span>
                   </h3>
-                  <h2 className="cursor-target text-wrap">{event?.title}</h2>
+                  <h2 className="cursor-target text-wrap uppercase">{event?.title.slice(0, 10) + "..."}</h2>
                   <span className="text-xs">{new Date(event?.createdAt!).toDateString()}</span>
                 </div>
               </div>
