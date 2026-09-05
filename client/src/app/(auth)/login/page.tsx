@@ -65,7 +65,7 @@ const LoginPage = () => {
     } catch (error: any) {
       toasty("Login Failed");
       if (error.response.data.errors?.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
+        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
       }
       setAuth(false);
     } finally {

@@ -46,8 +46,8 @@ export type EventType = {
   isPublic: boolean;
 
   //metadata
-  createdAt? : string,
-  updatedAt? : string,
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export const initialEventState: EventType = {
@@ -79,13 +79,12 @@ export const initialEventState: EventType = {
 const CreateEvent = () => {
   const [editState, setEditState] = useState<EventType>(initialEventState);
 
-
   const [isAdmin, setAdmin] = useState(false);
 
   const [commaInputs, setCommaInputs] = useState<{ tags: string; speakers: string }>({ tags: "", speakers: "" });
 
   const { user } = useUserStore();
-  const {loading, setLoading} = useLoadingStore()
+  const { loading, setLoading } = useLoadingStore();
 
   useEffect(() => {
     if (!user || user.role === "USER") {
@@ -96,7 +95,7 @@ const CreateEvent = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log({banner : editState.banner});
+    console.log({ banner: editState.banner });
   }, [editState.banner]);
 
   const router = useRouter();
@@ -136,7 +135,7 @@ const CreateEvent = () => {
   };
 
   const hostEvent = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       // submit the data
       const { data }: { data: { event: EventType } } = await axiosInstance.post(
@@ -156,12 +155,12 @@ const CreateEvent = () => {
 
       router.push(`/events/${data.event.slug}`);
     } catch (error: any) {
-      console.log(error.message || error);
-      if (error.message.response.data.errors.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
+
+      if (error.response.data.errors.length > 0) {
+        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
       }
 
-      toasty(error.response.data.message);
+      toasty("failed to create event");
       return;
     } finally {
       setLoading(false);
@@ -193,12 +192,8 @@ const CreateEvent = () => {
     return <NotFound />;
   }
 
-
-
   return (
     <section className="min-h-screen flex justify-center px-6 py-20 text-black">
-  
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -79,7 +79,7 @@ const ProfileUpdatePage = () => {
     } catch (error: any) {
       console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(err.message));
+        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
       }
 
       toasty(error.response.data.message);
