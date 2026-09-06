@@ -91,7 +91,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
       const { data } = await axiosInstance.post("/image-to-url", formData);
 
-      setEditState((p)=>({...p, banner : data.url}));
+      setEditState((p) => ({ ...p, banner: data.url }));
     } catch {
       (error: any) => {
         toasty(error.message || "failed to upload image");
@@ -139,12 +139,12 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
   const downloadAttendanceList = async () => {
     try {
       if (!editState?._id) throw new Error("try again, failed to get event id");
+
       const res = await axiosInstance.get(`/events/${editState._id}/attended`, {
         withCredentials: true,
         responseType: "blob",
       });
-
-      download(res.data, "attendance-list.csv", "text/csv");
+      download(res.data, `attendance-list-${editState.slug}.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     } catch (error: any) {
       toasty("Failed to get your list");
     }
@@ -152,13 +152,16 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
   const downloadRegistrationList = async () => {
     try {
-      if (!editState?._id) throw new Error("try again, failed to get event id");
+      if (!editState?._id) {
+        throw new Error("try again, failed to get event id");
+      }
+
       const res = await axiosInstance.get(`/events/${editState._id}/register`, {
         withCredentials: true,
         responseType: "blob",
       });
 
-      download(res.data, "registration-list.csv", "text/csv");
+      download(res.data, `registration-list-${editState.slug}.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     } catch (error: any) {
       toasty("Failed to get your list");
     }

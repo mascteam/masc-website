@@ -27,6 +27,8 @@ import logger from "../utils/logger";
 import { isUserInOrganization } from "../utils/isOrganizor";
 import { FeedBack } from "../models/feedback.model";
 
+import ExcelJS from "exceljs";
+
 const getLatestEvent = asyncHandler(async (req: Request, res: Response) => {
   // pagination logic
   const events = await Event.findOne().sort({ createdAt: -1 });
@@ -192,7 +194,6 @@ const deleteEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response
   const { eventID } = req.params;
   if (!eventID) throw new ApiError(BAD_REQUEST, "event id was not provided");
 
-
   // get the authenticated user payload
   if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
   const { userID } = req.user;
@@ -205,7 +206,7 @@ const deleteEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response
     throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not allowed to perfom this action");
 
   // check if such event exist - masc client is passing slug here so im not changing the var names but fetch event by slug here
-  const event = await Event.findOne({slug : eventID});
+  const event = await Event.findOne({ slug: eventID });
   if (!event) throw new ApiError(NOT_FOUND, "event not found");
 
   // check is user is part of the organization using slug
@@ -213,7 +214,7 @@ const deleteEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response
   if (!isOrganizer) throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not in this org");
 
   // delete the event - delete using the slug
-  await Event.findOneAndDelete({ slug : eventID });
+  await Event.findOneAndDelete({ slug: eventID });
 
   // send a response
   res.status(CREATED).json({ event, message: "event updated successfully", succee: true });
@@ -352,7 +353,7 @@ const getRegisteredStudents = asyncHandler(async (req: AuthenticatedRequest, res
     throw new ApiError(403, "you are not allowed to request this event detail");
   }
 
-  // fetch the list and populate it with {sr no, moodleID,name, department, year, division}
+  // fetch the list
   const registrationList = await User.find(
     { registeredEvents: eventID },
     {
@@ -365,7 +366,7 @@ const getRegisteredStudents = asyncHandler(async (req: AuthenticatedRequest, res
     },
   );
 
-  // format data with serial number for csv
+  // format data with serial number
   const formattedData = registrationList.map((user, index) => ({
     sr_no: index + 1,
     moodleID: user.moodleID,
@@ -375,19 +376,38 @@ const getRegisteredStudents = asyncHandler(async (req: AuthenticatedRequest, res
     division: user.division,
   }));
 
-  // parse json into csv using json2csv package
-  const parser = new Parser({
-    fields: ["sr_no", "moodleID", "name", "department", "year", "division"],
-  });
+  // create Excel workbook
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Registrations");
 
-  const csv = parser.parse(formattedData);
+  // define columns
+  worksheet.columns = [
+    { header: "Sr No", key: "sr_no", width: 10 },
+    { header: "Moodle ID", key: "moodleID", width: 20 },
+    { header: "Name", key: "name", width: 25 },
+    { header: "Department", key: "department", width: 20 },
+    { header: "Year", key: "year", width: 10 },
+    { header: "Division", key: "division", width: 12 },
+  ];
 
-  //set headers in response object
-  res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", "attachment; filename=registration-list.csv");
+  // add data
+  worksheet.addRows(formattedData);
+
+  // optional: make header bold
+  worksheet.getRow(1).font = { bold: true };
+
+  // generate xlsx
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  // set response headers
+  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  res.setHeader("Content-Disposition", "attachment; filename=registration-list.xlsx");
+
+  // send file
+  res.send(buffer);
 
   // final response
-  res.status(OK).end(csv);
+  res.status(OK);
 });
 
 // organizors can get the list of attended students
@@ -449,31 +469,60 @@ const getAttendedStudents = asyncHandler(async (req: AuthenticatedRequest, res: 
     timeZone: "Asia/Kolkata",
   };
 
-  // format data with serial number for csv
-  const formattedData = attendedStudentList.map((user, index) => ({
-    sr_no: index + 1,
-    moodleID: user.moodleID,
-    name: user.name,
-    department: user.department,
-    year: user.year,
-    division: user.division,
-    date: eventData?.attendedStudentsID.get(user.moodleID)?.toLocaleDateString("en-IN", optionsDate) ?? null,
-    time: eventData?.attendedStudentsID.get(user.moodleID)?.toLocaleTimeString("en-IN", optionsTime) ?? null,
-  }));
+const formattedData = attendedStudentList.map((user, index) => ({
+  sr_no: index + 1,
+  moodleID: user.moodleID,
+  name: user.name,
+  department: user.department,
+  year: user.year,
+  division: user.division,
+  date:
+    eventData?.attendedStudentsID
+      .get(user.moodleID)
+      ?.toLocaleDateString("en-IN", optionsDate) ?? null,
+  time:
+    eventData?.attendedStudentsID
+      .get(user.moodleID)
+      ?.toLocaleTimeString("en-IN", optionsTime) ?? null,
+}));
 
-  // parse json into csv using json2csv package
-  const parser = new Parser({
-    fields: ["sr_no", "moodleID", "name", "department", "year", "division", "date", "time"],
-  });
+// Create Excel workbook
+const workbook = new ExcelJS.Workbook();
+const worksheet = workbook.addWorksheet("Attendance");
 
-  const csv = parser.parse(formattedData);
+// Define columns
+worksheet.columns = [
+  { header: "Sr No", key: "sr_no", width: 10 },
+  { header: "Moodle ID", key: "moodleID", width: 20 },
+  { header: "Name", key: "name", width: 25 },
+  { header: "Department", key: "department", width: 20 },
+  { header: "Year", key: "year", width: 10 },
+  { header: "Division", key: "division", width: 12 },
+  { header: "Date", key: "date", width: 15 },
+  { header: "Time", key: "time", width: 15 },
+];
 
-  //set headers in response object
-  res.setHeader("Content-Type", "text/csv");
-  res.setHeader("Content-Disposition", "attachment; filename=attendance-list.csv");
+// Add rows
+worksheet.addRows(formattedData);
 
-  // final response
-  res.status(OK).end(csv);
+// Bold headers
+worksheet.getRow(1).font = { bold: true };
+
+// Generate XLSX
+const buffer = await workbook.xlsx.writeBuffer();
+
+// Set response headers
+res.setHeader(
+  "Content-Type",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+);
+res.setHeader(
+  "Content-Disposition",
+  "attachment; filename=attendance-list.xlsx",
+);
+
+// Send file
+res.status(OK).send(buffer);
 });
 
 export {
