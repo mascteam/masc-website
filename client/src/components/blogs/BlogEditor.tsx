@@ -33,7 +33,6 @@ export function BlogEditor({ value, onChange, onImageUpload, placeholder = "Writ
         "outdent",
         "indent",
         "|",
-        "font",
         "fontsize",
         "brush",
         "paragraph",
@@ -90,5 +89,5 @@ export function BlogEditor({ value, onChange, onImageUpload, placeholder = "Writ
     [onImageUpload, placeholder],
   );
 
-  return <JoditEditor ref={editor} value={value} config={config} onBlur={onChange} />;
+  return <JoditEditor className="px-2" ref={editor} value={value} config={config} onBlur={onChange} />;
 }
