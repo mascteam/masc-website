@@ -80,6 +80,27 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
     }
   };
 
+  const [uploading, setUploading] = useState(false);
+
+  const uploadImage = async (file: File) => {
+    try {
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const { data } = await axiosInstance.post("/image-to-url", formData);
+
+      setEditState((p)=>({...p, banner : data.url}));
+    } catch {
+      (error: any) => {
+        toasty(error.message || "failed to upload image");
+      };
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const updateEvents = async () => {
     setDisable(true);
     try {
@@ -103,7 +124,9 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
     } catch (error: any) {
       console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
+        return error.response.data.errors.map((err: { path: string; message: string }) =>
+          toasty(`${err.path}, ${err.message}`),
+        );
       }
 
       toasty(error.response.data.message);
@@ -199,16 +222,29 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
           />
 
           <input
+            type="file"
+            accept="image/*"
+            disabled={uploading}
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              try {
+                const url = await uploadImage(file);
+
+                toasty("Banner uploaded");
+              } catch (error: any) {
+                toasty(error.response?.data?.message || "Upload failed");
+              }
+            }}
+            className="w-full mt-4 file:mr-4 file:border-0 file:bg-transparent cursor-target"
+          />
+
+          <input
             name="banner"
             placeholder="Banner Link"
             value={editState.banner}
-            onChange={(e) =>
-              setEditState({
-                ...editState,
-                banner: e.target.value,
-              })
-            }
-            className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
+            className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
           />
         </motion.div>
 
