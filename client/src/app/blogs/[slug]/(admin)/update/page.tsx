@@ -32,7 +32,7 @@ const UpdateBlogPage = () => {
 
   return (
     <main className="min-h-screen px-6 py-16 text-black">
-      <BlogForm mode="create" initialData={blog} />
+      <BlogForm mode="update" initialData={blog} blogId={blog.slug} />
     </main>
   );
 };
