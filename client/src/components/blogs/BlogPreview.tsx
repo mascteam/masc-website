@@ -1,15 +1,7 @@
 import Link from "next/link";
 
 import * as motion from "motion/react-client";
-
-export type BlogContentType = {
-  title: string;
-  createdAt: string;
-  content: string;
-  bannerUrl: string;
-  _id: string;
-  slug: string;
-};
+import { Blog } from "@/app/blogs/[slug]/page";
 
 const containerVariants = {
   hidden: {},
@@ -36,7 +28,7 @@ const rowVariants = {
   },
 };
 
-const BlogPreview = ({ blogContent }: { blogContent: BlogContentType }) => {
+const BlogPreview = ({ blogContent }: { blogContent: Blog }) => {
   return (
     <section className="w-[95%] border-black my-2">
       <motion.div

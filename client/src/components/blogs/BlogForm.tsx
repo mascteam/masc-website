@@ -9,12 +9,13 @@ import axiosInstance from "@/services/axios";
 import { toasty } from "../ToastProvider";
 import { useUserStore } from "@/store/user";
 import NotFound from "@/app/not-found";
-import { RawDraftContentState } from "draft-js";
 
 export type BlogData = {
   title: string;
   bannerUrl: string;
   content: string;
+  slug: string;
+  createdAt?: string;
 };
 
 type BlogFormProps = {
@@ -31,6 +32,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
     title: initialData?.title ?? "",
     bannerUrl: initialData?.bannerUrl ?? "",
     content: initialData?.content ?? "",
+    slug: initialData?.slug ?? "",
   });
 
   const [image, setImage] = useState<File | null>(null);
@@ -107,7 +109,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
           ? await axiosInstance.post("/blogs", blogContent, {
               withCredentials: true,
             })
-          : await axiosInstance.put(`/blogs/${blogId}`, blogContent, { withCredentials: true });
+          : await axiosInstance.patch(`/blogs/${blogId}`, blogContent, { withCredentials: true });
 
       router.push(`/blogs/${response.data.blog.slug}`);
     } catch (error: any) {
@@ -209,7 +211,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
         </div>
 
         <div className="relative border border-black p-2">
-          {mode === "create" ? (
+          {mode === "create" || "update" ? (
             <BlogEditor
               value={blogContent.content}
               onChange={(value) => updateField("content", value)}
@@ -221,7 +223,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
         </div>
       </section>
 
-      <footer className="flex items-center justify-between border-t-2 border-black pt-6 text-black">
+      <div className="flex items-center justify-between border-t-2 border-black pt-6 text-black">
         <button type="button" onClick={() => router.back()} className="cursor-target text-sm">
           Cancel
         </button>
@@ -234,7 +236,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
         >
           {loading ? "Saving..." : mode === "create" ? "Publish Blog" : "Save Changes"}
         </button>
-      </footer>
+      </div>
     </div>
   );
 }
