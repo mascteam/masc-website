@@ -4,7 +4,7 @@ import { createBlogSchema, updateBlogSchema } from "./blog.schema";
 import ApiError from "../utils/apiError";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import { Organization } from "../models/organization.model";
-import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from "../constants/status-codes";
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, UNAUTHORIZED } from "../constants/status-codes";
 import { User } from "../models/user.model";
 import asyncHandler from "../utils/asyncHandler";
 
@@ -70,6 +70,11 @@ export const createBlog = asyncHandler(async (req: AuthenticatedRequest, res: Re
 
   const slug = validated.title.split(" ").join("-").toLocaleLowerCase();
 
+  //check if this slug is already present in the db
+  const BlogAlreadyExist = await Blog.findOne({slug});
+
+  if(BlogAlreadyExist) throw new ApiError(CONFLICT, "blog with this slug already exist")
+
   const blog = await Blog.create({ ...validated, slug });
 
   res.status(201).json({
@@ -79,6 +84,7 @@ export const createBlog = asyncHandler(async (req: AuthenticatedRequest, res: Re
 
 export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const validated = updateBlogSchema.parse(req.body);
+
 
   const { slug } = req.params;
   if (!slug) throw new ApiError(BAD_REQUEST, "no slug provided to update");
@@ -120,11 +126,12 @@ export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
 
   const blog = await Blog.findOneAndUpdate(
     { slug },
-    { validated, slug: newSlug },
+    { ...validated, slug: newSlug },
     {
       new: true,
     },
   );
+
 
   if (!blog) {
     return res.status(404).json({
