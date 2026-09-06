@@ -55,7 +55,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
     }));
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
@@ -67,6 +67,27 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
     setImage(file);
     setPreview(URL.createObjectURL(file));
     updateField("bannerUrl", "");
+
+    try {
+      setUploadingImage(true);
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const { data } = await axiosInstance.post("/image-to-url", formData, { withCredentials: true });
+
+      console.log(data);
+
+      updateField("bannerUrl", data.url);
+
+      await navigator.clipboard.writeText(data.url);
+
+      toasty("Uploaded & copied to clipboard");
+    } catch (error: any) {
+      toasty(error.response?.data?.message ?? "Upload failed");
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleImageUpload = async () => {
@@ -113,7 +134,12 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
 
       router.push(`/blogs/${response.data.blog.slug}`);
     } catch (error: any) {
-      toasty(error.response?.data?.message ?? `Failed to ${mode} blog`);
+      toasty(error.response.data.message);
+      if (error.response.data.errors.length > 0) {
+        return error.response.data.errors.map((err: { path: string; message: string }) =>
+          toasty(`${err.path}, ${err.message}`),
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -172,15 +198,6 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
               onChange={handleImageChange}
               className="w-full flex-1 cursor-pointer text-sm"
             />
-
-            <button
-              type="button"
-              onClick={handleImageUpload}
-              disabled={!image || uploadingImage}
-              className="cursor-target border-y-2 border-black px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              {uploadingImage ? "Uploading..." : "Upload Image"}
-            </button>
           </div>
 
           {preview && (
