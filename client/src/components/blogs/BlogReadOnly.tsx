@@ -21,10 +21,5 @@ export function BlogReadOnly({ value }: BlogReadOnlyProps) {
     [],
   );
 
-  return (
-    <JoditEditor
-      value={value}
-      config={config}
-    />
-  );
+  return <JoditEditor value={value} config={config} />;
 }
