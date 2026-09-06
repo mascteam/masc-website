@@ -87,3 +87,7 @@
 * {
   scrollbar-width: none;
 }
+
+ul, ol {
+  list-style: none;
+}
