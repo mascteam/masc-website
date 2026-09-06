@@ -1,15 +1,15 @@
 "use server";
 
-import BlogPreview, { BlogContentType } from "@/components/blogs/BlogPreview";
+import BlogPreview from "@/components/blogs/BlogPreview";
 import LoadingPage from "../loading";
 import axiosInstance from "@/services/axios";
-import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
+import { Blog } from "./[slug]/page";
 
 const BlogPage = async () => {
   try {
     const {
       data: { blogs },
-    }: { data: { blogs: BlogContentType[] } } = await axiosInstance.get("/blogs");
+    }: { data: { blogs: Blog[] } } = await axiosInstance.get("/blogs");
 
     if (!blogs || blogs.length < 1) throw new Error("failed to fetch blogs");
 

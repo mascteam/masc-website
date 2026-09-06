@@ -7,10 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
-import { BlogContentType } from "../blogs/BlogPreview";
 import { toasty } from "../ToastProvider";
 import axiosInstance from "@/services/axios";
 import { TypingAnimation } from "../ui/typing-animation";
+import { Blog } from "@/app/blogs/[slug]/page";
+
 
 const containerVariants = {
   hidden: {},
@@ -47,13 +48,13 @@ const elements = [
 const BlogSection = () => {
   const router = useRouter();
 
-  const [blogs, setBlogs] = useState<BlogContentType[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const {
           data: { blogs },
-        }: { data: { blogs: BlogContentType[] } } = await axiosInstance.get("/blogs");
+        }: { data: { blogs: Blog[] } } = await axiosInstance.get("/blogs");
 
         if (!blogs || blogs.length < 1) throw new Error("failed to fetch blogs");
 
