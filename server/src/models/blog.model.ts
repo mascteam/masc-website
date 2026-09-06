@@ -17,6 +17,7 @@ const blogSchema = new Schema<BlogDocument>(
     slug: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
     },
     content: {
