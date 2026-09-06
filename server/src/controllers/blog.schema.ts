@@ -6,4 +6,8 @@ export const createBlogSchema = z.object({
   bannerUrl: z.string().url(),
 });
 
-export const updateBlogSchema = createBlogSchema.partial();
+export const updateBlogSchema = z.object({
+  title: z.string().min(1).max(255).optional(),
+  content: z.string().min(1).optional(),
+  bannerUrl: z.string().url().optional(),
+});
