@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
 
 import { FeedBack } from "../models/feedback.model";
 import { Event } from "../models/events.model";
@@ -7,15 +7,14 @@ import { User, type UserDocument } from "../models/user.model";
 import asyncHandler from "../utils/asyncHandler";
 import ApiError from "../utils/apiError";
 
-import { BAD_REQUEST, CONFLICT, CREATED, FORBIDDEN, NOT_FOUND, OK, UNAUTHORIZED } from "../constants/status-codes";
+import { BAD_REQUEST, CREATED, FORBIDDEN, NOT_FOUND, OK, UNAUTHORIZED } from "../constants/status-codes";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
 
 import { feedbackQuestions } from "../utils/questions";
 import { feedbackSchema } from "./feedback.schema";
 import type { ObjectId } from "mongoose";
-import logger from "../utils/logger";
 
-import { Parser } from "json2csv";
+import ExcelJS from "exceljs";
 
 const uploadFeedback = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const feedBackData = feedbackSchema.parse(req.body);
@@ -93,7 +92,6 @@ const getFeedbackCsv = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     timeZone: "Asia/Kolkata",
   };
 
-  // turn json to csv
   const formattedData = allFeedbacks.map((fb) => ({
     moodleID: fb.userID?.moodleID,
     name: fb.userID?.name,
@@ -109,17 +107,32 @@ const getFeedbackCsv = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     time: fb.createdAt.toLocaleTimeString("en-IN", optionsTime),
   }));
 
-  const questions = feedbackQuestions;
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Feedback");
 
   const fields = Object.keys(formattedData[0] || {});
-  const parser = new Parser({ fields });
 
-  const csv = parser.parse(formattedData);
+  worksheet.columns = fields.map((field) => ({
+    header: field,
+    key: field,
+    width: Math.max(field.length + 2, 15),
+  }));
 
-  // send the response
-  res.header("Content-Type", "text/csv");
-  res.attachment("feedback.csv");
-  res.send(csv);
+  worksheet.addRows(formattedData);
+
+  worksheet.getRow(1).font = { bold: true };
+  worksheet.autoFilter = {
+    from: "A1",
+    to: `${String.fromCharCode(64 + fields.length)}1`,
+  };
+
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+  res.setHeader("Content-Disposition", 'attachment; filename="feedback.xlsx"');
+
+  res.send(Buffer.from(buffer));
 });
 
 export { uploadFeedback, getFeedbackCsv };

@@ -14,7 +14,8 @@ import {
   markAttendanceForEvent,
   registerForEvent,
   updateEventInformation,
-  getLatestEvent
+  getLatestEvent,
+  getEventStats
 } from "../controllers/event.controller";
 
 // get all events
@@ -46,5 +47,8 @@ router.get("/:eventID/register", checkAuth, getRegisteredStudents);
 
 // organizors can get the list of attended students
 router.get("/:eventID/attended", checkAuth, getAttendedStudents);
+
+// anyone can get the count of registered students and marked attendance
+router.get("/:eventID/stat", getEventStats)
 
 export default router;

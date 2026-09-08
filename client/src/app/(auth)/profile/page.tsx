@@ -77,7 +77,7 @@ const ProfilePage = () => {
           <Link href="#" className="cursor-target underline underline-offset-4">
             Update Details
           </Link>
-          {user.role === "ORGANIZOR" && (
+          {["ORGANIZOR", "ADMIN"].includes(user.role)  && (
             <Link className="cursor-target underline underline-offset-4" href="/admin/nav">
               Admin Navigation
             </Link>

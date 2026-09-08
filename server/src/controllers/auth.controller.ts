@@ -144,7 +144,7 @@ const updateUserInfo = asyncHandler(async (req: AuthenticatedRequest, res: Respo
   }
 
   // check if user is Admin then allow anyway
-  const isAdmin = currentUser.role === "ORGANIZOR" || "ADMIN";
+  const isAdmin = currentUser.role === "ADMIN";
   if (!isAdmin && !isUpdatingOwnDoc) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
   // update the user

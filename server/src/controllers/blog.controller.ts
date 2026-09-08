@@ -175,7 +175,7 @@ export const deleteBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
     throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
   }
 
-  const userAuthorised = organizationToUpdate.members.includes(user._id) || user.role === "ADMIN";
+  const userAuthorised = user.role === "ADMIN";
 
   if (!userAuthorised) {
     throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");

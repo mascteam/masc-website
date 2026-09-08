@@ -20,6 +20,10 @@ import { EventType } from "@/app/events/create/page";
 
 const UpdateEventDetails = ({ event }: { event: EventType }) => {
   const [editState, setEditState] = useState<EventType>({ ...event });
+  const [eventStat, setEventStat] = useState<{ registerdStudentsID: number; attendedStudentsID: number }>({
+    registerdStudentsID: 0,
+    attendedStudentsID: 0,
+  });
 
   const [disable, setDisable] = useState(false);
 
@@ -33,16 +37,11 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
   const { user } = useUserStore();
 
   useEffect(() => {
-    if (!user || user.role === "USER") {
+    if (!user) {
       return setAdmin(false);
     }
-
-    setAdmin(true);
+    setAdmin(user.role === "ADMIN");
   }, [user]);
-
-  useEffect(() => {
-    console.log({ editState, commaInputs });
-  }, [editState, commaInputs]);
 
   const router = useRouter();
 
@@ -144,7 +143,11 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         withCredentials: true,
         responseType: "blob",
       });
-      download(res.data, `attendance-list-${editState.slug}.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      download(
+        res.data,
+        `attendance-list-${editState.slug}.xlsx`,
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      );
     } catch (error: any) {
       toasty("Failed to get your list");
     }
@@ -161,7 +164,11 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         responseType: "blob",
       });
 
-      download(res.data, `registration-list-${editState.slug}.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      download(
+        res.data,
+        `registration-list-${editState.slug}.xlsx`,
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      );
     } catch (error: any) {
       toasty("Failed to get your list");
     }
@@ -206,7 +213,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
       >
         {/* Heading */}
         <div>
-          <h1 className="text-5xl font-bold uppercase">Update an Event</h1>
+          <h1 className="text-xl md:text-5xl font-bold uppercase">Update an Event</h1>
         </div>
 
         {/* Title */}
@@ -221,7 +228,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                 title: e.target.value,
               })
             }
-            className="cursor-target w-full bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold"
+            className="cursor-target w-full bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
           />
 
           <input
@@ -456,7 +463,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
         {/* Submit */}
 
-        <div className="flex justify-end pt-6">
+        <div className="flex gap-2 justify-end pt-6">
           <motion.button
             whileHover={{ x: 6 }}
             whileTap={{ scale: 0.97 }}
@@ -500,6 +507,16 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             >
               {editState.canRegister ? "Close" : "Open"} Registration
             </button>
+
+            <div>
+              <p className="text-sm text-base-content/60">Registered Students</p>
+              <p className="text-xl font-bold">{eventStat.registerdStudentsID}</p>
+            </div>
+
+            <div>
+              <p className="text-sm text-base-content/60">Attended Students</p>
+              <p className="text-xl font-bold">{eventStat.attendedStudentsID}</p>
+            </div>
           </div>
         </div>
       </motion.div>

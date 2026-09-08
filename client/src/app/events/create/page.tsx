@@ -87,16 +87,12 @@ const CreateEvent = () => {
   const { loading, setLoading } = useLoadingStore();
 
   useEffect(() => {
-    if (!user || user.role === "USER") {
+    if (!user || user.role === "USER" || "ORGNIZOR") {
       return setAdmin(false);
     }
 
     setAdmin(true);
   }, [user]);
-
-  useEffect(() => {
-    console.log({ banner: editState.banner });
-  }, [editState.banner]);
 
   const router = useRouter();
 

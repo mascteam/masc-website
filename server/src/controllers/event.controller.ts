@@ -31,7 +31,7 @@ import ExcelJS from "exceljs";
 
 const getLatestEvent = asyncHandler(async (req: Request, res: Response) => {
   // pagination logic
-  const events = await Event.findOne().sort({ createdAt: -1 });
+  const events = await Event.findOne().sort({ createdAt: -1 }).select("-markedStudents -registeredStudents");
 
   res.status(OK).json({ events, message: "events fetched successfully", success: true });
 });
@@ -44,6 +44,7 @@ const getAllEvents = asyncHandler(async (req: Request, res: Response) => {
   const limitNum = 8;
 
   const events = await Event.find({ isPublic: true })
+    .select("-markedStudents -registeredStudents")
     .populate({
       path: "organizationID",
       select: "name",
@@ -64,9 +65,7 @@ const getEventBySlug = asyncHandler(async (req: Request, res: Response) => {
   const { slug } = req.params;
   if (!slug) throw new ApiError(BAD_REQUEST, "event slug not provided");
 
-  console.log({ slug });
-
-  const event = await Event.findOne({ slug }).populate({
+  const event = await Event.findOne({ slug }).select("-markedStudents -registeredStudents").populate({
     path: "organizationID",
     select: "name slug",
   });
@@ -105,7 +104,7 @@ const hostEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response) 
   // check if user is has the organizor role
   const user = await User.findById(userID);
   if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
-  if (user.role === "USER")
+  if (user.role === "USER" || "ORGANIZOR")
     throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not allowed to perfom this action");
 
   // check is user is part of the organization using slug
@@ -161,7 +160,7 @@ const updateEventInformation = asyncHandler(async (req: AuthenticatedRequest, re
   // check if user is has the organizor role
   const user = await User.findById(userID);
   if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
-  if (user.role === "USER")
+  if (user.role === "USER" || "ORGANIZOR")
     throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not allowed to perfom this action");
 
   // check if user is in the  organization who hosted the event
@@ -202,7 +201,7 @@ const deleteEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response
   // check if user is has the organizor role
   const user = await User.findById(userID);
   if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
-  if (user.role === "USER")
+  if (user.role === "USER" || "ORGANIZOR")
     throw new ApiError(UNAUTHORIZED, "unauthorised action, you are not allowed to perfom this action");
 
   // check if such event exist - masc client is passing slug here so im not changing the var names but fetch event by slug here
@@ -469,60 +468,74 @@ const getAttendedStudents = asyncHandler(async (req: AuthenticatedRequest, res: 
     timeZone: "Asia/Kolkata",
   };
 
-const formattedData = attendedStudentList.map((user, index) => ({
-  sr_no: index + 1,
-  moodleID: user.moodleID,
-  name: user.name,
-  department: user.department,
-  year: user.year,
-  division: user.division,
-  date:
-    eventData?.attendedStudentsID
-      .get(user.moodleID)
-      ?.toLocaleDateString("en-IN", optionsDate) ?? null,
-  time:
-    eventData?.attendedStudentsID
-      .get(user.moodleID)
-      ?.toLocaleTimeString("en-IN", optionsTime) ?? null,
-}));
+  const formattedData = attendedStudentList.map((user, index) => ({
+    sr_no: index + 1,
+    moodleID: user.moodleID,
+    name: user.name,
+    department: user.department,
+    year: user.year,
+    division: user.division,
+    date: eventData?.attendedStudentsID.get(user.moodleID)?.toLocaleDateString("en-IN", optionsDate) ?? null,
+    time: eventData?.attendedStudentsID.get(user.moodleID)?.toLocaleTimeString("en-IN", optionsTime) ?? null,
+  }));
 
-// Create Excel workbook
-const workbook = new ExcelJS.Workbook();
-const worksheet = workbook.addWorksheet("Attendance");
+  // Create Excel workbook
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Attendance");
 
-// Define columns
-worksheet.columns = [
-  { header: "Sr No", key: "sr_no", width: 10 },
-  { header: "Moodle ID", key: "moodleID", width: 20 },
-  { header: "Name", key: "name", width: 25 },
-  { header: "Department", key: "department", width: 20 },
-  { header: "Year", key: "year", width: 10 },
-  { header: "Division", key: "division", width: 12 },
-  { header: "Date", key: "date", width: 15 },
-  { header: "Time", key: "time", width: 15 },
-];
+  // Define columns
+  worksheet.columns = [
+    { header: "Sr No", key: "sr_no", width: 10 },
+    { header: "Moodle ID", key: "moodleID", width: 20 },
+    { header: "Name", key: "name", width: 25 },
+    { header: "Department", key: "department", width: 20 },
+    { header: "Year", key: "year", width: 10 },
+    { header: "Division", key: "division", width: 12 },
+    { header: "Date", key: "date", width: 15 },
+    { header: "Time", key: "time", width: 15 },
+  ];
 
-// Add rows
-worksheet.addRows(formattedData);
+  // Add rows
+  worksheet.addRows(formattedData);
 
-// Bold headers
-worksheet.getRow(1).font = { bold: true };
+  // Bold headers
+  worksheet.getRow(1).font = { bold: true };
 
-// Generate XLSX
-const buffer = await workbook.xlsx.writeBuffer();
+  // Generate XLSX
+  const buffer = await workbook.xlsx.writeBuffer();
 
-// Set response headers
-res.setHeader(
-  "Content-Type",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-);
-res.setHeader(
-  "Content-Disposition",
-  "attachment; filename=attendance-list.xlsx",
-);
+  // Set response headers
+  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  res.setHeader("Content-Disposition", "attachment; filename=attendance-list.xlsx");
 
-// Send file
-res.status(OK).send(buffer);
+  // Send file
+  res.status(OK).send(buffer);
+});
+
+const getEventStats = asyncHandler(async (req: Request, res: Response) => {
+  const { slug } = req.params;
+  if (!slug) throw new ApiError(BAD_REQUEST, "event slug not provided");
+
+  const event = await Event.findOne({ slug, isPublic: true })
+    .select({
+      registerdStudentsID: 1,
+      attendedStudentsID: 1,
+    })
+    .lean();
+
+  if (!event) {
+    return null;
+  }
+
+  const result = {
+    regCount: event.registerdStudentsID?.length ?? 0,
+    markCount: event.attendedStudentsID?.length ?? 0,
+  };
+
+  if (!event) throw new ApiError(BAD_REQUEST, "invalid event id provided, failed to fetch event");
+
+  // TODO - hide event for users but show for organizor so make this a private route
+  res.status(OK).json({ event, message: "events fetched successfully", success: true });
 });
 
 export {
@@ -536,4 +549,5 @@ export {
   getEventBySlug,
   deleteEvent,
   getLatestEvent,
+  getEventStats
 };
