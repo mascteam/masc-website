@@ -27,12 +27,12 @@ const Rootpage = () => {
       <HeroSection />
       <AboutSection />
       <Marquee className=" border-t-2 border-black select-none">
-        <h1
+        <p
           className={`font-mono text-[10vh] md:text-[15vh] font-bold text-black [-webkit-text-stroke:2px_white] uppercase ${poppins.className}`}
         >
           <span className="hidden md:flex">Minds Behind masc</span>
           <span className="md:hidden flex">Team masc</span>
-        </h1>
+        </p>
       </Marquee>
       <TeamSection />
       <EventSection />
