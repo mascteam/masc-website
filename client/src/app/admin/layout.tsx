@@ -8,7 +8,7 @@ import { ReactNode } from "react";
 const AdminRoutesLayout = ({ children }: { children: ReactNode }) => {
   const { isAuth, user } = useUserStore();
 
-  if(isAuth && user?.role == "ORGANIZOR") {
+  if(isAuth && ["ORGANIZOR", "ADMIN"].includes(user?.role || "")) {
     return children
   }
 
