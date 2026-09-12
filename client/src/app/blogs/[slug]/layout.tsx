@@ -6,8 +6,6 @@ import { Blog } from "./page";
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
 
-
-
   try {
     const { data } = await axiosInstance.get(`/blogs/${slug}`);
 
@@ -23,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     return {
       title: blog.title,
-      description: blog.content.slice(0, 160),
+      description: blog.description,
 
       alternates: {
         canonical: `/blogs/${blog.slug}`,
