@@ -15,6 +15,8 @@ export type BlogData = {
   title: string;
   bannerUrl: string;
   content: string;
+  description: string;
+  writtenBy: string;
   slug: string;
   createdAt?: string;
 };
@@ -33,6 +35,8 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
     title: initialData?.title ?? "",
     bannerUrl: initialData?.bannerUrl ?? "",
     content: initialData?.content ?? "",
+    description: initialData?.description ?? "",
+    writtenBy: initialData?.writtenBy ?? "",
     slug: initialData?.slug ?? "",
   });
 
@@ -193,6 +197,30 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
             onChange={(event) => updateField("title", event.target.value)}
             placeholder="Enter your blog title..."
             className="w-full border-b-2 border-black py-1 text-2xl outline-none"
+          />
+        </div>
+
+        {/* WRITTEN BY  */}
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-widest">Written By</label>
+
+          <input
+            value={blogContent.writtenBy}
+            onChange={(event) => updateField("writtenBy", event.target.value)}
+            placeholder="Enter your blog title..."
+            className="w-full border-b-2 border-black py-1 text-lg outline-none"
+          />
+        </div>
+
+        {/* DESCRIPTION  */}
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-widest">Description</label>
+
+          <textarea
+            value={blogContent.description}
+            onChange={(event) => updateField("description", event.target.value)}
+            placeholder="Enter your blog title..."
+            className="w-full border-b-2 border-black py-1 text-lg outline-none"
           />
         </div>
 
