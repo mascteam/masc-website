@@ -82,7 +82,7 @@ const CreateEvent = () => {
   const { loading, setLoading } = useLoadingStore();
 
   useEffect(() => {
-    if (!user || user.role === "USER" || "ORGNIZOR") {
+    if (!user || user.role === "USER" || user.role === "ORGNIZOR") {
       return setAdmin(false);
     }
 
