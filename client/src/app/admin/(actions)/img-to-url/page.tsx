@@ -12,6 +12,9 @@ const ImageToUrlTool = () => {
   const [preview, setPreview] = useState("");
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [path, setPath] = useState<string>("misc");
+
+  const allowedPaths = ["teams", "blogs", "events", "misc"];
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -33,6 +36,7 @@ const ImageToUrlTool = () => {
 
       const formData = new FormData();
       formData.append("image", image);
+      formData.append("path", path);
 
       const { data } = await axiosInstance.post("/image-to-url", formData);
 
@@ -78,6 +82,16 @@ const ImageToUrlTool = () => {
             onChange={handleImage}
             className="cursor-target border p-2 text-sm file:mr-4 file:border-0 file:bg-transparent file:font-medium"
           />
+          <div className="flex flex-col">
+            <label>Where Should This Image be Stored?</label>
+            <select value={path} onChange={(e)=> setPath(e.target.value)} name="path" id="path" className="border">
+              {allowedPaths.map((paths, index) => (
+                <option  key={paths} value={paths} className="cursor-target">
+                  {paths}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <button
             onClick={handleUpload}

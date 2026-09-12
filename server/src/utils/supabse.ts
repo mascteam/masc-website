@@ -6,10 +6,7 @@ import ApiError from "./apiError";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import { User } from "../models/user.model";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-);
+const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!);
 
 export const upload = multer({
   storage: multer.memoryStorage(),
@@ -17,27 +14,27 @@ export const upload = multer({
 
 const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
   try {
-
+    const { path } = req.body;
+    
     if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
-      const { userID } = req.user;
-    
-      if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
-    
-      // check if authenticated user is in the organization
-      const user = await User.findById(userID);
-      if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
-    
-      const userAuthorised = ["ADMIN", "ORGANIZOR"].includes(user.role);
-      if (!userAuthorised) throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
+    const { userID } = req.user;
 
+    if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
+
+    // check if authenticated user is in the organization
+    const user = await User.findById(userID);
+    if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
+
+    const userAuthorised = ["ADMIN", "ORGANIZOR"].includes(user.role);
+    if (!userAuthorised) throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
 
     if (!req.file) {
       return res.status(400).json({
         message: "Image is required",
       });
-    }    
+    }
 
-    const fileName = `${crypto.randomUUID()}-${req.file.originalname}`;
+    const fileName = `${path ? path : "misc"}/${crypto.randomUUID()}-${req.file.originalname}`;
 
     const { error } = await supabase.storage
       .from("masc") // Bucket name
@@ -52,9 +49,7 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
       });
     }
 
-    const { data } = supabase.storage
-      .from("masc")
-      .getPublicUrl(fileName);
+    const { data } = supabase.storage.from("masc").getPublicUrl(fileName);
 
     return res.status(200).json({
       url: data.publicUrl,
