@@ -9,6 +9,7 @@ import axiosInstance from "@/services/axios";
 import { toasty } from "../ToastProvider";
 import { useUserStore } from "@/store/user";
 import NotFound from "@/app/not-found";
+import LoadingPage from "@/app/loading";
 
 export type BlogData = {
   title: string;
@@ -162,7 +163,11 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
     }
   };
 
-  if (user?.role === "USER") {
+  if (!user) {
+    return <LoadingPage />;
+  }
+
+  if (!["ADMIN", "ORGANIZOR"].includes(user.role)) {
     return <NotFound />;
   }
 
