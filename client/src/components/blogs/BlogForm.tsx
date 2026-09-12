@@ -207,7 +207,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
           <input
             value={blogContent.writtenBy}
             onChange={(event) => updateField("writtenBy", event.target.value)}
-            placeholder="Enter your blog title..."
+            placeholder="Enter Author Name..."
             className="w-full border-b-2 border-black py-1 text-lg outline-none"
           />
         </div>
@@ -219,7 +219,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
           <textarea
             value={blogContent.description}
             onChange={(event) => updateField("description", event.target.value)}
-            placeholder="Enter your blog title..."
+            placeholder="Enter your blog description..."
             className="w-full border-b-2 border-black py-1 text-lg outline-none"
           />
         </div>
