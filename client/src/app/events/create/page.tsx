@@ -145,9 +145,10 @@ const CreateEvent = () => {
 
       router.push(`/events/${data.event.slug}`);
     } catch (error: any) {
-
       if (error.response.data.errors.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
+        return error.response.data.errors.map((err: { path: string; message: string }) =>
+          toasty(`${err.path}, ${err.message}`),
+        );
       }
 
       toasty("failed to create event");
@@ -165,6 +166,7 @@ const CreateEvent = () => {
 
       const formData = new FormData();
       formData.append("image", file);
+      formData.append("path", "events");
 
       const { data } = await axiosInstance.post("/image-to-url", formData);
 

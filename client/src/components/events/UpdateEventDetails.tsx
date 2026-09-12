@@ -48,9 +48,12 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
       try {
         const { data } = await axiosInstance.get(`/events/${editState.slug}/stat`, { withCredentials: true });
 
-        setEventStat({registerdStudentsID: data.event.registerdStudentsID.length, attendedStudentsID: data.event.attendedStudentsID.length})
+        setEventStat({
+          registerdStudentsID: data.event.registerdStudentsID.length,
+          attendedStudentsID: data.event.attendedStudentsID.length,
+        });
       } catch (error: any) {
-        console.log(error.response)
+        console.log(error.response);
         toasty(error.response.data.message);
       }
     };
@@ -102,6 +105,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
       const formData = new FormData();
       formData.append("image", file);
+      formData.append("path", "events");
 
       const { data } = await axiosInstance.post("/image-to-url", formData);
 

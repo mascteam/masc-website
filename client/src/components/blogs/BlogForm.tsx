@@ -74,6 +74,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
 
       const formData = new FormData();
       formData.append("image", file);
+      formData.append("path", "blogs");
 
       const { data } = await axiosInstance.post("/image-to-url", formData, { withCredentials: true });
 
@@ -102,6 +103,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
 
       const formData = new FormData();
       formData.append("image", image);
+      formData.append("path", "blogs");
 
       const { data } = await axiosInstance.post("/image-to-url", formData, { withCredentials: true });
 
@@ -149,6 +151,7 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
   const handleRichTextImageUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
+    formData.append("path", "blogs");
 
     try {
       const { data } = await axiosInstance.post("/image-to-url", formData, {
