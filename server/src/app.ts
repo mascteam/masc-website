@@ -27,7 +27,6 @@ app.use(
 import { errorHandler } from "./middlewares/errorHandler.ts";
 
 import AuthRouter from "./routes/auth.routes.ts";
-import OrganizationRouter from "./routes/organization.routes.ts";
 import EventsRouter from "./routes/event.routes.ts";
 import FeedbackRouter from "./routes/feedback.routes.ts";
 import BlogRouter from "./routes/blog.routes.ts"
@@ -53,7 +52,6 @@ app.get(
 );
 
 app.use("/auth", AuthRouter);
-app.use("/organizations", OrganizationRouter);
 app.use("/events", EventsRouter);
 app.use("/feedbacks", FeedbackRouter);
 

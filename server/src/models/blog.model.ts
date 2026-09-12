@@ -6,6 +6,10 @@ export interface BlogDocument extends mongoose.Document {
   slug: string;
   content: string;
   bannerUrl: string;
+  description: string;
+  writtenBy: string;
+  createdAt : Date,
+  updatedAt : Date
 }
 
 const blogSchema = new Schema<BlogDocument>(
@@ -25,6 +29,14 @@ const blogSchema = new Schema<BlogDocument>(
       required: true,
     },
     bannerUrl: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    writtenBy: {
       type: String,
       required: true,
     },

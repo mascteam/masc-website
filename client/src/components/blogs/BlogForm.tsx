@@ -199,22 +199,22 @@ export default function BlogForm({ mode, initialData, blogId }: BlogFormProps) {
               className="w-full flex-1 cursor-pointer text-sm"
             />
           </div>
+          <input
+            name="banner"
+            placeholder="Paste Banner URL here"
+            value={blogContent.bannerUrl}
+            onChange={(e) =>
+              setBlogContent((p) => ({
+                ...p,
+                banner: e.target.value,
+              }))
+            }
+            className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
+          />
 
           {preview && (
             <div className="overflow-hidden border border-black">
               <img src={preview} alt="Banner preview" className="h-64 w-full object-cover" />
-            </div>
-          )}
-
-          {blogContent.bannerUrl && (
-            <div>
-              <p className="mb-1 text-[10px] uppercase tracking-widest">Banner URL</p>
-
-              <input
-                value={blogContent.bannerUrl}
-                onChange={(event) => updateField("bannerUrl", event.target.value)}
-                className="w-full rounded-lg text-sm outline-none"
-              />
             </div>
           )}
         </div>

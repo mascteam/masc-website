@@ -12,7 +12,6 @@ import axiosInstance from "@/services/axios";
 import { TypingAnimation } from "../ui/typing-animation";
 import { Blog } from "@/app/blogs/[slug]/page";
 
-
 const containerVariants = {
   hidden: {},
   visible: {
@@ -58,7 +57,7 @@ const BlogSection = () => {
 
         if (!blogs || blogs.length < 1) throw new Error("failed to fetch blogs");
 
-        setBlogs(blogs);
+        setBlogs(blogs.slice(0, 5));
       } catch (error) {
         setBlogs([]);
         toasty("failed to fetch blogs");
@@ -68,7 +67,7 @@ const BlogSection = () => {
     fetchBlogs();
   }, []);
   return (
-    <section className="h-[70vh]  md:h-screen md:min-h-[90vh] w-screen px-5 flex flex-col ">
+    <section className="min-h-[70vh] mt-10 md:min-h-[90vh] w-screen px-5 flex flex-col ">
       <div>
         <h1 className="text-3xl md:text-4xl">
           <TypingAnimation
@@ -77,7 +76,7 @@ const BlogSection = () => {
             pauseDelay={2000}
             as="span"
             loop
-            className="uppercase text-lg md:text-4xl select-none"
+            className="uppercase text-2xl md:text-4xl select-none"
           />
         </h1>
 
@@ -120,7 +119,7 @@ const BlogSection = () => {
               </span>
 
               {/* TITLE */}
-              <h2 className="cursor-target w-full leading-tight md:text-2xl select-none">{blog.title}</h2>
+              <h2 className="cursor-target w-full leading-tight text-xs md:text-2xl select-none">{blog.title}</h2>
 
               {/* ARROW */}
               <motion.span
@@ -164,7 +163,7 @@ const BlogSection = () => {
         className="mt-8 flex justify-end"
       >
         <Link href="/blogs" className="cursor-target flex items-center gap-3 text-sm md:text-base">
-          <span className="text-xl border-b border-black pb-1">Read our catalogue</span>
+          <span className="text-xl border-b border-black pb-1 mb-3 ">Read our catalogue</span>
         </Link>
       </motion.div>
     </section>

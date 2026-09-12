@@ -8,20 +8,22 @@ import { useUserStore } from "@/store/user";
 
 import { toasty } from "../ToastProvider";
 import axiosInstance from "@/services/axios";
+import { useLoadingStore } from "@/store/loading";
 
 const EventsDetails = ({ event }: { event: EventType }) => {
-  const [loading, setLoading] = useState(false);
-
   const { user, isAuth } = useUserStore();
 
+  const { loading, setLoading } = useLoadingStore();
+
   const handleRegister = async () => {
+    setLoading(true);
     try {
       if (!user || !isAuth) {
         throw Error("log in to register");
       }
 
       const { data } = await axiosInstance.post(
-        `/events/${event._id}/register`,
+        `/events/register`,
         { eventID: event._id, moodleID: user.moodleID },
         { withCredentials: true },
       );
@@ -29,8 +31,11 @@ const EventsDetails = ({ event }: { event: EventType }) => {
       toasty("registered successfully");
     } catch (error: any) {
       toasty(error.response?.data.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen flex justify-center px-6 py-20">
       <div className="absolute inset-0 -z-10 text-black" />
@@ -46,7 +51,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
           {/* Right */}
           <div className="lg:w-1/2 flex flex-col gap-8">
             <div>
-              <h1 className="text-xl md:text-5xl font-bold uppercase">{event.title}</h1>
+              <h1 className="text-xl md:text-4xl font-bold uppercase">{event.title}</h1>
             </div>
 
             <div className="flex flex-col md:flex-row gap-4">
@@ -106,10 +111,11 @@ const EventsDetails = ({ event }: { event: EventType }) => {
 
             <div className="flex justify-end pt-6">
               <button
+                disabled={loading}
                 onClick={handleRegister}
                 className="border-b-2 border-black text-xl uppercase tracking-wide cursor-target"
               >
-                {user && event.registerdStudentsID.includes(user.moodleID) ? "Already registered" : "register"}
+                {user && event.registerdStudentsID.includes(user._id) ? "Already registered" : "register"}
               </button>
             </div>
           </div>

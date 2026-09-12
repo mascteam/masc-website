@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 import { EventType } from "@/app/events/create/page";
@@ -11,15 +10,6 @@ import { toasty } from "../ToastProvider";
 import { TypingAnimation } from "../ui/typing-animation";
 
 const EventSection = () => {
-  const eventData: { banner: string; title: string; slug: string }[] = [
-    { banner: "event 1", title: "banner 1", slug: "bannner 1" },
-    { banner: "event 2", title: "banner 2", slug: "bannner 2" },
-    { banner: "event 3", title: "banner 3", slug: "bannner 3" },
-    { banner: "event 4", title: "banner 4", slug: "bannner 4" },
-    { banner: "event 5", title: "banner 5", slug: "bannner 5" },
-  ];
-
-  const router = useRouter();
 
   const [events, setEvents] = useState<EventType[]>([]);
 
@@ -27,7 +17,7 @@ const EventSection = () => {
     const getEvents = async () => {
       try {
         const { data }: { data: { events: EventType[] } } = await axiosInstance.get(`/events`);
-        setEvents(data.events);
+        setEvents(data.events.slice(0,5));
       } catch {
         (err: any) => toasty(err.message || "failed to fetch events");
       }
@@ -45,7 +35,7 @@ const EventSection = () => {
   ];
 
   return (
-    <section className="h-screen md:h-[80vh] w-screen flex flex-col justify-start items-start px-5">
+    <section className="min-h-screen md:min-h-[80vh] w-screen flex flex-col justify-start items-start px-5 border-b">
       <TypingAnimation
         words={elements}
         blinkCursor={true}

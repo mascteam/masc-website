@@ -21,5 +21,5 @@ export function BlogReadOnly({ value }: BlogReadOnlyProps) {
     [],
   );
 
-  return <JoditEditor value={value} config={config} />;
+  return <JoditEditor className="bg-slate-100" value={value} config={config} />;
 }

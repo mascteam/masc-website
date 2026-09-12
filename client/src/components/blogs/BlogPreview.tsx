@@ -61,17 +61,18 @@ const BlogPreview = ({ blogContent }: { blogContent: Blog }) => {
               <Link href={`/blogs/${blogContent.slug}`}>
                 <h1 className="text-lg md:text-2xl select-none cursor-target md:px-3">{blogContent.title}</h1>
               </Link>
-              <span className="text-xs mt-2">{new Date(blogContent.createdAt!).toDateString()}</span>
+              <div className="flex flex-col justify-start items-start">
+                <span className="text-xs text-black/50 md:text-black">{blogContent.writtenBy}</span>
+                <span className="hidden md:flex text-xs text-black/50">{new Date(blogContent.createdAt!).toDateString()}</span>
+              </div>
             </div>
           </motion.div>
 
-          <p
-            className="text-black/50 text-wrap mb-2 text-xs md:text-sm"
-            dangerouslySetInnerHTML={{
-              __html:
-                blogContent.content.length > 500 ? blogContent.content.slice(0, 500) + "..." : blogContent.content,
-            }}
-          ></p>
+          <p className="text-black/50 text-wrap mb-2 text-xs md:text-sm">
+            {blogContent.description.length > 500
+              ? blogContent.description.slice(0, 500) + "..."
+              : blogContent.description}
+          </p>
 
           {/* HOVER LINE */}
           <motion.div

@@ -40,8 +40,23 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
     if (!user) {
       return setAdmin(false);
     }
-    setAdmin(user.role === "ADMIN");
+    setAdmin(["ADMIN", "ORGANIZOR"].includes(user.role));
   }, [user]);
+
+  useEffect(() => {
+    const fetchEventStat = async () => {
+      try {
+        const { data } = await axiosInstance.get(`/events/${editState.slug}/stat`, { withCredentials: true });
+
+        setEventStat({registerdStudentsID: data.event.registerdStudentsID.length, attendedStudentsID: data.event.attendedStudentsID.length})
+      } catch (error: any) {
+        console.log(error.response)
+        toasty(error.response.data.message);
+      }
+    };
+
+    fetchEventStat();
+  }, []);
 
   const router = useRouter();
 
@@ -108,7 +123,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         `/events/${event._id}`,
         {
           ...editState,
-          organizationID: user!.organizationID[0]._id,
           tags: commaInputs.tags.split(","),
           speakers: commaInputs.speakers.split(","),
         },
@@ -121,14 +135,14 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
       router.push(`/events?search=${data.event.slug}`);
     } catch (error: any) {
-      console.log(error.message || error);
-      if (error.message.response.data.errors.length > 0) {
+      toasty(error.response.data.message);
+
+      if (error.response.data.errors.length > 0) {
         return error.response.data.errors.map((err: { path: string; message: string }) =>
           toasty(`${err.path}, ${err.message}`),
         );
       }
 
-      toasty(error.response.data.message);
       return;
     } finally {
       setDisable(false);
@@ -184,7 +198,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         `/events/${event._id}`,
         {
           canRegister: !editState.canRegister,
-          organizationID: user.organizationID[0]._id,
         },
         {
           withCredentials: true,
@@ -223,10 +236,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             placeholder="Event Title"
             value={editState.title}
             onChange={(e) =>
-              setEditState({
-                ...editState,
+              setEditState((p) => ({
+                ...p,
                 title: e.target.value,
-              })
+              }))
             }
             className="cursor-target w-full bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
           />
@@ -254,6 +267,12 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             name="banner"
             placeholder="Banner Link"
             value={editState.banner}
+            onChange={(e) =>
+              setEditState((p) => ({
+                ...p,
+                banner: e.target.value,
+              }))
+            }
             className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
           />
         </motion.div>
@@ -266,10 +285,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             name="date"
             value={editState.date}
             onChange={(e) =>
-              setEditState({
-                ...editState,
+              setEditState((p) => ({
+                ...p,
                 date: e.target.value,
-              })
+              }))
             }
           />
 
@@ -279,10 +298,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             name="time"
             value={editState.time}
             onChange={(e) =>
-              setEditState({
-                ...editState,
+              setEditState((p) => ({
+                ...p,
                 time: e.target.value,
-              })
+              }))
             }
           />
 
@@ -292,10 +311,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             name="venue"
             value={editState.venue}
             onChange={(e) =>
-              setEditState({
-                ...editState,
+              setEditState((p) => ({
+                ...p,
                 venue: e.target.value,
-              })
+              }))
             }
           />
         </div>
@@ -309,10 +328,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             value={editState.description}
             placeholder="Tell people about your event..."
             onChange={(e) =>
-              setEditState({
-                ...editState,
+              setEditState((p) => ({
+                ...p,
                 description: e.target.value,
-              })
+              }))
             }
             className="w-full min-h-20 resize-none bg-transparent border-0 border-b-2 border-black outline-none"
           />
@@ -356,7 +375,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         </div>
 
         {/* Departments */}
-
         <div className="flex flex-col gap-4">
           <h2 className="uppercase text-sm opacity-60">Allowed Departments</h2>
 
@@ -376,7 +394,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         </div>
 
         {/* Years */}
-
         <div className="flex flex-col gap-4">
           <h2 className="uppercase text-sm opacity-60">Allowed Years</h2>
 
@@ -396,7 +413,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         </div>
 
         {/* Divisions */}
-
         <div className="flex flex-col gap-4">
           <h2 className="uppercase text-sm opacity-60">Allowed Divisions</h2>
 
@@ -426,7 +442,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                 onChange={(e) => {
                   const updated = [...editState.externalLinks];
                   updated[index] = { ...updated[index], name: e.target.value };
-                  setEditState({ ...editState, externalLinks: updated });
+                  setEditState((p) => ({ ...p, externalLinks: updated }));
                 }}
                 className="cursor-target w-full md:flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
               />
@@ -439,7 +455,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
                   onChange={(e) => {
                     const updated = [...editState.externalLinks];
                     updated[index] = { ...updated[index], link: e.target.value };
-                    setEditState({ ...editState, externalLinks: updated });
+                    setEditState((p) => ({ ...p, externalLinks: updated }));
                   }}
                   className="cursor-target flex-1 border-0 border-b-2 border-black bg-transparent outline-none"
                 />
@@ -462,7 +478,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
         </div>
 
         {/* Submit */}
-
         <div className="flex gap-2 justify-end pt-6">
           <motion.button
             whileHover={{ x: 6 }}
@@ -475,7 +490,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
           </motion.button>
         </div>
 
-        <div className="mt-20 pt-8 border-t border-white/10">
+        <div className="mt-5 pt-2 border-t border-white/10">
           <h2 className="text-sm uppercase tracking-widest opacity-60 mb-8">Event Actions</h2>
 
           <div className="flex flex-wrap gap-x-10 gap-y-6">
@@ -493,14 +508,6 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
               Download Attendance List
             </button>
 
-            <Link href="attendance" className="cursor-target border-b-2 border-black hover:opacity-70 transition">
-              Mark Attendance
-            </Link>
-
-            <Link href="feedback" className="cursor-target border-b-2 border-black hover:opacity-70 transition">
-              Start Feedback
-            </Link>
-
             <button
               onClick={registrationToggle}
               className="cursor-target border-b-2 border-black text-red-400 hover:opacity-70 transition"
@@ -508,12 +515,20 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
               {editState.canRegister ? "Close" : "Open"} Registration
             </button>
 
-            <div>
+            <Link href="attendance" className="cursor-target border-b-2 border-black hover:opacity-70 ">
+              Mark Attendance
+            </Link>
+
+            <Link href="feedback" className="cursor-target border-b-2 border-black hover:opacity-70 ">
+              Start Feedback
+            </Link>
+
+            <div className=" border-b-2">
               <p className="text-sm text-base-content/60">Registered Students</p>
               <p className="text-xl font-bold">{eventStat.registerdStudentsID}</p>
             </div>
 
-            <div>
+            <div className=" border-b-2">
               <p className="text-sm text-base-content/60">Attended Students</p>
               <p className="text-xl font-bold">{eventStat.attendedStudentsID}</p>
             </div>

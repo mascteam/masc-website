@@ -96,10 +96,9 @@ const ProfilePage = () => {
             <p className="text-gray-600">No registrations.</p>
           ) : (
             user.registeredEvents.map((event, i) => (
-              <div key={event._id} className="flex gap-6 border-b-2 border-black pb-3">
+              <div key={event._id} className="flex gap-6 border-b-2 border-black pb-3 cursor-target">
                 <span className="opacity-40">{String(i + 1).padStart(2, "0")}</span>
-
-                <span className="text-xl">{event.title}</span>
+                <span onClick={()=> router.push(`/events/${event.slug}`)} className="text-xl">{event.title}</span>
               </div>
             ))
           )}

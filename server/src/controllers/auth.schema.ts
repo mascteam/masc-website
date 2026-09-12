@@ -25,13 +25,15 @@ const updateSchema = z.object({
     .regex(/^\d{8}$/, "Moodle ID must be exactly 8 digits")
     .optional(),
   name: z.string().min(6).max(255).optional(),
-  password: z.preprocess(
-    (val : unknown)=> val === "" ? undefined : val,
-    z.string().min(6).max(255).optional()
-  ),
+  password: z.preprocess((val: unknown) => (val === "" ? undefined : val), z.string().min(6).max(255).optional()),
   year: z.enum(["FE", "SE", "TE", "BE"]).optional(),
   division: z.string().length(1).optional(),
   department: z.enum(["DS", "AIML", "IT", "COMP", "CIVIL", "MECH"]).optional(),
 });
 
-export { registerSchema, loginSchema, findSchema, updateSchema };
+const updateUserRoleSchema = z.object({
+  moodleID: z.string().regex(/^\d{8}$/, "Moodle ID must be exactly 8 digits"),
+  role: z.enum(["ADMIN", "ORGANIZOR", "USER"]),
+});
+
+export { registerSchema, loginSchema, findSchema, updateSchema, updateUserRoleSchema };

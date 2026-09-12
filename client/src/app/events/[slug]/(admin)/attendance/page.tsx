@@ -3,9 +3,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType } from "@zxing/library";
 import axiosInstance from "@/services/axios";
-import { EventType } from '@/app/events/create/page';
+import { EventType } from "@/app/events/create/page";
 import { toasty } from "@/components/ToastProvider";
-import { Send, SendHorizonal } from "lucide-react";
+import { SendHorizonal } from "lucide-react";
+
+export type markedAttendanceType = {
+  _id: string;
+  studentID: {
+    _id: string;
+    name: string;
+    year: string;
+    department: string;
+    division: string;
+    moodleID: string;
+  };
+  eventID: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
 const AttendancePage = ({ params }: { params: Promise<{ slug: string }> }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -22,15 +37,25 @@ const AttendancePage = ({ params }: { params: Promise<{ slug: string }> }) => {
 
   const [status, setStatus] = useState<string>(statusList.ready);
 
-  const [markedIDs, setMarkedIDs] = useState<string[]>([]);
+  const [markedIDs, setMarkedIDs] = useState<markedAttendanceType[]>([]);
 
   const fetchEvent = async () => {
     try {
       const { slug } = await params;
-      const { data }: { data: { event: EventType } } = await axiosInstance.get(`/events/${slug}`);
-      eventRef.current = data.event;
+
+      const { data: eventData }: { data: { event: EventType } } = await axiosInstance.get(`/events/${slug}`);
+
+      eventRef.current = eventData.event;
+
+      const {
+        data: attendanceData,
+      }: {
+        data: { markedStudentList: markedAttendanceType[] };
+      } = await axiosInstance.get(`/events/${eventData.event._id}/attendance-preview`);
+
+      setMarkedIDs(attendanceData.markedStudentList);
     } catch (error: any) {
-      toasty(error.message || "failed to fetch event");
+      toasty(error.response?.data?.message || "failed to fetch event");
       eventRef.current = null;
     }
   };
@@ -60,7 +85,7 @@ const AttendancePage = ({ params }: { params: Promise<{ slug: string }> }) => {
 
       try {
         const { data } = await axiosInstance.post(
-          `/events/${eventRef.current?._id}/attended`,
+          `/events/attended`,
           { eventID: eventRef.current?._id, moodleID },
           { withCredentials: true },
         );
@@ -73,11 +98,9 @@ const AttendancePage = ({ params }: { params: Promise<{ slug: string }> }) => {
 
         toasty("marked successfully");
 
-        setMarkedIDs(data.allMoodleIDs);
+        setMarkedIDs(data.markedStudentList);
       } catch (error: any) {
         isProcessingRef.current = false;
-
-        console.log(error);
 
         setStatus(statusList.failure + ` for ${moodleID}`);
         toasty(error.response.data.message || statusList.failure + ` for ${moodleID}`);
@@ -96,13 +119,13 @@ const AttendancePage = ({ params }: { params: Promise<{ slug: string }> }) => {
       if (manualID.length < 8) throw new Error("length must be of atleast 8 charcters");
 
       const { data } = await axiosInstance.post(
-        `/events/${eventRef.current?._id}/attended`,
+        `/events/attended`,
         { eventID: eventRef.current?._id, moodleID: manualID },
         { withCredentials: true },
       );
       setStatus(statusList.success + ` for ${manualID}`);
       toasty("marked successfully");
-      setMarkedIDs(data.allMoodleIDs);
+      setMarkedIDs(data.markedStudentList);
     } catch (error: any) {
       setStatus(statusList.failure + ` for ${manualID}`);
       toasty(error.response.data.message || statusList.failure + ` for ${manualID}`);
@@ -147,22 +170,38 @@ const AttendancePage = ({ params }: { params: Promise<{ slug: string }> }) => {
         {/* RIGHT - Attendance */}
         <div className="w-full lg:flex-1 flex flex-col gap-10">
           <div>
-            <h1 className="text-5xl font-bold uppercase">Attendance</h1>
+            <h1 className="text-xl md:text-5xl font-bold uppercase">Attendance</h1>
 
             <p className="mt-3 text-xs uppercase opacity-50">{markedIDs.length} Students Marked</p>
           </div>
 
           {markedIDs.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 border-t border-white/10">
-              {markedIDs.map((id) => (
-                <div key={id} className="border-r border-b border-white/10 p-5">
-                  {id}
-                </div>
-              ))}
+            <div className="w-full overflow-x-auto border-t">
+              <table className="w-full text-left text-xs">
+                <thead className="border-b">
+                  <tr>
+                    <th className="px-3 py-2 font-medium">Name</th>
+                    <th className="px-3 py-2 font-medium">Department</th>
+                    <th className="px-3 py-2 font-medium">Year</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {markedIDs.map((record) => (
+                    <tr key={record._id} className="border-b last:border-b-0">
+                      <td className="px-3 py-2 whitespace-nowrap">{record.studentID.name}</td>
+
+                      <td className="px-3 py-2 whitespace-nowrap">{record.studentID.department}</td>
+
+                      <td className="px-3 py-2 whitespace-nowrap">{record.studentID.year}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ) : (
-            <div className="border-t border-white/10 pt-6">
-              <span className="opacity-50">No attendance marked yet.</span>
+            <div className="border-t pt-4">
+              <span className="text-xs opacity-50">No attendance marked yet.</span>
             </div>
           )}
         </div>

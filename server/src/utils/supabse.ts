@@ -4,7 +4,6 @@ import type { Request, Response } from "express";
 import { NOT_FOUND, UNAUTHORIZED } from "../constants/status-codes";
 import ApiError from "./apiError";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
-import { Organization } from "../models/organization.model";
 import { User } from "../models/user.model";
 
 const supabase = createClient(
@@ -24,15 +23,11 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
     
       if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
     
-      // check if such organization exist or not
-      const organizationToUpdate = await Organization.findOne({ slug : "masc" });
-      if (!organizationToUpdate) throw new ApiError(NOT_FOUND, "invalid slug provided, to find organization");
-    
       // check if authenticated user is in the organization
       const user = await User.findById(userID);
       if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
     
-      const userAuthorised = organizationToUpdate.members.includes(user._id) || user.role === "ADMIN";
+      const userAuthorised = ["ADMIN", "ORGANIZOR"].includes(user.role);
       if (!userAuthorised) throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
 
 

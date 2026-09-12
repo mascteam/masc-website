@@ -35,9 +35,6 @@ export type EventType = {
   allowedDepartments: string[];
   allowedDivisions: string[];
 
-  // org info
-  organizationID: string;
-
   // data handling of students
   registerdStudentsID: string[];
 
@@ -63,8 +60,6 @@ export const initialEventState: EventType = {
   description: "",
   tags: ["example1", "example2"],
   externalLinks: [],
-
-  organizationID: "",
 
   canRegister: false,
   isPublic: false,
@@ -138,7 +133,6 @@ const CreateEvent = () => {
         `/events`,
         {
           ...editState,
-          organizationID: user!.organizationID[0]._id,
           tags: commaInputs.tags.split(","),
           speakers: commaInputs.speakers.split(","),
         },

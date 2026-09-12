@@ -9,7 +9,6 @@ export type UserType = {
   password : string;
   name: string;
   year : string;
-  organizationID: { _id: string; name: string; slug: string; logoUrl: string }[];
   registeredEvents: { title: string; _id: string; slug: string }[];
   role: string;
   _id: string;

@@ -18,12 +18,9 @@ export interface EventsDocument extends mongoose.Document {
   allowedDepartments: string[];
   allowedDivisions: string[];
 
-  // org info
-  organizationID: ObjectId;
-
   // data handling of students
-  registerdStudentsID: string[];
-  attendedStudentsID: Map<string, Date>;
+  registerdStudentsID: ObjectId[];
+  attendedStudentsID: ObjectId[];
   studentFeedbacks: ObjectId[];
 
   //bools to hide/show certain action for the user
@@ -34,13 +31,6 @@ export interface EventsDocument extends mongoose.Document {
 
 const eventsSchema = new Schema<EventsDocument>(
   {
-    // org info
-    organizationID: {
-      type: Schema.Types.ObjectId,
-      ref: "Organization",
-      required: true,
-    },
-
     // data about the event
     title: {
       type: String,
@@ -111,14 +101,20 @@ const eventsSchema = new Schema<EventsDocument>(
     },
 
     // data handling of students
-    registerdStudentsID: {
-      type: [String],
-      default: [],
-    },
-    attendedStudentsID: {
-      type: Map,
-      of: Date,
-    },
+    registerdStudentsID: [
+      {
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: "Register",
+      },
+    ],
+    attendedStudentsID: [
+      {
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: "Attendance",
+      },
+    ],
 
     //bools to hide/show certain action for the user
     canRegister: {

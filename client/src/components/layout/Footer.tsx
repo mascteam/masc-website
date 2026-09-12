@@ -41,24 +41,25 @@ const Footer = () => {
           href={"https://www.linkedin.com/in/shree-bavachikar-a16493375/"}
           className="group block w-fit cursor-target"
         >
-          <h2 className="text-[10vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em]">
+          <h2 className="text-[10vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em] mb-5">
             <span className="cursor-target mb-2">SHREE</span>
-            <span>
-              MADE THAT
-
-            </span>
+            <span>MADE THAT</span>
           </h2>
         </Link>
       </div>
 
       {/* LINKS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:py-16">
+      <div className="md:w-[50%] grid grid-cols-2 md:grid-cols-4 gap-10 md:py-16">
         <div>
-          <p className="text-xs text-gray-500 mb-4">NAVIGATION</p>
+          <p className="text-xs text-gray-500 md:mb-4">NAVIGATION</p>
 
           <div className="flex flex-col gap-1">
             {navs.map((nav) => (
-              <Link key={`${nav.name} footer`} href={`${nav.path}`} className="cursor-target capitalize text-lg hover:text-gray-400 transition-colors">
+              <Link
+                key={`${nav.name} footer`}
+                href={`${nav.path}`}
+                className="cursor-target capitalize text-lg hover:text-gray-400 transition-colors"
+              >
                 {nav.name}
               </Link>
             ))}
@@ -66,7 +67,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <p className="text-xs text-gray-500 mb-4">SOCIALS</p>
+          <p className="text-xs text-gray-500 md:mb-4">SOCIALS</p>
 
           <div className="flex flex-col gap-1">
             {socials.map((social) => (
@@ -83,9 +84,14 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="md:col-span-2 md:text-right flex flex-col justify-start md:items-end items-start mb-2 md:mb-0">
-          <p className="text-xs text-gray-500 mb-4">MASC</p>
-          <p title="Albert Camus" className="text-xs w-[90vw] overflow-x-hidden md:max-w-55 cursor-target">The universe is under no obligation to make sense to you.</p>
+        <div className="w-full md:col-span-2 md:text-right flex flex-col justify-start items-start mb-10 md:mb-0 gap-3">
+          <p
+            title="Shree Bavachikar"
+            className="md:w-full md:text-nowrap text-gray-400 text-xs w-[90vw] overflow-x-hidden cursor-target"
+          >
+            Everything here started as a random idea.
+          </p>
+          <img className="hidden md:flex object-contain cursor-target" src="/banner.png"/>
         </div>
       </div>
     </footer>
