@@ -10,6 +10,8 @@ import { useParams } from "next/navigation";
 import { toasty } from "@/components/ToastProvider";
 import { useLoadingStore } from "@/store/loading";
 import LoadingPage from "@/app/loading";
+import { useUserStore } from "@/store/user";
+import Link from "next/link";
 
 export type Blog = {
   _id: string;
@@ -28,6 +30,8 @@ const BlogPage = () => {
   const [blog, setBlog] = useState<Blog | null>(null);
 
   const { loading, setLoading } = useLoadingStore();
+
+  const { user } = useUserStore();
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -85,6 +89,7 @@ const BlogPage = () => {
       {/* Content */}
       <section className="mx-auto w-full max-w-6xl p-6 text-xs md:text-lg">
         <BlogReadOnly value={blog.content} />
+
       </section>
 
       {/* Footer metadata */}
