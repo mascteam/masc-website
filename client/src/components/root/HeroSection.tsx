@@ -12,7 +12,7 @@ const HeroSection = () => {
           <HeroMainContent />
         </section>
       </Cover>
-      <div className="absolute z-10 bottom-0 p-2 mb-10 md:mb-0 md:p-10 left-0 h-1/2 w-full flex justify-between items-end">
+      <div className="absolute z-10 bottom-0 p-2 md:p-10 left-0 h-1/2 w-full flex justify-between items-end">
         <HeroToast />
         <HeroNotification />
       </div>
