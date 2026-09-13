@@ -58,14 +58,14 @@ const LoginPage = () => {
       setAuth(true);
 
       if (redirectTo) {
-        return redirectTo === "/" || "/login" ? router.push("/profile") : router.push(redirectTo);
+        return redirectTo === "/" || redirectTo === "/login" ? router.push("/profile") : router.push(redirectTo);
       }
-
-      router.push("/profile");
     } catch (error: any) {
       toasty("Login Failed");
       if (error.response.data.errors?.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
+        return error.response.data.errors.map((err: { path: string; message: string }) =>
+          toasty(`${err.path}, ${err.message}`),
+        );
       }
       setAuth(false);
     } finally {
