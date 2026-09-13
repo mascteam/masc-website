@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/user";
 import { EventType } from "@/app/events/create/page";
 import axiosInstance from "@/services/axios";
+import { useCoverStore } from "@/store/cover";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -30,10 +31,12 @@ const Navbar = () => {
 
   const [event, setEvent] = useState<EventType | null>(null);
 
+  const {hovered, setHovered} = useCoverStore();
+
   useEffect(() => {
     const fetchUpcomingEvent = async () => {
       const { data } = await axiosInstance.get("/events/latest", { withCredentials: true });
-      setEvent(data.events);
+      setEvent(data.event);
     };
 
     fetchUpcomingEvent();
@@ -68,7 +71,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed select-none top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3">
+    <nav style={{color : hovered ? "white" : "black"  }} className="fixed select-none top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3">
       <span className="cursor-target text-2xl">MASC</span>
       <div className="hidden md:flex max-w-sm flex-row flex-wrap gap-3">
         {navs.map((nav) => (

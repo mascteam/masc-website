@@ -78,8 +78,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children } : {children : ReactNode}) {
   return (
-    <html lang="en" className={`${globalFont.className} overflow-x-hidden`}>
-      <body className="flex flex-col text-black bg-slate-100">
+    <html lang="en" className={`${globalFont.className}`}>
+      <body className="flex flex-col text-black bg-slate-100 overflow-x-hidden">
         <LenisProvider>
           <Toaster position="bottom-right" reverseOrder={false} />
           <TargetCursor

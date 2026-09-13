@@ -2,7 +2,7 @@
 
   const AboutSection = () => {
     return (
-      <section className="border-t h-[60vh] md:h-[70vh] w-screen flex flex-col md:flex-row justify-around md:justify-around items-center px-5 md:px-20 uppercase">
+      <section className="border-t h-[60vh] overflow-hidden md:h-[70vh] w-screen flex flex-col md:flex-row justify-around md:justify-around items-center px-5 md:px-20 uppercase">
         <motion.div
           className="w-full md:w-1/2"
           initial={{ opacity: 0, x: -40 }}

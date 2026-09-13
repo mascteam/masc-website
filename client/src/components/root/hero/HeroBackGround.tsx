@@ -4,7 +4,7 @@ import React from "react";
 const HeroBackGround = () => {
   return (
     <>
-      <AeroShards
+      {/* <AeroShards
         backgroundColor="#F1F5F9"
         shardColor="#080114"
         accentColor="#c41f1f"
@@ -67,7 +67,7 @@ const HeroBackGround = () => {
         holdToGather
         paused={false}
         className="h-full w-full md:hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-      />
+      /> */}
     </>
   );
 };
