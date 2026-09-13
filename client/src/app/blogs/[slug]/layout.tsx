@@ -5,10 +5,6 @@ import { Blog } from "./page";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-<<<<<<< HEAD
-=======
-
->>>>>>> 0194b9bc1094a0d0241435a8c14330966ec8a3b0
   try {
     const { data } = await axiosInstance.get(`/blogs/${slug}`);
 
