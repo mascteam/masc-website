@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import JoditEditor from "jodit-react";
-import type { IJodit } from "jodit/esm/types";
+import { useRef, useState } from "react";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 type BlogEditorProps = {
   value: string;
@@ -12,82 +12,145 @@ type BlogEditorProps = {
 };
 
 export function BlogEditor({ value, onChange, onImageUpload, placeholder = "Write something..." }: BlogEditorProps) {
-  const editor = useRef<IJodit | null>(null);
+  const quillRef = useRef<ReactQuill>(null);
 
-  const config = useMemo(
-    () => ({
-      readonly: false,
-      placeholder,
-      height: 500,
-      saveSelectionOnBlur: true,
+  const [imageDialog, setImageDialog] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
 
-      buttons: [
-        "bold",
-        "italic",
-        "underline",
-        "strikethrough",
-        "|",
-        "ul",
-        "ol",
-        "|",
-        "outdent",
-        "indent",
-        "|",
-        "fontsize",
-        "brush",
-        "paragraph",
-        "align",
-        "|",
-        "link",
-        "image",
-        "|",
-        "undo",
-        "redo",
-        "eraser",
-      ],
+  const insertImage = (url: string) => {
+    const editor = quillRef.current?.getEditor();
 
-      uploader: {
-  insertImageAsBase64URI: false,
+    if (!editor || !url.trim()) return;
 
-  customUploadFunction: async (
-    requestData: FormData,
-    showProgress: (progress: number) => void,
-  ) => {
-    const file = requestData.get("files[0]") as File | null;
+    const range = editor.getSelection(true);
 
-    if (!file) {
-      throw new Error("No image selected");
-    }
+    editor.insertEmbed(range.index, "image", url.trim());
+    editor.setSelection(range.index + 1);
 
-    const url = await onImageUpload(file);
+    setImageUrl("");
+    setImageDialog(false);
+  };
 
-    showProgress(100);
+  const handleImageUrl = () => {
+    insertImage(imageUrl);
+  };
 
-    return {
-      success: true,
-      data: {
-        files: [url],
-        path: "",
-        baseurl: "",
-        isImages: [true],
-        messages: [],
-        error: 0,
-      },
+  const handleImageUpload = () => {
+    const input = document.createElement("input");
+
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = async () => {
+      const file = input.files?.[0];
+
+      if (!file) return;
+
+      try {
+        setUploading(true);
+
+        const url = await onImageUpload(file);
+
+        insertImage(url);
+      } catch (error  : any) {
+        console.error("Image upload failed:", error);
+      } finally {
+        setUploading(false);
+      }
     };
-  },
 
-  imagesExtensions: [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "svg",
-    "webp",
-  ],
-},  
-    }),
-    [onImageUpload, placeholder],
+    input.click();
+  };
+
+  const modules = {
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["blockquote", "code-block"],
+        ["link", "image"],
+        [{ align: [] }],
+        ["clean"],
+      ],
+      handlers: {
+        image: () => setImageDialog(true),
+      },
+    },
+  };
+
+  return (
+    <>
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        placeholder={placeholder}
+      />
+
+      {imageDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+            <h2 className="mb-5 text-lg font-semibold">Insert Image</h2>
+
+            <div className="space-y-3">
+              {/* Upload */}
+              <button
+                type="button"
+                onClick={handleImageUpload}
+                disabled={uploading}
+                className="w-full rounded-lg border p-4 text-left transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <p className="font-medium">{uploading ? "Uploading..." : "Upload Image"}</p>
+
+                <p className="text-sm text-gray-500">Choose an image from your device</p>
+              </button>
+
+              {/* URL */}
+              <div className="rounded-lg border p-4">
+                <p className="mb-2 font-medium">Insert from URL</p>
+
+                <input
+                  type="url"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleImageUrl();
+                    }
+                  }}
+                  placeholder="https://example.com/image.jpg"
+                  className="w-full rounded-lg border px-3 py-2 outline-none focus:ring-2"
+                />
+
+                <button
+                  type="button"
+                  onClick={handleImageUrl}
+                  disabled={!imageUrl.trim()}
+                  className="mt-3 rounded-lg bg-black px-4 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Insert Image
+                </button>
+              </div>
+
+              {/* Cancel */}
+              <button
+                type="button"
+                onClick={() => {
+                  setImageDialog(false);
+                  setImageUrl("");
+                }}
+                className="w-full py-2 text-sm text-gray-500 hover:text-gray-700"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
-
-  return <JoditEditor className="px-2" ref={editor} value={value} config={config} onBlur={onChange} />;
 }

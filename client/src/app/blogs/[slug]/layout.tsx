@@ -5,9 +5,6 @@ import { Blog } from "./page";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-
-
-
   try {
     const { data } = await axiosInstance.get(`/blogs/${slug}`);
 
@@ -23,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     return {
       title: blog.title,
-      description: blog.content.slice(0, 160),
+      description: blog.description,
 
       alternates: {
         canonical: `/blogs/${blog.slug}`,
@@ -32,22 +29,20 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       openGraph: {
         type: "article",
         title: blog.title,
-        description: blog.content.slice(0, 160),
+        description: blog.description,
         url: `/blogs/${blog.slug}`,
-        images: blog.bannerUrl
-          ? [
+        images: [
               {
                 url: blog.bannerUrl,
                 width: 1200,
                 height: 630,
                 alt: blog.title,
               },
-            ]
-          : undefined,
+            ],
 
         publishedTime: blog.createdAt,
         modifiedTime: blog.updatedAt,
-        authors: ["MASC"],
+        authors: [blog.writtenBy ,"MASC", ],
       },
     };
   } catch {

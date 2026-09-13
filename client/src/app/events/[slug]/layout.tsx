@@ -31,16 +31,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title: event.title,
         description: event.description,
         url: `/events/${event.slug}`,
-        images: event.banner
-          ? [
+        images:[
               {
                 url: event.banner,
                 width: 1200,
                 height: 630,
                 alt: event.title,
               },
-            ]
-          : undefined,
+            ],
       },
     };
   } catch {

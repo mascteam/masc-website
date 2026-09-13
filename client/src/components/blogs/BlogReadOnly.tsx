@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
-import JoditEditor from "jodit-react";
 
 type BlogReadOnlyProps = {
   value: string;
 };
+
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 export function BlogReadOnly({ value }: BlogReadOnlyProps) {
   const config = useMemo(
@@ -21,5 +23,5 @@ export function BlogReadOnly({ value }: BlogReadOnlyProps) {
     [],
   );
 
-  return <JoditEditor className="bg-slate-100" value={value} config={config} />;
+  return <ReactQuill theme="snow" value={value} readOnly={true} modules={{ toolbar: false }} />;
 }
