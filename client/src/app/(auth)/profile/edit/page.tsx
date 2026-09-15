@@ -1,6 +1,6 @@
 "use client";
 
-import { IdCard, IdCardIcon, Lock, User2 } from "lucide-react";
+import { IdCard, IdCardIcon, Key, Lock, User2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -19,6 +19,7 @@ const ProfileUpdatePage = () => {
   const [updateData, setUpdateData] = useState<{
     moodleID: string;
     password: string;
+    currentPassword: string;
     name: string;
     department: string;
     division: string;
@@ -26,6 +27,7 @@ const ProfileUpdatePage = () => {
   }>({
     moodleID: "",
     password: "",
+    currentPassword: "",
     name: "",
     department: "",
     division: "",
@@ -49,6 +51,7 @@ const ProfileUpdatePage = () => {
       name: user.name,
       year: user.year,
       password: "",
+      currentPassword: "",
     });
   }, [user]);
 
@@ -67,9 +70,9 @@ const ProfileUpdatePage = () => {
 
   const handleUpdate = async () => {
     try {
-      const { moodleID, password, name, department, division, year } = updateData;
-
-      if (!moodleID || !name || !department || !division || !year) return toasty("incomplete form cant be submitted");
+      if (Object.values(updateData).some((value) => !value)) {
+        return toasty("Incomplete form, can't be submitted");
+      }
 
       const { data } = await axiosInstance.patch("/auth/update", updateData, { withCredentials: true });
 
@@ -79,7 +82,9 @@ const ProfileUpdatePage = () => {
     } catch (error: any) {
       console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
+        return error.response.data.errors.map((err: { path: string; message: string }) =>
+          toasty(`${err.path}, ${err.message}`),
+        );
       }
 
       toasty(error.response.data.message);
@@ -116,7 +121,7 @@ const ProfileUpdatePage = () => {
             <IdCard className="shrink-0" />
 
             <input
-              className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg"
+              className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg cursor-target"
               placeholder="Moodle ID"
               value={updateData.moodleID}
               onChange={(e) =>
@@ -138,7 +143,7 @@ const ProfileUpdatePage = () => {
             <User2 className="shrink-0" />
 
             <input
-              className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg"
+              className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg cursor-target"
               placeholder="Full Name"
               value={updateData.name}
               onChange={(e) =>
@@ -169,12 +174,12 @@ const ProfileUpdatePage = () => {
               }))
             }
           >
-            <option className="bg-[#131F43]" disabled value="">
+            <option className="" disabled value="">
               Department
             </option>
 
             {departments.map((dept) => (
-              <option key={dept} value={dept} className="bg-[#131F43]">
+              <option key={dept} value={dept} className="">
                 {dept}
               </option>
             ))}
@@ -190,12 +195,12 @@ const ProfileUpdatePage = () => {
               }))
             }
           >
-            <option className="bg-[#131F43]" disabled value="">
+            <option className="" disabled value="">
               Division
             </option>
 
             {divisions.map((div) => (
-              <option key={div} value={div} className="bg-[#131F43]">
+              <option key={div} value={div} className="">
                 {div}
               </option>
             ))}
@@ -211,12 +216,12 @@ const ProfileUpdatePage = () => {
               }))
             }
           >
-            <option className="bg-[#131F43]" disabled value="">
+            <option className="" disabled value="">
               Year
             </option>
 
             {years.map((year) => (
-              <option key={year} value={year} className="bg-[#131F43]">
+              <option key={year} value={year} className="">
                 {year}
               </option>
             ))}
@@ -234,7 +239,7 @@ const ProfileUpdatePage = () => {
           <Lock className="shrink-0" />
 
           <input
-            className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg"
+            className="flex-1 border-0 border-b bg-transparent outline-none uppercase text-lg cursor-target"
             placeholder="New Password"
             type="password"
             value={updateData.password}

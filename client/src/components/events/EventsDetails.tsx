@@ -49,7 +49,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
           </div>
 
           {/* Right */}
-          <div className="lg:w-1/2 flex flex-col gap-8">
+          <div className="lg:w-[70%] flex flex-col gap-8">
             <div>
               <h1 className="text-xl md:text-4xl font-bold uppercase">{event.title}</h1>
             </div>
@@ -72,17 +72,17 @@ const EventsDetails = ({ event }: { event: EventType }) => {
             </div>
 
             <div>
-              <h2 className="uppercase text-sm textgray-600 mb-2">About</h2>
+              <h2 className="uppercase text-sm text-gray-600 mb-2">About</h2>
 
               <p className="leading-7 whitespace-pre-line">{event.description}</p>
             </div>
 
             <div>
-              <h2 className="uppercase text-sm textgray-600 mb-2">Tags</h2>
+              <h2 className="uppercase text-sm text-gray-600 mb-2">Tags</h2>
 
               <div className="flex flex-wrap gap-2">
                 {event.tags.map((tag) => (
-                  <span key={tag} className="border-2 border-b-2 border-blacklack px-3 py-1 text-sm uppercase">
+                  <span key={tag} className="bg-black text-white  px-3 py-1 text-sm uppercase">
                     {tag}
                   </span>
                 ))}
@@ -91,7 +91,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
 
             {event.externalLinks.length > 0 && (
               <div>
-                <h2 className="uppercase text-sm textgray-600 mb-2">Helpful Links</h2>
+                <h2 className="uppercase text-sm text-gray-600 mb-2">Helpful Links</h2>
 
                 <div className="flex flex-col gap-2">
                   {event.externalLinks.length > 0 &&

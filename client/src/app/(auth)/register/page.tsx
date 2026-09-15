@@ -12,6 +12,7 @@ import { toasty } from "@/components/ToastProvider";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useLoadingStore } from "@/store/loading";
+import Link from "next/link";
 
 const RegisterPage = () => {
   const [registerData, setRegisterData] = useState<{
@@ -65,7 +66,9 @@ const RegisterPage = () => {
       router.push("/profile");
     } catch (error: any) {
       if (error.message.response.data.errors.length > 0) {
-        return error.response.data.errors.map((err: { path: string; message: string }) => toasty(`${err.path}, ${err.message}`));
+        return error.response.data.errors.map((err: { path: string; message: string }) =>
+          toasty(`${err.path}, ${err.message}`),
+        );
       }
 
       toasty("Failed To Register User");
@@ -84,8 +87,8 @@ const RegisterPage = () => {
       >
         {/* Heading */}
         <div>
-          <h1 className="text-4xl font-bold uppercase">Register at masc</h1>
-          <p className="text-sm opacity-60 mt-2">Enter your academic details to continue.</p>
+          <h1 className="text-2xl md:text-4xl font-bold uppercase">Register at masc</h1>
+          <p className="text-xs md:text-sm opacity-60 mt-2">Enter your academic details to continue.</p>
         </div>
 
         {/* Basic */}
@@ -243,6 +246,12 @@ const RegisterPage = () => {
             Submit Details
           </motion.button>
         </motion.div>
+        <Link
+          href={"/login"}
+          className="underline capitalize underline-offset-4 text-gray-400 cursor-target"
+        >
+          Already have an account?
+        </Link>
       </motion.div>
     </section>
   );

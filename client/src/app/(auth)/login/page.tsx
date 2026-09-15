@@ -83,8 +83,8 @@ const LoginPage = () => {
       >
         {/* Heading */}
         <div>
-          <h1 className="text-4xl font-bold uppercase">Login At masc</h1>
-          <p className="mt-2 text-sm opacity-60">Continue with your Moodle credentials.</p>
+          <h1 className="text-2xl md:text-4xl font-bold uppercase">Login At masc</h1>
+          <p className="mt-2 text-xs md:text-sm opacity-60">Continue with your Moodle credentials.</p>
         </div>
 
         {/* Moodle ID */}

@@ -74,8 +74,8 @@ const ProfilePage = () => {
         </div>
 
         <div className="md:text-right flex flex-col gap-2 justify-start items-end">
-          <Link href="#" className="cursor-target underline underline-offset-4">
-            Update Details
+          <Link href="/profile/edit" className="cursor-target underline underline-offset-4">
+            Update Profile
           </Link>
           {["ORGANIZOR", "ADMIN"].includes(user.role)  && (
             <Link className="cursor-target underline underline-offset-4" href="/admin/nav">
