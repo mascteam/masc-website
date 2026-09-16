@@ -17,8 +17,8 @@ const ManageMembers = () => {
 
   const fetchOrgDetails = async () => {
     try {
-      const { data } = await axiosInstance.get("/organizations/masc");
-      setDisplayMembers(() => data.organization.members.map((member: string) => member));
+      const { data } = await axiosInstance.get("/auth/find-members");
+      setDisplayMembers(() => data.members.map((member: string) => member));
     } catch (error: any) {
       toasty(error.response.data.message);
     }
@@ -32,8 +32,8 @@ const ManageMembers = () => {
     if (!inputData) return;
     try {
       if (!displayMembers) throw new Error("org has 0 members, contact dev");
-      const { data } = await axiosInstance.put(
-        "/organizations/members",
+      const { data } = await axiosInstance.patch(
+        "/auth/update-role",
         { moodleID: inputData, slug: "masc" },
         { withCredentials: true },
       );

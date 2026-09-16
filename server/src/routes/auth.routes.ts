@@ -9,6 +9,7 @@ import {
   findUser,
   updateUserInfo,
   updateUserRole,
+  findMembers,
 } from "../controllers/auth.controller";
 import { checkAuth } from "../middlewares/auth.middleware";
 
@@ -29,5 +30,8 @@ router.patch("/update", checkAuth, updateUserInfo);
 
 // admin route to update user role
 router.patch("/update-role", checkAuth, updateUserRole);
+
+// get list of uers who have website access
+router.get("/find-members", checkAuth, findMembers)
 
 export default router;
