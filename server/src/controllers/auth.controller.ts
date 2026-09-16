@@ -183,7 +183,7 @@ const findMembers = asyncHandler(async (req: AuthenticatedRequest, res: Response
   if (!isAdmin(adminUser.role)) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
   // fetch the requested user using moodleID
-  const members  = await User.find({ role : {$ne : ["USER"]} });
+  const members  = await User.find({ role : {$ne : "USER"} });
 
   // response with the user doc
   res.status(OK).json({ message: "user fetched successfully", success: true, members });
