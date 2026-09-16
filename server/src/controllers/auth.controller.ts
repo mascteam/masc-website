@@ -171,9 +171,6 @@ const updateUserRole = asyncHandler(async (req: AuthenticatedRequest, res: Respo
 const findMembers = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
-  // validate the moodleID
-  const { moodleID } = findSchema.parse(req.params);
-
   // get the userID from req.user
   const { userID } = req.user;
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
