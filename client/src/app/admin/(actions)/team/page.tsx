@@ -28,22 +28,33 @@ const ManageMembers = () => {
     fetchOrgDetails();
   }, [user]);
 
-  const updateRole = async () => {
+  const addMember = async () => {
     if (!inputData) return;
     try {
       if (!displayMembers) throw new Error("org has 0 members, contact dev");
-      const { data } = await axiosInstance.patch(
-        "/auth/update-role",
-        inputData,
-        { withCredentials: true },
-      );
+      const { data } = await axiosInstance.patch("/auth/update-role", inputData, { withCredentials: true });
 
       setDisplayMembers([...displayMembers, data.user]);
       toasty(`${data.user.name} added`);
     } catch (error: any) {
       toasty("Failed to add id");
     } finally {
-      setInputData({moodleID : "", role : ""});
+      setInputData({ moodleID: "", role: "" });
+    }
+  };
+
+  const removeMember = async () => {
+    if (!inputData) return;
+    try {
+      if (!displayMembers) throw new Error("org has 0 members, contact dev");
+      const { data } = await axiosInstance.patch("/auth/update-role", inputData, { withCredentials: true });
+
+      setDisplayMembers((p) => p.filter((member) => member.name !== data.user.name));
+      toasty(`${data.user.name} removed`);
+    } catch (error: any) {
+      toasty("Failed to add id");
+    } finally {
+      setInputData({ moodleID: "", role: "" });
     }
   };
 
@@ -91,14 +102,14 @@ const ManageMembers = () => {
 
               <div className="flex gap-8">
                 <button
-                  onClick={updateRole}
+                  onClick={addMember}
                   className="cursor-target border-b-2 border-black hover:opacity-70 transition"
                 >
                   Add Member
                 </button>
 
                 <button
-                  onClick={updateRole}
+                  onClick={removeMember}
                   className="cursor-target border-b-2 border-black text-red-600 hover:opacity-70 transition"
                 >
                   Remove Member
