@@ -9,7 +9,7 @@ import { toasty } from "@/components/ToastProvider";
 export type MemberType = { name: string; department: string; year: string; moodleID: string; division: string };
 
 const ManageMembers = () => {
-  const [inputData, setInputData] = useState("");
+  const [inputData, setInputData] = useState<{ moodleID: string; role: string }>({ moodleID: "", role: "" });
 
   const [displayMembers, setDisplayMembers] = useState<{ _id: string; moodleID: string; name: string }[]>([]);
 
@@ -28,13 +28,13 @@ const ManageMembers = () => {
     fetchOrgDetails();
   }, [user]);
 
-  const addMember = async () => {
+  const updateRole = async () => {
     if (!inputData) return;
     try {
       if (!displayMembers) throw new Error("org has 0 members, contact dev");
       const { data } = await axiosInstance.patch(
         "/auth/update-role",
-        { moodleID: inputData, slug: "masc" },
+        inputData,
         { withCredentials: true },
       );
 
@@ -43,29 +43,7 @@ const ManageMembers = () => {
     } catch (error: any) {
       toasty("Failed to add id");
     } finally {
-      setInputData("");
-    }
-  };
-
-  const removeMember = async () => {
-    if (!inputData) return;
-    try {
-      if (!displayMembers) throw new Error("org has 0 members, contact dev");
-
-      const { data } = await axiosInstance.delete("/organizations/members", {
-        data: {
-          moodleID: inputData,
-          slug: "masc",
-        },
-        withCredentials: true,
-      });
-
-      setDisplayMembers(displayMembers.filter((val) => val !== data.user));
-      toasty(`${data.user.name} removed`);
-    } catch (error: any) {
-      toasty("Failed to remove id");
-    } finally {
-      setInputData("");
+      setInputData({moodleID : "", role : ""});
     }
   };
 
@@ -85,21 +63,42 @@ const ManageMembers = () => {
               <input
                 type="text"
                 placeholder="Moodle ID"
-                value={inputData}
-                onChange={(e) => setInputData(e.target.value)}
+                value={inputData.moodleID}
+                onChange={(e) => setInputData((p) => ({ ...p, moodleID: e.target.value }))}
                 className="border-0 border-b-2 border-black bg-transparent outline-none"
               />
 
+              <select
+                className="flex-1 min-w-[180px] border-0 border-b-2 border-black bg-transparent outline-none uppercase text-lg"
+                value={inputData.role}
+                onChange={(e) =>
+                  setInputData((p) => ({
+                    ...p,
+                    role: e.target.value,
+                  }))
+                }
+              >
+                <option className="" disabled value="">
+                  Roles
+                </option>
+
+                {["USER", "ORGANIZOR", "ADMIN"].map((role) => (
+                  <option key={role} value={role} className="">
+                    {role}
+                  </option>
+                ))}
+              </select>
+
               <div className="flex gap-8">
                 <button
-                  onClick={addMember}
+                  onClick={updateRole}
                   className="cursor-target border-b-2 border-black hover:opacity-70 transition"
                 >
                   Add Member
                 </button>
 
                 <button
-                  onClick={removeMember}
+                  onClick={updateRole}
                   className="cursor-target border-b-2 border-black text-red-600 hover:opacity-70 transition"
                 >
                   Remove Member
