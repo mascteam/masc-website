@@ -14,19 +14,19 @@ const navs: {
 const socials = [
   {
     name: "instagram",
-    link: "https://instagram.com/masc",
+    link: "https://www.instagram.com/masc.apsit/",
   },
   {
     name: "linkedin",
-    link: "https://linkedin.com/company/masc",
+    link: "https://www.linkedin.com/company/maths-and-applied-sciences-club-apsit",
   },
   {
     name: "github",
-    link: "https://github.com/masc",
+    link: "https://github.com/mascteam",
   },
   {
     name: "whatsapp",
-    link: "https://whatsapp.com/masc",
+    link: "https://chat.whatsapp.com/DT6ANV9rdsP1888ZCVz47f?s=sw&p=a&mlu=4&ilr=4",
   },
 ];
 
@@ -91,7 +91,7 @@ const Footer = () => {
           >
             Everything here started as a random idea.
           </p>
-          <img className="hidden md:flex object-contain cursor-target" src="/banner.png"/>
+          <img className="hidden md:flex object-contain cursor-target" src="/banner.png" />
         </div>
       </div>
     </footer>
