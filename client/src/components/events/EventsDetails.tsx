@@ -72,6 +72,16 @@ const EventsDetails = ({ event }: { event: EventType }) => {
             </div>
 
             <div>
+              <h2 className="uppercase text-sm text-gray-600 mb-2">Speakers</h2>
+
+              {event.speakers.map((speaker, index) => (
+                <p key={`${speaker} ${index}`} className="leading-7 whitespace-pre-line">
+                  {index > event.speakers.length ? `${speaker},` : `${speaker}`}
+                </p>
+              ))}
+            </div>
+
+            <div>
               <h2 className="uppercase text-sm text-gray-600 mb-2">About</h2>
 
               <p className="leading-7 whitespace-pre-line">{event.description}</p>
@@ -87,16 +97,6 @@ const EventsDetails = ({ event }: { event: EventType }) => {
                   </span>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <h2 className="uppercase text-sm text-gray-600 mb-2">Speakers</h2>
-
-              {event.speakers.map((speaker, index) => (
-                <p key={`${speaker} ${index}`} className="leading-7 whitespace-pre-line">
-                  {index > event.speakers.length ? `${speaker},` : `${speaker}`}
-                </p>
-              ))}
             </div>
 
             {event.externalLinks.length > 0 && (
