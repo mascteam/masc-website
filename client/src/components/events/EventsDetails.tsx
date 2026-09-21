@@ -72,7 +72,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
             </div>
 
             <div>
-              <h2 className="uppercase text-sm text-gray-600 mb-2">Speakers</h2>
+              <h2 className="uppercase text-xs text-gray-600 mb-2">Speakers</h2>
 
               {event.speakers.map((speaker, index) => (
                 <p key={`${speaker} ${index}`} className="leading-7 whitespace-pre-line">
@@ -82,7 +82,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
             </div>
 
             <div>
-              <h2 className="uppercase text-sm text-gray-600 mb-2">About</h2>
+              <h2 className="uppercase text-xs text-gray-600 mb-2">About</h2>
 
               <p className="leading-7 whitespace-pre-line">{event.description}</p>
             </div>
