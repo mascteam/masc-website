@@ -17,7 +17,7 @@ const ProfilePage = () => {
     if (!user) {
       getUser();
     }
-  }, []);
+  }, [user]);
 
   if (!user) {
     return <LoadingPage />;

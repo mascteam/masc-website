@@ -70,15 +70,13 @@ const ProfileUpdatePage = () => {
 
   const handleUpdate = async () => {
     try {
-      if (Object.values(updateData).some((value) => !value)) {
-        return toasty("Incomplete form, can't be submitted");
-      }
-
       const { data } = await axiosInstance.patch("/auth/update", updateData, { withCredentials: true });
 
-      Cookie.set("jwt", data.token);
-
       router.push("/profile");
+
+      setUser(data.user);
+
+      toasty("profile updated successfully");
     } catch (error: any) {
       console.log(error.message || error);
       if (error.message.response.data.errors.length > 0) {
@@ -111,7 +109,7 @@ const ProfileUpdatePage = () => {
 
         {/* Basic Info */}
         <div className="flex flex-col gap-8">
-          <motion.div
+          {/* <motion.div
             custom={0}
             variants={fieldVariants}
             initial="hidden"
@@ -131,7 +129,7 @@ const ProfileUpdatePage = () => {
                 }))
               }
             />
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
             custom={1}
