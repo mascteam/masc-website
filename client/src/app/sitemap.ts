@@ -14,15 +14,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogUrls: MetadataRoute.Sitemap = blogs.map((blog) => ({
     url: `${BASE_URL}/blogs/${blog.slug}`,
     lastModified: blog.updatedAt,
+    images: [blog.bannerUrl],
   }));
 
   const eventUrls: MetadataRoute.Sitemap = events.map((event) => ({
     url: `${BASE_URL}/events/${event.slug}`,
     lastModified: event.updatedAt,
+    images: [event.banner],
   }));
 
   return [
-
     // STATIC PAGES
     {
       url: BASE_URL,

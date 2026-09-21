@@ -9,8 +9,6 @@ import AuthProvider from "@/components/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import { ReactNode } from "react";
 
-
-
 export const titleFont = Mansalva({
   weight: "400",
   subsets: ["latin"],
@@ -26,6 +24,10 @@ const SITE_URL = process.env.NEXT_PUBLIC_CLIENT_URL!;
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
+  verification: {
+    google: "30HlZJIENrDvG-Ga-ypOqLDLpBRQEC_gfMnAxwRUk-k",
+  },
+
   title: {
     default: "MASC | Math & Applied Science Club",
     template: "%s | MASC",
@@ -38,7 +40,8 @@ export const metadata: Metadata = {
 
   authors: [
     {
-      name: "Math & Applied Science Club",
+      name: "Shree Bavachikar",
+      url: "https://ssb.is-a.dev",
     },
   ],
 
@@ -54,8 +57,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "MASC",
     title: "MASC | Math & Applied Science Club",
-    description:
-      "Explore mathematics, science, technology, events, workshops, projects, and ideas with MASC.",
+    description: "Explore mathematics, science, technology, events, workshops, projects, and ideas with MASC.",
     url: SITE_URL,
     images: [
       {
@@ -70,13 +72,12 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "MASC | Math & Applied Science Club",
-    description:
-      "Math, science, technology, events, workshops, and ideas.",
+    description: "Math, science, technology, events, workshops, and ideas.",
     images: ["/og-image.png"],
   },
 };
 
-export default function RootLayout({ children } : {children : ReactNode}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${globalFont.className}`}>
       <body className="flex flex-col text-black bg-slate-100 overflow-x-hidden">

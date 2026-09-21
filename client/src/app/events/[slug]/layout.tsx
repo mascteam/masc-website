@@ -9,6 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const { data } = await axiosInstance.get(`/events/${slug}`);
 
+    console.log(data);
+
     const event: EventType = data.event;
 
     if (!event) {
@@ -26,19 +28,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         canonical: `/events/${event.slug}`,
       },
 
+      authors: event.speakers.map((author) => ({
+        name: author,
+      })),
+
       openGraph: {
         type: "website",
         title: event.title,
         description: event.description,
         url: `/events/${event.slug}`,
-        images:[
-              {
-                url: event.banner,
-                width: 1200,
-                height: 630,
-                alt: event.title,
-              },
-            ],
+        images: [
+          {
+            url: event.banner,
+            width: 1200,
+            height: 630,
+            alt: event.title,
+          },
+        ],
       },
     };
   } catch {
