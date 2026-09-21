@@ -22,17 +22,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: any) {
       if (error.response.data.message === "jwt malformed") {
         toasty("cookie expired, login again");
-
-        if (pathname === "/profile") {
-          router.push("/login?redirect=/profile");
-        }
       }
 
-      if (error.response.data.message === "unauthorized no token provided" && pathname === "/profile") {
-        toasty("login into your accoun to see profile");
-        router.push("/login?redirect=/profile");
+      if (error.response.data.message === "unauthorized no token provided") {
+        toasty("login into your account to see profile");
       }
       setAuth(false);
+      router.push(`/login?redirect=${pathname === "/login" ? "/profile" : pathname}`);
     }
   };
 
