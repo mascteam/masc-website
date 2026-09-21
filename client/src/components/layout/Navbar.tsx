@@ -31,7 +31,7 @@ const Navbar = () => {
 
   const [event, setEvent] = useState<EventType | null>(null);
 
-  const {hovered, setHovered} = useCoverStore();
+  const { hovered, setHovered } = useCoverStore();
 
   useEffect(() => {
     const fetchUpcomingEvent = async () => {
@@ -71,7 +71,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{color : hovered ? "white" : "black"  }} className="fixed select-none top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3">
+    <nav
+      style={{ color: hovered ? "white" : "black" }}
+      className="fixed select-none top-0 left-0 z-20 flex w-screen items-center justify-between bg-transparent px-10 py-3"
+    >
       <span className="cursor-target text-2xl">MASC</span>
       <div className="hidden md:flex max-w-sm flex-row flex-wrap gap-3">
         {navs.map((nav) => (
@@ -138,14 +141,20 @@ const Navbar = () => {
               </span>
 
               {/* BOTTOM NOTIFICATION */}
-              <div onClick={()=> router.push(`/events/${event?.slug}`)}  className="cursor-target cursor-pointer flex flex-row justify-around items-center border-2 border-black rounded-sm w-[90%] h-[40%] p-1 m-1">
-                <img src={event?.banner} className="h-full w-[30%] object-cover p-1" />
-                <div className="flex flex-col justify-around items-start">
+              <div
+                onClick={() => router.push(`/events/${event?.slug}`)}
+                className="cursor-target cursor-pointer flex flex-row gap-x-2 justify-start items-center border-2 border-black rounded-sm w-[90%] h-[40%] p-1 m-1"
+              >
+                <div className="h-full w-[40%] flex justify-center items-center">
+                  <img src={event?.banner} className="h-full w-full object-contain" />
+                </div>
+
+                <div className="flex w-full flex-col justify-around items-start">
                   <h3 className="flex flex-row gap-1 justify-start items-center">
                     <div className="size-2 bg-red-400" />
                     <span className="text-xs p-2">Upcoming Event</span>
                   </h3>
-                  <h2 className="cursor-target text-wrap uppercase">{event?.title.slice(0, 10) + "..."}</h2>
+                  <h2 className="cursor-target text-wrap uppercase">{event?.title.slice(0,20) + "..."}</h2>
                   <span className="text-xs">{new Date(event?.createdAt!).toDateString()}</span>
                 </div>
               </div>
