@@ -5,10 +5,10 @@ const navs: {
   path: string;
 }[] = [
   { name: "Home", path: "/" },
-  { name: "Teams", path: "/teams" },
   { name: "Events", path: "/events" },
   { name: "Blogs", path: "/blogs" },
   { name: "Register", path: "/register" },
+  { name: "Login", path: "/login" },
 ];
 
 const socials = [
@@ -38,7 +38,8 @@ const Footer = () => {
         <p className="text-sm text-gray-500 mb-4">The End Of The Line</p>
 
         <Link
-          href={"https://www.linkedin.com/in/shree-bavachikar-a16493375/"}
+          href={"https://ssb.is-a.dev"}
+          target="_blank"
           className="group block w-fit cursor-target"
         >
           <h2 className="text-[10vw] flex flex-col md:text-[5vw] gap-1 leading-[0.8] tracking-[-0.06em] mb-5">
