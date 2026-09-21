@@ -150,7 +150,7 @@ const LoginPage = () => {
         </motion.div>
         <span
           className="underline underline-offset-4 text-gray-400 cursor-target"
-          onClick={() => toasty("No worries!, Club Members can set new password for you")}
+          onClick={() => toasty("No worries! Club Members can set new password for you")}
         >
           Forgot Password ?
         </span>
