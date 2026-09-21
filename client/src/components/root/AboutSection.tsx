@@ -11,7 +11,7 @@
           transition={{ duration: 1, ease: "easeOut" }}
         >
           <span className="flex flex-nowrap gap-1 justify-start items-center">
-            <div className="size-2 bg-slate-700" />
+            <div className="size-2 bg-red-400" />
             <span className="text-xs p-2 cursor-target">Idea Behind MASC</span>
           </span>
 
