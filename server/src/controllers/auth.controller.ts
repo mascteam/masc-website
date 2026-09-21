@@ -137,7 +137,10 @@ const updateUserInfo = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
   // update the user
-  const newUser = await User.findOneAndUpdate({ moodleID: data.moodleID }, data);
+  const newUser = await User.findOneAndUpdate({ moodleID: data.moodleID }, data).populate({
+    path : "registeredEvents",
+    select : "_id title slug"
+  });
 
   // response
   res.status(OK).json({ message: "updated user data", success: true, user: newUser });
