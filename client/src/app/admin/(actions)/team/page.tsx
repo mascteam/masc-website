@@ -6,12 +6,20 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/user";
 import { toasty } from "@/components/ToastProvider";
 
-export type MemberType = { name: string; department: string; year: string; moodleID: string; division: string };
+export type MemberType = {
+  _id: string;
+  name: string;
+  department: string;
+  year: string;
+  moodleID: string;
+  division: string;
+  role: string;
+};
 
 const ManageMembers = () => {
   const [inputData, setInputData] = useState<{ moodleID: string; role: string }>({ moodleID: "", role: "" });
 
-  const [displayMembers, setDisplayMembers] = useState<{ _id: string; moodleID: string; name: string }[]>([]);
+  const [displayMembers, setDisplayMembers] = useState<MemberType[]>([]);
 
   const { user } = useUserStore();
 
@@ -28,31 +36,15 @@ const ManageMembers = () => {
     fetchOrgDetails();
   }, [user]);
 
-  const addMember = async () => {
+  const updateMember = async () => {
     if (!inputData) return;
     try {
       if (!displayMembers) throw new Error("org has 0 members, contact dev");
       const { data } = await axiosInstance.patch("/auth/update-role", inputData, { withCredentials: true });
-
-      setDisplayMembers([...displayMembers, data.user]);
-      toasty(`${data.user.name} added`);
+      toasty(`${data.user.name} updated`);
+      await fetchOrgDetails()
     } catch (error: any) {
-      toasty("Failed to add id");
-    } finally {
-      setInputData({ moodleID: "", role: "" });
-    }
-  };
-
-  const removeMember = async () => {
-    if (!inputData) return;
-    try {
-      if (!displayMembers) throw new Error("org has 0 members, contact dev");
-      const { data } = await axiosInstance.patch("/auth/update-role", inputData, { withCredentials: true });
-
-      setDisplayMembers((p) => p.filter((member) => member.name !== data.user.name));
-      toasty(`${data.user.name} removed`);
-    } catch (error: any) {
-      toasty("Failed to add id");
+      toasty("Failed to update role");
     } finally {
       setInputData({ moodleID: "", role: "" });
     }
@@ -102,17 +94,10 @@ const ManageMembers = () => {
 
               <div className="flex gap-8">
                 <button
-                  onClick={addMember}
-                  className="cursor-target border-b-2 border-black hover:opacity-70 transition"
-                >
-                  Add Member
-                </button>
-
-                <button
-                  onClick={removeMember}
+                  onClick={updateMember}
                   className="cursor-target border-b-2 border-black text-red-600 hover:opacity-70 transition"
                 >
-                  Remove Member
+                  Update Member
                 </button>
               </div>
 
@@ -138,6 +123,7 @@ const ManageMembers = () => {
                     className="cursor-target flex justify-between items-center border-b-2 border-black border-white/10 py-5"
                   >
                     <span>{member.name}</span>
+                    <span>{member.role}</span>
                     <span>{member.moodleID}</span>
                   </div>
                 ))}
