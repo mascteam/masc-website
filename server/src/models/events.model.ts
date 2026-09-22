@@ -12,6 +12,7 @@ export interface EventsDocument extends mongoose.Document {
   tags: string[];
   externalLinks: { name: string; link: string }[];
   slug: string;
+  feedbackLink : string;
 
   // filters
   allowedYears: string[];
@@ -128,6 +129,11 @@ const eventsSchema = new Schema<EventsDocument>(
     canFeedback: {
       type: Boolean,
       default: false,
+    },
+    feedbackLink :{
+      type: String,
+      required: true,
+      default : ""
     },
     studentFeedbacks: [
       {

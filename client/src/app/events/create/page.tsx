@@ -10,7 +10,6 @@ import axiosInstance from "@/services/axios";
 import { toasty } from "@/components/ToastProvider";
 
 import { useUserStore } from "@/store/user";
-import LoadingPage from "@/app/loading";
 import NotFound from "@/app/not-found";
 import { TrashIcon } from "lucide-react";
 import { useLoadingStore } from "@/store/loading";
@@ -29,6 +28,7 @@ export type EventType = {
   tags: string[];
   externalLinks: { name: string; link: string }[];
   slug: string;
+  feedbackLink: string;
 
   // filters
   allowedYears: string[];
@@ -60,6 +60,7 @@ export const initialEventState: EventType = {
   description: "",
   tags: ["example1", "example2"],
   externalLinks: [],
+  feedbackLink: "",
 
   canRegister: false,
   isPublic: false,
@@ -276,6 +277,21 @@ const CreateEvent = () => {
                 venue: e.target.value,
               })
             }
+          />
+        </div>
+
+        <div>
+          <input
+            name="feedback Link"
+            placeholder="Feedback Link"
+            value={editState.feedbackLink}
+            onChange={(e) =>
+              setEditState({
+                ...editState,
+                feedbackLink: e.target.value,
+              })
+            }
+            className="w-full bg-transparent border-0 border-b-2 border-black outline-none font-bold cursor-target"
           />
         </div>
 

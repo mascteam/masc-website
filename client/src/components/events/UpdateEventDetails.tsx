@@ -378,6 +378,22 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
           </div>
         </div>
 
+        {/* FEEDBACK LINK  */}
+        <div>
+          <input
+            name="feedback Link"
+            placeholder="Feedback Link"
+            value={editState.feedbackLink}
+            onChange={(e) =>
+              setEditState({
+                ...editState,
+                feedbackLink: e.target.value,
+              })
+            }
+            className="w-full bg-transparent border-0 border-b-2 border-black outline-none font-bold cursor-target"
+          />
+        </div>
+
         {/* Departments */}
         <div className="flex flex-col gap-4">
           <h2 className="uppercase text-sm opacity-60">Allowed Departments</h2>
@@ -523,7 +539,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
               Mark Attendance
             </Link>
 
-            <Link href="feedback" className="cursor-target border-b-2 border-black hover:opacity-70 ">
+            <Link href={`feedback?link=${editState.feedbackLink}`} className="cursor-target border-b-2 border-black hover:opacity-70 ">
               Start Feedback
             </Link>
 

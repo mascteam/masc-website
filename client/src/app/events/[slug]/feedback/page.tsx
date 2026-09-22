@@ -3,8 +3,12 @@
 import { useState } from "react";
 import QRCode from "react-qr-code";
 
+import { useSearchParams } from "next/navigation";
+
 const FeedbackPage = () => {
-  const [link, setLink] = useState("");
+
+  const params = useSearchParams();
+  const [link, setLink] = useState(params.get("link"));
 
   return (
     <section className="min-h-screen flex justify-center items-center px-6">
