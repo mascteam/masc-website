@@ -137,7 +137,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
       toasty("event updated successfully");
 
-      router.push(`/events?search=${data.event.slug}`);
+      router.push(`/events/${data.event.slug}`);
     } catch (error: any) {
       toasty(error.response.data.message);
 
