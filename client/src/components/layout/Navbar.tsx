@@ -141,12 +141,13 @@ const Navbar = () => {
               </span>
 
               {/* BOTTOM NOTIFICATION */}
-              <div
-                onClick={() => router.push(`/events/${event?.slug}`)}
+              {
+                event && <div
+                onClick={() => router.push(`/events/${event.slug}`)}
                 className="cursor-target cursor-pointer flex flex-row gap-x-2 justify-start items-center border-2 border-black rounded-sm w-[90%] h-[40%] p-1 m-1"
               >
                 <div className="h-full w-[40%] flex justify-center items-center">
-                  <img src={event?.banner} className="h-full w-full object-contain" />
+                  <img src={event.banner} className="h-full w-full object-contain" />
                 </div>
 
                 <div className="flex w-full flex-col justify-around items-start">
@@ -155,9 +156,10 @@ const Navbar = () => {
                     <span className="text-xs p-2">Upcoming Event</span>
                   </h3>
                   <h2 className="cursor-target text-wrap uppercase">{event?.title.slice(0,20) + "..."}</h2>
-                  <span className="text-xs">{new Date(event?.createdAt!).toDateString()}</span>
+                  <span className="text-xs">{event.date}</span>
                 </div>
               </div>
+              }
             </div>
           </motion.div>
         )}

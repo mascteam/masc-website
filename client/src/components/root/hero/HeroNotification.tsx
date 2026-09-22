@@ -38,7 +38,7 @@ const HeroNotification = () => {
             {event.title.slice(0, 30) + "..."}
           </h2>
           <span style={{ color: hovered ? "gray" : "black" }} className="text-xs mt-2">
-            {new Date(event.createdAt!).toDateString()}
+            {event.date}
           </span>
         </div>
       </div>
