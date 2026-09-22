@@ -5,6 +5,7 @@ const hostEventSchema = z.object({
   title: z.string().min(2),
   banner: z.string().min(1),
   date: z.string().min(2),
+  feedbackLink : z.string().url(),
 
   time: z.string().min(1),
   venue: z.string().min(1),
@@ -25,6 +26,7 @@ const updateEventSchema = z.object({
   slug: z.string().min(2).optional(),
   banner: z.string().min(1).optional(),
   date: z.string().min(2).optional(),
+  feedbackLink : z.string().url().optional(),
 
   time: z.string().min(1).optional(),
   venue: z.string().min(1).optional(),

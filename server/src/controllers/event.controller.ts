@@ -68,21 +68,7 @@ const getEventBySlug = asyncHandler(async (req: Request, res: Response) => {
 // organizors can host an event
 const hostEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   //validate the payload by zod
-  const {
-    title,
-    banner,
-    date,
-    venue,
-    time,
-    description,
-    tags,
-    externalLinks,
-    speakers,
-
-    allowedDepartments,
-    allowedDivisions,
-    allowedYears,
-  } = hostEventSchema.parse(req.body);
+  const data = hostEventSchema.parse(req.body);
 
   // get the authenticated user payload
   if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
@@ -95,24 +81,10 @@ const hostEvent = asyncHandler(async (req: AuthenticatedRequest, res: Response) 
 
   if (!isAdmin(user.role)) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
-  const slug = `${title}`.trim().toLowerCase().replace(/\s+/g, "-");
+  const slug = `${data.title}`.trim().toLowerCase().replace(/\s+/g, "-");
 
   // create an event
-  const event = await Event.create({
-    title,
-    banner,
-    date,
-    venue,
-    time,
-    description,
-    tags,
-    externalLinks,
-    speakers,
-    slug,
-    allowedDepartments,
-    allowedYears,
-    allowedDivisions,
-  });
+  const event = await Event.create({...data, slug});
 
   // send a response
   res.status(CREATED).json({ event, message: "event hosted successfully", succee: true });
