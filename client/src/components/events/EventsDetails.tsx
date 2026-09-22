@@ -136,7 +136,7 @@ const EventsDetails = ({ event }: { event: EventType }) => {
             <div className=" flex flex-col md:flex-row justify-start items-start gap-2 md:gap-x-5">
               <div className="flex flex-wrap gap-x-10 gap-y-6">
                 <Link
-                  href={`/${event.slug}/update`}
+                  href={`/events/${event.slug}/update`}
                   className="cursor-target border-b-2 border-black hover:opacity-70 transition text-red-400"
                 >
                   Update Event Details
