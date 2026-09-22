@@ -12,6 +12,8 @@ export const upload = multer({
   storage: multer.memoryStorage(),
 });
 
+const bucketName = process.env.SUPABASE_BUCKET_NAME!
+
 const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { path } = req.body;
@@ -37,7 +39,7 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
     const fileName = `${path ? path : "misc"}/${crypto.randomUUID()}-${req.file.originalname}`;
 
     const { error } = await supabase.storage
-      .from("masc") // Bucket name
+      .from(bucketName) // Bucket name
       .upload(fileName, req.file.buffer, {
         contentType: req.file.mimetype,
         upsert: false,
@@ -49,7 +51,7 @@ const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
       });
     }
 
-    const { data } = supabase.storage.from("masc").getPublicUrl(fileName);
+    const { data } = supabase.storage.from(bucketName).getPublicUrl(fileName);
 
     return res.status(200).json({
       url: data.publicUrl,
