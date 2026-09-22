@@ -42,7 +42,7 @@ const ManageMembers = () => {
       if (!displayMembers) throw new Error("org has 0 members, contact dev");
       const { data } = await axiosInstance.patch("/auth/update-role", inputData, { withCredentials: true });
       toasty(`${data.user.name} updated`);
-      await fetchOrgDetails()
+      await fetchOrgDetails();
     } catch (error: any) {
       toasty("Failed to update role");
     } finally {
@@ -116,20 +116,27 @@ const ManageMembers = () => {
             </div>
 
             {displayMembers.length ? (
-              <div className="border-t border-white/10">
-                {displayMembers.map((member) => (
-                  <div
-                    key={member._id}
-                    className="cursor-target flex justify-between items-center border-b-2 border-black border-white/10 py-5"
-                  >
-                    <span>{member.name}</span>
-                    <span>{member.role}</span>
-                    <span>{member.moodleID}</span>
-                  </div>
-                ))}
-              </div>
+              <table className="w-full border-collapse uppercase">
+                <thead>
+                  <tr className="border-y border-black text-left text-xs">
+                    <th className="px-4 py-3 font-normal">Name</th>
+                    <th className="px-4 py-3 font-normal">Role</th>
+                    <th className="px-4 py-3 font-normal">Moodle ID</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {displayMembers.map((member) => (
+                    <tr key={member._id} className="cursor-target border-b border-black">
+                      <td className="px-4 py-5">{member.name}</td>
+                      <td className="px-4 py-5">{member.role}</td>
+                      <td className="px-4 py-5">{member.moodleID}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             ) : (
-              <div className="border-t border-white/10 pt-6">
+              <div className="border-t border-black pt-6">
                 <span className="text-gray-600">No members added yet.</span>
               </div>
             )}
