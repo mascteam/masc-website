@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 const FeedbackPage = () => {
 
   const params = useSearchParams();
-  const [link, setLink] = useState(params.get("link"));
+  const [link, setLink] = useState<string>(params.get("link") || "");
 
   return (
     <section className="min-h-screen flex justify-center items-center px-6">
