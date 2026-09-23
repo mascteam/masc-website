@@ -35,7 +35,7 @@ const Footer = () => {
     <footer className="min-h-[40vh] md:min-h-[50vh] w-screen bg-black cursor-auto text-white px-5 md:px-10 flex flex-col md:flex-row justify-between">
       {/* CTA */}
       <div className="pt-5">
-        <p className="text-sm text-gray-500 mb-4">The End Of The Line</p>
+        <p className="text-sm text-black mb-4">The End Of The Line</p>
 
         <Link
           href={"https://ssb.is-a.dev"}
