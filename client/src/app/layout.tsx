@@ -29,8 +29,8 @@ export const metadata: Metadata = {
   },
 
   title: {
-    default: "MASC | Math & Applied Science Club",
-    template: "%s | MASC",
+    default: "MASC APSIT | Math & Applied Science Club",
+    template: "%s | MASC APSIT",
   },
 
   description:
