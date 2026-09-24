@@ -8,7 +8,6 @@ import { poppins } from "@/lib/fonts";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
   description:
     "MASC is the Math & Applied Science Club at APSIT, bringing students together through mathematics, science, technology, events, workshops, and exploration.",
   alternates: {
