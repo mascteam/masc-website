@@ -77,10 +77,27 @@ export const metadata: Metadata = {
   },
 };
 
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "MASC",
+  alternateName: "Math & Applied Science Club",
+  url: "https://masc-apsit.vercel.app",
+  description:
+    "Math & Applied Science Club at APSIT, bringing students together through mathematics, science, technology, events, workshops, and exploration.",
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${globalFont.className}`}>
       <body className="flex flex-col text-black bg-slate-100 overflow-x-hidden">
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(jsonLd),
+  }}
+/>
         <LenisProvider>
           <Toaster position="bottom-right" reverseOrder={false} />
           <TargetCursor
