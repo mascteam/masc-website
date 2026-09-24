@@ -25,7 +25,7 @@ const FeedbackPage = () => {
 
         {link && (
           <>
-            <div className="bg-white p-6 md:p-8">
+            <div className="bg-white p-8">
               <QRCode value={link} size={420} />
             </div>
 
