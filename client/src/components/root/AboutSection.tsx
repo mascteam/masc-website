@@ -15,13 +15,13 @@
             <span className="text-xs p-2 cursor-target">Idea Behind MASC</span>
           </span>
 
-          <h1 className="cursor-target text-lg md:text-4xl md:max-w-lg flex flex-col justify-start items-start">
+          <h3 className="cursor-target text-lg md:text-4xl md:max-w-lg flex flex-col justify-start items-start">
             <span className="flex flex-row">
               EXPLORING THE <span className="flex ml-2 md:hidden">BEAUTY OF</span>
             </span>
             <span className="hidden md:flex">BEAUTY OF</span>
-            <span>MATH AND SCIENCE</span>
-          </h1>
+            <span>MATHS AND SCIENCES</span>
+          </h3>
         </motion.div>
 
         <motion.div

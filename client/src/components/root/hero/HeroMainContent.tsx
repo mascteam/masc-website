@@ -17,7 +17,7 @@ const MobileMainContent = () => {
   return (
     <section className="flex md:hidden flex-col px-4 pt-8 pb-20">
       <div className="relative">
-        <span className="block text-[clamp(3.5rem,18vw,6rem)] leading-[0.8] tracking-[-0.06em]">Math</span>
+        <span className="block text-[clamp(3.5rem,18vw,6rem)] leading-[0.8] tracking-[-0.06em]">Maths</span>
 
         <p className="mt-4 ml-1 max-w-[220px] text-[11px] leading-relaxed text-neutral-500">
           Exploring the ideas that shape our world.
@@ -31,7 +31,7 @@ const MobileMainContent = () => {
       <div className="relative w-[90%]">
         <span className="block text-[1.4rem] leading-none tracking-tight">Applied</span>
 
-        <span className="mt-1 block text-[3.8rem] leading-[0.85] tracking-[-0.05em]">Science</span>
+        <span className="mt-1 block text-[3.8rem] leading-[0.85] tracking-[-0.05em]">Sciences</span>
 
         <p className="mt-5 max-w-[260px] text-[11px] leading-relaxed text-neutral-500">
           Learn, Compete & Grow alongside a community driven by curiosity and innovation.
@@ -52,7 +52,7 @@ const DesktopMainContent = () => {
     >
       <div className="flex flex-col justify-center items-start mb-10">
         <span className="flex flex-row items-center gap-x-5 text-8xl">
-          <span>Math</span>
+          <span>Maths</span>
           <span>&</span>
         </span>
         <p className="text-sm max-w-sm">Exploring the ideas that shape our world.</p>
@@ -61,7 +61,7 @@ const DesktopMainContent = () => {
       <div className="flex flex-col justify-center items-start mt-10">
         <span className="flex flex-col justify-center items-start">
           <span className="text-3xl">Applied</span>
-          <span className="text-8xl">Science</span>
+          <span className="text-8xl">Sciences</span>
         </span>
         <p className="text-sm max-w-md">
           Learn, Compete & Grow along side a community driven by curiosity and innovation.
