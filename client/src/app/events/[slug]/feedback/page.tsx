@@ -25,8 +25,11 @@ const FeedbackPage = () => {
 
         {link && (
           <>
-            <div className="bg-white p-8">
+            <div className="hidden md:flex bg-white p-8">
               <QRCode value={link} size={420} />
+            </div>
+            <div className="flex  md:hidden bg-white p-8">
+              <QRCode value={link} size={260} />
             </div>
 
             <p className="text-lg md:text-2xl uppercase tracking-widest opacity-70">Scan to submit feedback</p>
