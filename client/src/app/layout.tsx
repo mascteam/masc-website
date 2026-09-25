@@ -77,7 +77,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -92,12 +91,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${globalFont.className}`}>
       <body className="flex flex-col text-black bg-slate-100 overflow-x-hidden">
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify(jsonLd),
-  }}
-/>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+          }}
+        />
         <LenisProvider>
           <Toaster position="bottom-right" reverseOrder={false} />
           <TargetCursor
