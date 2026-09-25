@@ -212,30 +212,32 @@ const CreateEvent = () => {
             }
             className="w-full bg-transparent border-0 border-b-2 border-black outline-none text-5xl font-bold cursor-target"
           />
+          <label className="uppercase text-sm opacity-60 underline underline-offset-2 text-red-500 cursor-target">
+            Tap here to Upload New Banner image
+            <input
+              type="file"
+              accept="image/*"
+              disabled={uploading}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
 
-          <input
-            type="file"
-            accept="image/*"
-            disabled={uploading}
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
+                try {
+                  const url = await uploadImage(file);
 
-              try {
-                const url = await uploadImage(file);
+                  setEditState((prev) => ({
+                    ...prev,
+                    banner: url,
+                  }));
 
-                setEditState((prev) => ({
-                  ...prev,
-                  banner: url,
-                }));
-
-                toasty("Banner uploaded");
-              } catch (error: any) {
-                toasty(error.response?.data?.message || "Upload failed");
-              }
-            }}
-            className="w-full mt-4 file:mr-4 file:border-0 file:bg-transparent cursor-target"
-          />
+                  toasty("Banner uploaded");
+                } catch (error: any) {
+                  toasty(error.response?.data?.message || "Upload failed");
+                }
+              }}
+              className="hidden w-full mt-4 file:mr-4 file:border-0 file:bg-transparent cursor-target"
+            />
+          </label>
         </motion.div>
 
         {/* Meta */}
@@ -281,6 +283,7 @@ const CreateEvent = () => {
         </div>
 
         <div>
+          <p className="uppercase text-sm">Feedback Link</p>
           <input
             name="feedback Link"
             placeholder="Feedback Link"
