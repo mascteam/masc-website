@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useId, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, hover, motion } from "motion/react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { useCoverStore } from "@/store/cover";
 
 export const Cover = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
-  const { hovered } = useCoverStore();
+  const { hovered, setHovered } = useCoverStore();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -23,6 +23,10 @@ export const Cover = ({ children, className }: { children?: React.ReactNode; cla
       const positions = Array.from({ length: numberOfBeams }, (_, i) => (i + 1) * (height / (numberOfBeams + 1)));
       setBeamPositions(positions);
     }
+
+    return () => {
+      setHovered(false);
+    };
   }, [ref.current]);
 
   return (
