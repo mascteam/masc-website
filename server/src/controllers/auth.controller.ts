@@ -44,7 +44,7 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
   // check if such user exist
   const userExist = await User.findOne({ moodleID }).populate({
     path: "registeredEvents",
-    select: "_id title",
+    select: "_id title slug",
   });
 
   if (!userExist) throw new ApiError(CONFLICT, "Invalid username or password");
