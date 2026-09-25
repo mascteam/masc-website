@@ -235,6 +235,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
         {/* Title */}
         <motion.div variants={{}} initial="hidden" animate="visible">
+          <p className="uppercase text-sm opacity-60">Title</p>
           <input
             name="title"
             placeholder="Event Title"
@@ -248,37 +249,42 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
             className="cursor-target w-full bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
           />
 
-          <input
-            type="file"
-            accept="image/*"
-            disabled={uploading}
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
+          <label className="uppercase text-sm opacity-60 underline underline-offset-2 text-red-500 cursor-target">
+            Tap here to Upload New Banner image
+            <input
+              type="file"
+              accept="image/*"
+              disabled={uploading}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
 
-              try {
-                const url = await uploadImage(file);
+                try {
+                  const url = await uploadImage(file);
 
-                toasty("Banner uploaded");
-              } catch (error: any) {
-                toasty(error.response?.data?.message || "Upload failed");
+                  toasty("Banner uploaded");
+                } catch (error: any) {
+                  toasty(error.response?.data?.message || "Upload failed");
+                }
+              }}
+              className="hidden w-full mt-4 file:mr-4 file:border-0 file:bg-transparent cursor-target"
+            />
+          </label>
+          <div className="flex-col w-full">
+            <p className="uppercase text-sm opacity-60">Banner Image URL</p>
+            <input
+              name="banner"
+              placeholder="Banner Link"
+              value={editState.banner}
+              onChange={(e) =>
+                setEditState((p) => ({
+                  ...p,
+                  banner: e.target.value,
+                }))
               }
-            }}
-            className="w-full mt-4 file:mr-4 file:border-0 file:bg-transparent cursor-target"
-          />
-
-          <input
-            name="banner"
-            placeholder="Banner Link"
-            value={editState.banner}
-            onChange={(e) =>
-              setEditState((p) => ({
-                ...p,
-                banner: e.target.value,
-              }))
-            }
-            className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
-          />
+              className="cursor-target w-full mt-4 bg-transparent border-0 border-b-2 border-black outline-none text-lg font-bold"
+            />
+          </div>
         </motion.div>
 
         {/* Meta */}
@@ -380,6 +386,8 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
         {/* FEEDBACK LINK  */}
         <div>
+            <p className="uppercase text-sm opacity-60">Feedback Link</p>
+
           <input
             name="feedback Link"
             placeholder="Feedback Link"
@@ -539,7 +547,10 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
               Mark Attendance
             </Link>
 
-            <Link href={`feedback?link=${editState.feedbackLink}`} className="cursor-target border-b-2 border-black hover:opacity-70 ">
+            <Link
+              href={`feedback?link=${editState.feedbackLink}`}
+              className="cursor-target border-b-2 border-black hover:opacity-70 "
+            >
               Start Feedback
             </Link>
 
