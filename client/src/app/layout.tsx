@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     default: "MASC APSIT | Maths & Applied Sciences Club",
     template: "%s | MASC APSIT",
   },
+  icons :{
+    icon : "/favicon.ico"
+  },
 
   description:
     "Maths & Applied Sciences Club at APSIT. Explore mathematics, science, technology, events, workshops, projects, and ideas.",
