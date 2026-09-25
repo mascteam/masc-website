@@ -9,7 +9,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   description:
-    "MASC is the Math & Applied Science Club at APSIT, bringing students together through mathematics, science, technology, events, workshops, and exploration.",
+    "MASC is the Maths & Applied Sciences Club at APSIT, bringing students together through mathematics, science, technology, events, workshops, and exploration.",
   alternates: {
     canonical: "/",
   },
