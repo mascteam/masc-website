@@ -35,7 +35,7 @@ const ProfileUpdatePage = () => {
   });
 
   const departments = ["DS", "AIML", "IT", "COMP", "CIVIL", "MECH"];
-  const divisions = ["A", "B", "C", "D", "E", "F", "G", "H"];
+  const divisions = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
   const years = ["FE", "SE", "TE", "BE"];
 
   const router = useRouter();

@@ -65,7 +65,7 @@ const UpdateEventDetails = ({ event }: { event: EventType }) => {
 
   const allowedYears = ["FE", "SE", "TE", "BE"];
   const allowedDepartments = ["COMP", "DS", "AIML", "CIVIL", "MECH", "IT"];
-  const allowedDivisions = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+  const allowedDivisions = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
 
   const handleAllowedYears = (value: string, checked: boolean) => {
     if (!editState) return;
