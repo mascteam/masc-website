@@ -28,6 +28,31 @@ const uploadTeamJson = asyncHandler(async (req: AuthenticatedRequest, res: Respo
     throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
   }
 
+  const oldFilePath = "team/team.json";
+  const storage = supabase.storage.from(bucketName);
+
+  const { data: existingFiles, error: listError } = await storage.list("team", {
+    search: "team.json",
+  });
+
+  if (listError) {
+    return res.status(500).json({
+      message: `Failed to check existing file: ${listError.message}`,
+    });
+  }
+
+  const fileExists = existingFiles?.some((file) => file.name === "team.json");
+
+  if (fileExists) {
+    const { error: deleteError } = await storage.remove([oldFilePath]);
+
+    if (deleteError) {
+      return res.status(500).json({
+        message: `Failed to delete existing file: ${deleteError.message}`,
+      });
+    }
+  }
+
   const teamData = req.body;
 
   if (!teamData || typeof teamData !== "object") {
