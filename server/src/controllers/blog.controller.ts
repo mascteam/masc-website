@@ -3,9 +3,28 @@ import { Blog } from "../models/blog.model";
 import { createBlogSchema, updateBlogSchema } from "./blog.schema";
 import ApiError from "../utils/apiError";
 import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
-import { BAD_REQUEST, CONFLICT, NOT_FOUND, UNAUTHORIZED } from "../constants/status-codes";
+import { BAD_REQUEST, CONFLICT, NOT_FOUND, OK, UNAUTHORIZED } from "../constants/status-codes";
 import { User } from "../models/user.model";
 import asyncHandler from "../utils/asyncHandler";
+import mongoose from "mongoose";
+
+export const getLatestBlog = asyncHandler(async (req: Request, res: Response) => {
+  console.log("DB:", mongoose.connection.name);
+  console.log("Collection:", Blog.collection.name);
+
+  const count = await Blog.countDocuments();
+  console.log("Blog count:", count);
+
+  const blogs = await Blog.find().limit(3).lean();
+  console.log("Blogs:", blogs);
+
+  // pagination logic
+  const blog = await Blog.findOne();
+
+  if (!blog) throw new ApiError(NOT_FOUND, "latest blog not found");
+
+  res.status(OK).json({ blog, message: "blog fetched successfully", success: true });
+});
 
 export const getAllBlogs = asyncHandler(async (_: Request, res: Response) => {
   const blogs = await Blog.find().sort({ createdAt: -1 });
@@ -60,9 +79,9 @@ export const createBlog = asyncHandler(async (req: AuthenticatedRequest, res: Re
   const slug = validated.title.split(" ").join("-").toLocaleLowerCase();
 
   //check if this slug is already present in the db
-  const BlogAlreadyExist = await Blog.findOne({slug});
+  const BlogAlreadyExist = await Blog.findOne({ slug });
 
-  if(BlogAlreadyExist) throw new ApiError(CONFLICT, "blog with this slug already exist")
+  if (BlogAlreadyExist) throw new ApiError(CONFLICT, "blog with this slug already exist");
 
   const blog = await Blog.create({ ...validated, slug });
 
@@ -74,7 +93,6 @@ export const createBlog = asyncHandler(async (req: AuthenticatedRequest, res: Re
 export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const validated = updateBlogSchema.parse(req.body);
 
-
   const { slug } = req.params;
   if (!slug) throw new ApiError(BAD_REQUEST, "no slug provided to update");
 
@@ -85,8 +103,6 @@ export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
   if (!userID) {
     throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
   }
-
-
 
   // check if authenticated user is in the organization
   const user = await User.findById(userID);
@@ -113,7 +129,6 @@ export const updateBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
       new: true,
     },
   );
-
 
   if (!blog) {
     return res.status(404).json({
