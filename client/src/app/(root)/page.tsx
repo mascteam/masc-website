@@ -20,7 +20,7 @@ const Rootpage = () => {
     <>
       <HeroSection />
       <AboutSection />
-      {/* <Marquee className=" border-t-2 border-black select-none">
+      <Marquee className=" border-t-2 border-black select-none">
         <p
           className={`font-mono text-[10vh] md:text-[15vh] font-bold text-black [-webkit-text-stroke:2px_black] uppercase`}
         >
@@ -28,7 +28,7 @@ const Rootpage = () => {
           <span className={`${poppins.className} md:hidden flex`}>Team masc</span>
         </p>
       </Marquee>
-      <TeamSection /> */}
+      <TeamSection />
       <EventSection />
       <BlogSection />
     </>
