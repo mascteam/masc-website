@@ -50,6 +50,17 @@ const ManageMembers = () => {
     }
   };
 
+  const uploadTeamData = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const text = await file.text();
+    const teamData = JSON.parse(text);
+
+    await axiosInstance.put("/teams", teamData, {withCredentials : true});
+  };
+
   return (
     displayMembers && (
       <section className="w-[90vw] min-h-[80vh] mx-auto py-10 mt-15">
@@ -99,6 +110,10 @@ const ManageMembers = () => {
                 >
                   Update Member
                 </button>
+                <label className="cursor-target border-b-2 border-black text-red-600 hover:opacity-70 transition">
+                  Upload Team Data
+                  <input type="file" accept=".json,application/json" onChange={uploadTeamData} hidden />
+                </label>
               </div>
 
               <p className="text-xs text-gray-600 leading-6">
