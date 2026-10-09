@@ -29,7 +29,7 @@ import { errorHandler } from "./middlewares/errorHandler.ts";
 import AuthRouter from "./routes/auth.routes.ts";
 import EventsRouter from "./routes/event.routes.ts";
 import FeedbackRouter from "./routes/feedback.routes.ts";
-import BlogRouter from "./routes/blog.routes.ts"
+import BlogRouter from "./routes/blog.routes.ts";
 
 app.get("/", (req: Request, res: Response) => {
   res.send("server is up!!");
@@ -40,6 +40,7 @@ import { User } from "./models/user.model.ts";
 import asyncHandler from "./utils/asyncHandler.ts";
 import { checkAuth } from "./middlewares/auth.middleware.ts";
 import uploadImage, { upload } from "./utils/supabse.ts";
+import { getTeamJson, uploadTeamJson } from "./utils/teams.ts";
 
 app.get(
   "/stats",
@@ -55,9 +56,12 @@ app.use("/auth", AuthRouter);
 app.use("/events", EventsRouter);
 app.use("/feedbacks", FeedbackRouter);
 
-app.use("/blogs", BlogRouter)
+app.use("/blogs", BlogRouter);
 
-app.post("/image-to-url", checkAuth, upload.single("image"), uploadImage)
+app.post("/image-to-url", checkAuth, upload.single("image"), uploadImage);
+
+app.get("/teams", getTeamJson);
+app.put("/teams", checkAuth, uploadTeamJson);
 
 app.use(errorHandler);
 
