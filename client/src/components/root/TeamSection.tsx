@@ -38,7 +38,7 @@ const TeamSection = () => {
     teamData && (
       <div
         id="team"
-        className="team h-screen w-screen xl:h-[60vh] border border-black flex flex-col xl:flex-row justify-start items-start overflow-hidden"
+        className="team h-[150vh] lg:h-screen w-screen xl:h-[60vh] border border-black flex flex-col xl:flex-row justify-start items-start overflow-hidden"
       >
         {Object.keys(teamData).map((name) => (
           <div
