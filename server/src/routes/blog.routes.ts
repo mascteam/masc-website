@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createBlog,
   deleteBlogBySlug,
+  getAllBlogOfMonth,
   getAllBlogs,
   getBlogBySlug,
   getLatestBlog,
@@ -15,6 +16,7 @@ import { checkAuth } from "../middlewares/auth.middleware";
 const router = Router();
 
 router.get("/", getAllBlogs);
+router.get("/blogs-of-month", getAllBlogOfMonth);
 router.get("/:slug", getBlogBySlug);
 
 router.get("/latest", getLatestBlog);

@@ -23,7 +23,16 @@ export const getLatestBlog = asyncHandler(async (req: Request, res: Response) =>
 });
 
 export const getAllBlogs = asyncHandler(async (_: Request, res: Response) => {
-  const blogs = await Blog.find().sort({ createdAt: -1 });
+  const blogs = await Blog.find({ blogOfMonth: false }).sort({ createdAt: -1 });
+  const blogOfTheMonth = await Blog.find({ blogOfMonth: true }).sort({ createdAt: -1 });
+  res.status(200).json({
+    blogs,
+    blogOfTheMonth,
+  });
+});
+
+export const getAllBlogOfMonth = asyncHandler(async (_: Request, res: Response) => {
+  const blogs = await Blog.find({ blogOfMonth: true }).sort({ createdAt: -1 });
 
   res.status(200).json({
     blogs,
@@ -275,5 +284,5 @@ export const setBlogOfMonth = asyncHandler(async (req: AuthenticatedRequest, res
     { returnDocument: "after" },
   );
 
-  res.status(OK).json({ message: `${!updatedBlog?.blogOfMonth ? "added to" : "removed from"} blog of the month` });
+  res.status(OK).json({ message: `${updatedBlog?.blogOfMonth ? "added to" : "removed from"} blog of the month` });
 });
