@@ -5,6 +5,8 @@ import {
   getAllBlogs,
   getBlogBySlug,
   getLatestBlog,
+  likedBlogBySlug,
+  setBlogOfMonth,
   updateBlogBySlug,
 } from "../controllers/blog.controller";
 
@@ -20,5 +22,8 @@ router.get("/latest", getLatestBlog);
 router.post("/", checkAuth, createBlog);
 router.patch("/:slug", checkAuth, updateBlogBySlug);
 router.delete("/:slug", checkAuth, deleteBlogBySlug);
+
+router.post("/:slug/like", checkAuth, likedBlogBySlug);
+router.post("/:slug/blog-of-month", checkAuth, setBlogOfMonth);
 
 export default router;

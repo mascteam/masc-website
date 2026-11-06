@@ -6,12 +6,8 @@ import type { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import { BAD_REQUEST, CONFLICT, NOT_FOUND, OK, UNAUTHORIZED } from "../constants/status-codes";
 import { User } from "../models/user.model";
 import asyncHandler from "../utils/asyncHandler";
-import mongoose from "mongoose";
 
 export const getLatestBlog = asyncHandler(async (req: Request, res: Response) => {
-  console.log("DB:", mongoose.connection.name);
-  console.log("Collection:", Blog.collection.name);
-
   const count = await Blog.countDocuments();
   console.log("Blog count:", count);
 
@@ -180,4 +176,104 @@ export const deleteBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, r
   res.status(200).json({
     message: "Blog deleted",
   });
+});
+
+export const likedBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user || !req.user.userID) {
+    throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
+  }
+
+  const { slug } = req.params;
+
+  if (!slug) throw new ApiError(BAD_REQUEST, "no slug provided to delete");
+
+  const { userID } = req.user;
+
+  if (!userID) {
+    throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
+  }
+
+  // check if user exist
+  const user = await User.findById(userID);
+
+  if (!user) {
+    throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
+  }
+
+  // check if blog exist
+  const blog = await Blog.findOne({ slug });
+  if (!blog) throw new ApiError(NOT_FOUND, "blog not found");
+
+  // check if user has already liked it
+  const alreadyLiked = blog.likedBy.some((id) => id.toString() === user._id.toString()) ?? false;
+  if (alreadyLiked) {
+    // remove user to the likedBy array of blogs
+    const updatedBlog = await Blog.findOneAndUpdate(
+      { slug },
+      {
+        $pull: {
+          likedBy: user._id,
+        },
+      },
+      {
+        returnDocument: "after",
+      },
+    );
+
+    return res.status(OK).json({ message: "removed liked from blog", success: true, blog: updatedBlog });
+  }
+
+  // add user to the likedBy array of blogs
+  const updatedBlog = await Blog.findOneAndUpdate(
+    { slug },
+    {
+      $addToSet: {
+        likedBy: user._id,
+      },
+    },
+    {
+      returnDocument: "after",
+    },
+  );
+
+  res.status(OK).json({ message: "added like to blog", success: "true", blog: updatedBlog });
+});
+
+export const setBlogOfMonth = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user || !req.user.userID) {
+    throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
+  }
+
+  const { slug } = req.params;
+  if (!slug) throw new ApiError(BAD_REQUEST, "no slug provided to delete");
+
+  const { userID } = req.user;
+  if (!userID) {
+    throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
+  }
+
+  // check if authenticated user is in the organization
+  const user = await User.findById(userID);
+  if (!user) {
+    throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
+  }
+
+  const userAuthorised = user.role === "ADMIN";
+  if (!userAuthorised) {
+    throw new ApiError(UNAUTHORIZED, "access denied, you arent authorised to perform this action");
+  }
+
+  const updatedBlog = await Blog.findOneAndUpdate(
+    { slug },
+    [
+      {
+        $set: {
+          blogOfMonth: { $not: "$blogOfMonth" },
+        },
+      },
+    ],
+    { returnDocument: "after" },
+  );
+
+  res.status(OK).json({ message: `${!updatedBlog?.blogOfMonth ? "added to" : "removed from"} blog of the month` });
 });
