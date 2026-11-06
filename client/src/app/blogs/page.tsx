@@ -63,7 +63,7 @@ const BlogPage = () => {
         {/* Top accent */}
         <div className="flex items-center justify-between border-b border-[#B58B45]/30 px-5 py-3">
           <div className="flex items-center gap-2">
-            <span className="font-[Michroma] text-2xl tracking-[0.2em] text-[#B58B45]">BLOG OF THE MONTH</span>
+            <span className="font-[Michroma] text-lg lg:text-2xl tracking-[0.2em] text-[#B58B45]">BLOG OF THE MONTH</span>
           </div>
         </div>
         {blogsOfMonth.map((blog) => (
