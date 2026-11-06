@@ -4,12 +4,15 @@ export interface BlogDocument extends mongoose.Document {
   _id: ObjectId;
   title: string;
   slug: string;
+  likedBy: ObjectId[];
+  likes: number; // virtual field
+  blogOfMonth: boolean;
   content: string;
   bannerUrl: string;
   description: string;
   writtenBy: string;
-  createdAt : Date,
-  updatedAt : Date
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const blogSchema = new Schema<BlogDocument>(
@@ -23,6 +26,16 @@ const blogSchema = new Schema<BlogDocument>(
       required: true,
       unique: true,
       trim: true,
+    },
+    likedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    blogOfMonth: {
+      type: Boolean,
+      default: false,
     },
     content: {
       type: String,
@@ -45,5 +58,12 @@ const blogSchema = new Schema<BlogDocument>(
     timestamps: true,
   },
 );
+
+blogSchema.virtual("likes").get(function () {
+  return this.likedBy.length;
+});
+
+blogSchema.set("toJSON", { virtuals: true });
+blogSchema.set("toObject", { virtuals: true });
 
 export const Blog = mongoose.model<BlogDocument>("Blog", blogSchema);
