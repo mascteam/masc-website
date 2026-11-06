@@ -11,12 +11,16 @@ import { toasty } from "@/components/ToastProvider";
 import { useLoadingStore } from "@/store/loading";
 import LoadingPage from "@/app/loading";
 import { useUserStore } from "@/store/user";
-import Link from "next/link";
+import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 
 export type Blog = {
   _id: string;
   title: string;
   slug: string;
+  likes: number;
+  likedBy: string[];
+  blogOfMonth: boolean;
   content: string;
   bannerUrl: string;
   description: string;
@@ -51,6 +55,16 @@ const BlogPage = () => {
     fetchBlog();
   }, []);
 
+  const likeBlog = async () => {
+    try {
+      const { data } = await axiosInstance.post(`/blogs/${blog?.slug}/like`, {}, { withCredentials: true });
+      setBlog(data.blog);
+      toasty(data.message);
+    } catch (error) {
+      toasty("failed to like blog");
+    }
+  };
+
   if (loading) {
     return <LoadingPage />;
   }
@@ -63,10 +77,21 @@ const BlogPage = () => {
     <main className="min-h-screen w-full overflow-x-hidden">
       {/* Header */}
       <section className="mx-auto w-full max-w-6xl px-6 pt-16 md:px-10 md:pt-24">
-        <div className="mb-4 flex text-sm items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-slate-500">
-          <span>MASC</span>
-          <span>/</span>
-          <span>Blog</span>
+        <div className="mb-4 flex text-sm items-center justify-between w-full gap-3 text-[10px] uppercase tracking-[0.3em] text-slate-500">
+          <h3>
+            <span>MASC</span>
+            <span>/</span>
+            <span>Blog</span>
+          </h3>
+
+          <span onClick={likeBlog} className="flex justify-center items-center gap-x-1 cursor-target">
+            {blog.likedBy.some((id) => id.toString() === user?._id) ? (
+              <FaStar size={28} fill="gold" />
+            ) : (
+              <CiStar size={30} />
+            )}
+            <span className="w-8 shrink-0 text-xl text-gray-400">{blog.likes || 0}</span>
+          </span>
         </div>
 
         <h1 className="max-w-6xl text-lg md:text-5xl font-medium leading-[1.2] tracking-tight">{blog.title}</h1>
@@ -89,7 +114,6 @@ const BlogPage = () => {
       {/* Content */}
       <section className="mx-auto w-full max-w-6xl p-6 text-xs md:text-lg">
         <BlogReadOnly value={blog.content} />
-
       </section>
 
       {/* Footer metadata */}
