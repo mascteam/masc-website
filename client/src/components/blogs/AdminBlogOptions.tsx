@@ -3,9 +3,19 @@
 import { useUserStore } from "@/store/user";
 import Link from "next/link";
 import { toasty } from "../ToastProvider";
+import axiosInstance from "@/services/axios";
 
 const AdminBlogOptions = ({ slug }: { slug: string }) => {
   const { user } = useUserStore();
+
+  const updateBlogOfMonth = async () => {
+    try {
+      const { data } = await axiosInstance.post(`/blogs/${slug}/blog-of-month`);
+      toasty(data.message);
+    } catch (error: any) {
+      toasty(error.message || error);
+    }
+  };
   return (
     <>
       {user?.role === "ORGANIZOR" ||
@@ -32,6 +42,11 @@ const AdminBlogOptions = ({ slug }: { slug: string }) => {
                 >
                   Delete This Blog
                 </Link>
+              </div>
+              <div className="flex flex-wrap gap-x-10 gap-y-6">
+                <button onClick={updateBlogOfMonth} className="cursor-target border-b-2 border-black hover:opacity-70 transition text-red-400">
+                  Blog of Month
+                </button>
               </div>
             </div>
           </div>
