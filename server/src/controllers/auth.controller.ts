@@ -42,10 +42,16 @@ const loginController = asyncHandler(async (req: Request, res: Response) => {
   const { moodleID, password } = loginSchema.parse(req.body);
 
   // check if such user exist
-  const userExist = await User.findOne({ moodleID }).populate({
-    path: "registeredEvents",
-    select: "_id title slug",
-  });
+  const userExist = await User.findOne({ moodleID }).populate([
+    {
+      path: "registeredEvents",
+      select: "_id title slug",
+    },
+    {
+      path: "likedBlogs",
+      select: "_id title slug writtenBy description",
+    },
+  ]);
 
   if (!userExist) throw new ApiError(CONFLICT, "Invalid username or password");
 
@@ -75,10 +81,16 @@ const getUserAuthenticated = asyncHandler(async (req: AuthenticatedRequest, res:
   if (!userID) throw new ApiError(UNAUTHORIZED, "Bad request, userID is missing");
 
   // check if user is has the organizor role
-  const user = await User.findById(userID).populate({
-    path: "registeredEvents",
-    select: "_id title slug",
-  });
+  const user = await User.findById(userID).populate([
+    {
+      path: "registeredEvents",
+      select: "_id title slug",
+    },
+    {
+      path: "likedBlogs",
+      select: "_id title slug writtenBy description",
+    },
+  ]);
 
   if (!user) throw new ApiError(NOT_FOUND, "invalid token provided, failed to fetch user");
 
@@ -138,8 +150,8 @@ const updateUserInfo = asyncHandler(async (req: AuthenticatedRequest, res: Respo
 
   // update the user
   const newUser = await User.findOneAndUpdate({ moodleID: data.moodleID }, data).populate({
-    path : "registeredEvents",
-    select : "_id title slug"
+    path: "registeredEvents",
+    select: "_id title slug",
   });
 
   // response
@@ -167,9 +179,8 @@ const updateUserRole = asyncHandler(async (req: AuthenticatedRequest, res: Respo
   const updatedUser = await User.findOneAndUpdate({ moodleID }, { role });
   if (!updatedUser) throw new ApiError(BAD_REQUEST, "Failed to update role");
 
-  res.status(OK).json({ message: `${updatedUser.name} is an ${role} now.`, success: true, user : updatedUser });
+  res.status(OK).json({ message: `${updatedUser.name} is an ${role} now.`, success: true, user: updatedUser });
 });
-
 
 const findMembers = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   if (!req.user || !req.user.userID) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
@@ -186,11 +197,18 @@ const findMembers = asyncHandler(async (req: AuthenticatedRequest, res: Response
   if (!isAdmin(adminUser.role)) throw new ApiError(UNAUTHORIZED, "unauthorized to perform this action");
 
   // fetch the requested user using moodleID
-  const members  = await User.find({ role : {$ne : "USER"} });
+  const members = await User.find({ role: { $ne: "USER" } });
 
   // response with the user doc
   res.status(OK).json({ message: "user fetched successfully", success: true, members });
 });
 
-
-export { registerController, loginController, getUserAuthenticated, findUser, updateUserInfo, updateUserRole, findMembers };
+export {
+  registerController,
+  loginController,
+  getUserAuthenticated,
+  findUser,
+  updateUserInfo,
+  updateUserRole,
+  findMembers,
+};
