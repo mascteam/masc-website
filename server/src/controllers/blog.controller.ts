@@ -222,6 +222,13 @@ export const likedBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, re
       },
     );
 
+    // remove blog from users liked by array
+    await User.findByIdAndUpdate(user._id, {
+      $pull: {
+        likedBlogs: blog._id,
+      },
+    });
+
     return res.status(OK).json({ message: "removed liked from blog", success: true, blog: updatedBlog });
   }
 
@@ -237,6 +244,12 @@ export const likedBlogBySlug = asyncHandler(async (req: AuthenticatedRequest, re
       returnDocument: "after",
     },
   );
+
+  await User.findByIdAndUpdate(user._id, {
+    $addToSet: {
+      likedBlogs: blog._id,
+    },
+  });
 
   res.status(OK).json({ message: "added like to blog", success: "true", blog: updatedBlog });
 });
