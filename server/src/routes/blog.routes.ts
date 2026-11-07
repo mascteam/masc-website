@@ -17,9 +17,9 @@ const router = Router();
 
 router.get("/", getAllBlogs);
 router.get("/blogs-of-month", getAllBlogOfMonth);
-router.get("/:slug", getBlogBySlug);
-
 router.get("/latest", getLatestBlog);
+
+router.get("/:slug", getBlogBySlug);
 
 router.post("/", checkAuth, createBlog);
 router.patch("/:slug", checkAuth, updateBlogBySlug);
