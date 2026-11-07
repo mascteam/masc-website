@@ -20,7 +20,7 @@ const AboutSection = () => {
             EXPLORING THE <span className="flex ml-2 md:hidden">BEAUTY OF</span>
           </span>
           <span className="hidden md:flex">BEAUTY OF</span>
-          <span>MATH AND SCIENCES</span>
+          <span>MATHS AND SCIENCES</span>
         </h3>
       </motion.div>
 
@@ -33,7 +33,7 @@ const AboutSection = () => {
       >
         <p className="uppercase flex flex-col justify-around space-y-10 md:p-2 md:max-w-lg">
           <span className="cursor-target text-xs md:text-sm text-wrap p-1">
-            MASC is a student-led Mathematics and Science Club that brings together curious minds through workshops,
+            MASC is a student-led Mathsematics and Science Club that brings together curious minds through workshops,
             competitions, and innovative projects. Our goal is not just to organize events, but to inspire curiosity and
             encourage learning beyond the classroom.
           </span>

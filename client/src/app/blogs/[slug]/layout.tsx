@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       return {
         title: "Blog Not Found",
         description:
-          "Explore MASC blogs covering mathematics, science, technology, programming, research, ideas, and curious questions.",
+          "Explore MASC blogs covering mathsematics, science, technology, programming, research, ideas, and curious questions.",
       };
     }
 
@@ -32,17 +32,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         description: blog.description,
         url: `/blogs/${blog.slug}`,
         images: [
-              {
-                url: blog.bannerUrl,
-                width: 1200,
-                height: 630,
-                alt: blog.title,
-              },
-            ],
+          {
+            url: blog.bannerUrl,
+            width: 1200,
+            height: 630,
+            alt: blog.title,
+          },
+        ],
 
         publishedTime: blog.createdAt,
         modifiedTime: blog.updatedAt,
-        authors: [blog.writtenBy ,"MASC", ],
+        authors: [blog.writtenBy, "MASC"],
       },
     };
   } catch {

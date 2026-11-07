@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
 
   title: {
-    default: "MASC APSIT | Math & Applied Sciences Club",
+    default: "MASC APSIT | Maths & Applied Sciences Club",
     template: "%s | MASC APSIT",
   },
   icons: {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Math & Applied Sciences Club at APSIT. Explore mathematics, science, technology, events, workshops, projects, and ideas.",
+    "Maths & Applied Sciences Club at APSIT. Explore mathsematics, science, technology, events, workshops, projects, and ideas.",
 
   applicationName: "MASC WEBSITE",
 
@@ -59,23 +59,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "MASC",
-    title: "MASC | Math & Applied Sciences Club",
-    description: "Explore mathematics, science, technology, events, workshops, projects, and ideas with MASC.",
+    title: "MASC | Maths & Applied Sciences Club",
+    description: "Explore mathsematics, science, technology, events, workshops, projects, and ideas with MASC.",
     url: SITE_URL,
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "MASC | Math & Applied Sciences Club",
+        alt: "MASC | Maths & Applied Sciences Club",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "MASC | Math & Applied Sciences Club",
-    description: "Math, science, technology, events, workshops, and ideas.",
+    title: "MASC | Maths & Applied Sciences Club",
+    description: "Maths, science, technology, events, workshops, and ideas.",
     images: ["/og-image.png"],
   },
 };
@@ -84,10 +84,10 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "MASC",
-  alternateName: "Math & Applied Sciences Club",
+  alternateName: "Maths & Applied Sciences Club",
   url: "https://masc-apsit.vercel.app",
   description:
-    "Math & Applied Sciences Club at APSIT, bringing students together through mathematics, science, technology, events, workshops, and exploration.",
+    "Maths & Applied Sciences Club at APSIT, bringing students together through mathsematics, science, technology, events, workshops, and exploration.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

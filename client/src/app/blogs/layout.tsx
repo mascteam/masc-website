@@ -4,14 +4,14 @@ import { ReactNode } from "react";
 export const metadata: Metadata = {
   title: "Blogs",
   description:
-    "Explore MASC blogs covering mathematics, science, technology, programming, research, ideas, and curious questions.",
+    "Explore MASC blogs covering mathsematics, science, technology, programming, research, ideas, and curious questions.",
   alternates: {
     canonical: "/blogs",
   },
 };
 
-const BlogsLayout = ({children}: {children : ReactNode}) => {
-  return children
-}
+const BlogsLayout = ({ children }: { children: ReactNode }) => {
+  return children;
+};
 
-export default BlogsLayout
+export default BlogsLayout;
