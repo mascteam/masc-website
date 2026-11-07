@@ -31,7 +31,6 @@ const blogSchema = new Schema<BlogDocument>(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
-        deafult: [],
       },
     ],
     blogOfMonth: {
@@ -61,7 +60,7 @@ const blogSchema = new Schema<BlogDocument>(
 );
 
 blogSchema.virtual("likes").get(function () {
-  return this.likedBy.length;
+  return this.likedBy?.length;
 });
 
 blogSchema.set("toJSON", { virtuals: true });
