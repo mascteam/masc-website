@@ -31,6 +31,7 @@ const blogSchema = new Schema<BlogDocument>(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+        deafult: [],
       },
     ],
     blogOfMonth: {
