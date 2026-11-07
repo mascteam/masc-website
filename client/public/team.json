@@ -1,0 +1,285 @@
+{
+  "Founders": {
+    "description": "Founders of the Maths and Applied Sciences Club",
+    "members": [
+      {
+        "id": 864270,
+        "name": "Mehaan Churi",
+        "role": "Founder",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/3bed2eba-44f9-4f2b-86ce-f3d3d7d3a848-mehaan_churi.jpeg"
+      },
+      {
+        "id": 355672,
+        "name": "Arav Palsule",
+        "role": "Co-Founder",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/eaa2557a-9dc3-4488-9297-64996b3d36d9-arav_paluse.jpeg"
+      },
+      {
+        "id": 357885,
+        "name": "Nikhil Sharma",
+        "role": "Founding Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/8a38613b-4754-42f9-a428-e7d48bfce66d-nikhil_sharma.jpeg"
+      }
+    ]
+  },
+  "Core": {
+    "description": "The core leadership team guiding the club and its departments",
+    "members": [
+      {
+        "id": 479652,
+        "name": "Mehaan Churi",
+        "role": "President",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/3bed2eba-44f9-4f2b-86ce-f3d3d7d3a848-mehaan_churi.jpeg"
+      },
+      {
+        "id": 269080,
+        "name": "Veera Bandekar",
+        "role": "Vice President",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/4fa235c4-16d0-45f7-bd1f-dbf9acc1b4fd-veera_bandekar.jpeg"
+      },
+      {
+        "id": 741068,
+        "name": "Niharika Jha",
+        "role": "Creative Head",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/10980ea2-fb64-4094-9581-0328e7810641-niharika_jha.jpeg"
+      },
+      {
+        "id": 238455,
+        "name": "Nikhil Sharma",
+        "role": "RnD Head",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/8a38613b-4754-42f9-a428-e7d48bfce66d-nikhil_sharma.jpeg"
+      },
+      {
+        "id": 733302,
+        "name": "Shreeyash Kulkarni",
+        "role": "Management Head",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/ba625d9b-2e62-4658-a5d5-5a381846bb04-shreeyash_kulkarni.jpeg"
+      }
+    ]
+  },
+  "Research": {
+    "description": "The team exploring mathematical and scientific ideas through research",
+    "members": [
+      {
+        "id": 536592,
+        "name": "Arnav Dighe",
+        "role": "Research Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/36eea619-4c6d-48f2-80d8-d3a52d602de0-arnav_dighe.jpeg"
+      },
+      {
+        "id": 104274,
+        "name": "Shreeya Kadam",
+        "role": "Research Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/eb5cb694-1a60-46c3-9445-16613a26f30e-shreeya_kadam.jpeg"
+      },
+      {
+        "id": 173105,
+        "name": "Arth Bhigwade",
+        "role": "Research Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/36ba0154-7fc9-43cc-9e90-060d3243f1bb-Arth_Bhigwade.jpeg"
+      },
+      {
+        "id": 487743,
+        "name": "Ayush Yadav",
+        "role": "Research Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/8cdad718-ed54-4ea1-bd92-235981bd8c5c-Ayush_Yadav.jpeg"
+      },
+      {
+        "id": 888720,
+        "name": "Sumangal Chinara",
+        "role": "Research Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/a2b98542-526f-4d14-a10b-10fbb291e6ae-Sumangal_Chinara.jpeg"
+      }
+    ]
+  },
+  "Development": {
+    "description": "The team building projects and turning ideas into practical solutions",
+    "members": [
+      {
+        "id": 116082,
+        "name": "Ojas Amrujkar",
+        "role": "Development Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/d6c8df17-b668-4f17-a859-37f18a9ccdc7-ojas_amrujkar.jpeg"
+      },
+      {
+        "id": 254330,
+        "name": "Aditi Bhosale",
+        "role": "Development Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/aa755362-2513-49f3-9857-1576b7f1c1d9-Aditi_Bhosale.jpeg"
+      },
+      {
+        "id": 720869,
+        "name": "Neil Patil",
+        "role": "Development Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/779524db-18c0-4def-a6fe-b7571640dec0-Neil_Patil.jpeg"
+      }
+    ]
+  },
+  "Management": {
+    "description": "The team coordinating club operations, planning, and organization",
+    "members": [
+      {
+        "id": 648332,
+        "name": "Shreeyash Kulkarni",
+        "role": "Management Head",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/ba625d9b-2e62-4658-a5d5-5a381846bb04-shreeyash_kulkarni.jpeg"
+      },
+      {
+        "id": 480175,
+        "name": "Niharika Mulye",
+        "role": "Management Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/488ab065-cf7c-4308-b464-15bf19bf95f7-Niharika_Mulye.jpeg"
+      },
+      {
+        "id": 216135,
+        "name": "Om Tupone",
+        "role": "Management Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/d675fff4-d295-41c7-b4ae-656d14df42eb-Om_Tupone.jpeg"
+      }
+    ]
+  },
+  "Documentation": {
+    "description": "The team recording activities and maintaining the club’s documentation",
+    "members": [
+      {
+        "id": 334862,
+        "name": "Rahi Chole",
+        "role": "Documentation Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/30fa7405-0d34-4f50-9b0a-a66db7136fc7-rahi_chole.jpeg"
+      },
+      {
+        "id": 459355,
+        "name": "Saisha Sarmalkar",
+        "role": "Documentation Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/bb4ab393-d2b6-4a2f-8d68-26b66e7b5c8b-Saisha_Sarmalkar.jpeg"
+      },
+      {
+        "id": 775329,
+        "name": "Soham Sawant",
+        "role": "Documentation Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/e28264bc-f9d2-4b38-82fb-b9b9ee0b1e3a-Soham_Sawant.jpeg"
+      }
+    ]
+  },
+  "Media": {
+    "description": "The team creating and sharing media to showcase club activities",
+    "members": [
+      {
+        "id": 494542,
+        "name": "Adrija Ghosh",
+        "role": "Media Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/44a3f247-68ad-4eb6-9e51-13186c811e89-Adrija_Ghosh.jpeg"
+      },
+      {
+        "id": 620271,
+        "name": "Nivesh Jain",
+        "role": "Media Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/b6078006-3da6-47c6-9d28-b255dd9b54af-Nivesh_Jain.jpeg"
+      },
+      {
+        "id": 636238,
+        "name": "Siddhi Bhanushali",
+        "role": "Media Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/1d133990-654c-40ad-88c0-23f8fe21e21a-Siddhi_Bhanushali.jpeg"
+      }
+    ]
+  },
+  "Design": {
+    "description": "The team shaping the club’s visual identity and creative materials",
+    "members": [
+      {
+        "id": 146432,
+        "name": "Rishikesh Deherkar",
+        "role": "Design Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/e80f659a-04fb-4acd-91aa-9d62b8af853b-rishikesh_deherkar.jpeg"
+      },
+      {
+        "id": 984296,
+        "name": "Swara Bhagat",
+        "role": "Design Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/537a230f-564b-4bec-9dfd-b3d5f81dab15-swara_bhagat.jpeg"
+      },
+      {
+        "id": 444469,
+        "name": "Sehgev Phansapurkar",
+        "role": "Design Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/08b874d4-99ea-4fd5-b301-b5ef2bfee3fe-Sehgev_Phansapurkar.jpeg"
+      },
+      {
+        "id": 555764,
+        "name": "Tanisha Gupta",
+        "role": "Design Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/fc4d7c9c-ad39-4b74-996c-7585066c9757-Tanisha_Gupta.jpeg"
+      },
+      {
+        "id": 536891,
+        "name": "Vidhyanshi Jain",
+        "role": "Design Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/c282dc8f-95dd-4aec-a90c-22dacd85eabc-Vidhyanshi_Jain.jpeg"
+      }
+    ]
+  },
+  "Publicity": {
+    "description": "The team promoting club initiatives, events, and opportunities",
+    "members": [
+      {
+        "id": 947563,
+        "name": "Simran Jha",
+        "role": "Publicity Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/eae90a2c-78e4-46cf-bcc2-060c80977f05-simran_jha.jpeg"
+      },
+      {
+        "id": 218275,
+        "name": "Tanvi Jadhav",
+        "role": "Publicity Lead",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/528ade3f-c54e-406d-9c47-66c09b82230a-tanvi_jadhav.jpeg"
+      },
+      {
+        "id": 603047,
+        "name": "Shamika Katakwar",
+        "role": "Publicity Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/aa4a446c-7eba-4f73-946b-7cc9a0d251c7-Shamika_Katakwar.jpeg"
+      },
+      {
+        "id": 816034,
+        "name": "Spoorti Jadhav",
+        "role": "Publicity Member",
+        "linkedin": null,
+        "img": "https://zjawiqmlpxhwysttlzpo.supabase.co/storage/v1/object/public/masc/teams/df2bc994-853e-4a67-89f6-61162fd6296f-Spoorti_Jadhav.jpeg"
+      }
+    ]
+  }
+}
