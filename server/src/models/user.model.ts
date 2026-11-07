@@ -11,7 +11,9 @@ export interface UserDocument extends mongoose.Document {
   division: string;
   department: string;
   role: string;
+
   registeredEvents: ObjectId[];
+  likedBlogs: ObjectId[];
   comparePassword(value: string): Promise<boolean>;
 }
 
@@ -61,6 +63,13 @@ const userSchema = new Schema<UserDocument>(
         default: [],
       },
     ],
+    likedBlogs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Blog",
+        default: [],
+      },
+    ],
   },
   { timestamps: true },
 );
@@ -72,7 +81,6 @@ userSchema.pre("save", async function (next) {
     next();
   }
 });
-
 
 userSchema.methods.comparePassword = async function (pass: string) {
   return await comparePassword(pass, this.password);
