@@ -8,14 +8,7 @@ import { User } from "../models/user.model";
 import asyncHandler from "../utils/asyncHandler";
 
 export const getLatestBlog = asyncHandler(async (req: Request, res: Response) => {
-  const count = await Blog.countDocuments();
-  console.log("Blog count:", count);
-
-  const blogs = await Blog.find().limit(3).lean();
-  console.log("Blogs:", blogs);
-
-  // pagination logic
-  const blog = await Blog.findOne();
+  const blog = await Blog.findOne().sort({ createdAt: -1 });
 
   if (!blog) throw new ApiError(NOT_FOUND, "latest blog not found");
 
