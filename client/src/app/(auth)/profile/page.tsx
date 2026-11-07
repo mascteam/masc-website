@@ -77,7 +77,7 @@ const ProfilePage = () => {
           <Link href="/profile/edit" className="cursor-target underline underline-offset-4">
             Update Profile
           </Link>
-          {["ORGANIZOR", "ADMIN"].includes(user.role)  && (
+          {["ORGANIZOR", "ADMIN"].includes(user.role) && (
             <Link className="cursor-target underline underline-offset-4" href="/admin/nav">
               Admin Navigation
             </Link>
@@ -85,6 +85,25 @@ const ProfilePage = () => {
           <button onClick={handleLogout} className="cursor-target underline underline-offset-4 text-red-400">
             Log Out
           </button>
+        </div>
+      </div>
+
+      <div className="border-t-2 border-black pt-10">
+        <h2 className="text-3xl mb-8">Liked Blogs ({user.likedBlogs.length})</h2>
+
+        <div className="space-y-4">
+          {user.likedBlogs.length === 0 ? (
+            <p className="text-gray-600">No Blogs Liked.</p>
+          ) : (
+            user.likedBlogs.map((blog, i) => (
+              <div key={blog._id} className="flex gap-6 border-b-2 border-black pb-3 cursor-target">
+                <span className="opacity-40">{String(i + 1).padStart(2, "0")}</span>
+                <span onClick={() => router.push(`/blogs/${blog.slug}`)} className="text-xl">
+                  {blog.title}
+                </span>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -98,7 +117,9 @@ const ProfilePage = () => {
             user.registeredEvents.map((event, i) => (
               <div key={event._id} className="flex gap-6 border-b-2 border-black pb-3 cursor-target">
                 <span className="opacity-40">{String(i + 1).padStart(2, "0")}</span>
-                <span onClick={()=> router.push(`/events/${event.slug}`)} className="text-xl">{event.title}</span>
+                <span onClick={() => router.push(`/events/${event.slug}`)} className="text-xl">
+                  {event.title}
+                </span>
               </div>
             ))
           )}
