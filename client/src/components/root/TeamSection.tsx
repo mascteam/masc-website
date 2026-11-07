@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { motion } from "motion/react";
 import axiosInstance from "@/services/axios";
+import axios from "axios";
 
 type MemberDataType = {
   name: string;
@@ -24,7 +25,7 @@ const TeamSection = () => {
   useEffect(() => {
     const fetchTeamJson = async () => {
       try {
-        const { data } = await axiosInstance.get("/teams", { withCredentials: true });
+        const { data } = await axios.get("/team.json", { withCredentials: true });
         setTeamData(data);
       } catch (error: any) {
         setTeamData({});
